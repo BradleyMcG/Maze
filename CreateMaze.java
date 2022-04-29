@@ -22,8 +22,8 @@ public class CreateMaze {
         frame.setContentPane(pnlInputs);
 
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints.weightx = 10;
-        constraints.weighty = 10;
+        constraints.weightx = 4;
+        constraints.weighty = 4;
 
         constraints.gridx = 0;
         constraints.gridwidth = 2;
