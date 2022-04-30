@@ -3,11 +3,26 @@ package guimaze;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 
-public class MazeGenerator extends JFrame implements ActionListener, Runnable {
+
+public class MazeGenerator extends JFrame implements ActionListener, Runnable { //class name changed eventual "Program.java"
+    /**
+     *
+     * @version 2
+     *
+     */
+
+    //Logical Fields
+    public static List<Maze> allMazes = new ArrayList<Maze>();
+        // - singleton design pattern to be implemented for global list of obj (Maze)
+
+
+    //GUI Fields
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
@@ -30,9 +45,11 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         JFrame frame = new JFrame("Maze Generator");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setBackground(Color.BLUE); //can't see anything?
 
         JPanel pane = new JPanel(new GridBagLayout());
         frame.setContentPane(pane);
+        frame.setBackground(Color.BLUE);//can't see anything?
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.weightx = 10;
@@ -41,7 +58,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
         JLabel headerLabel = new JLabel("Maze Generator");
         constraints.gridx = 1;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
         constraints.gridy = 0;
         pane.add(headerLabel, constraints);
 
@@ -80,6 +97,8 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
         frame.setVisible(true); //Show the window
     }
+
+
 
     private void createCreationGui(){
         setSize(WIDTH, HEIGHT);
@@ -168,13 +187,24 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     @Override
     public void run() {
         // SwingUtilities.invokeLater(new FramesAndPanels("BorderLayout"));
+
         createGUI();
+
+
 
     }
 
     public static void main(String[] args){
+
         SwingUtilities.invokeLater(new MazeGenerator());
+        /*
+        //eventually need to utilise a singleton pattern to maintain MazeGenerator (Program)
+        //is only instantiated once without being static - needs to be instantiated to store mazes
+        // - THIS WILL ALLOW MAIN TO BE STATIC ONCE AGAIN
+         */
     }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -189,5 +219,16 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             System.out.println("pressed");
         }
         
+    }
+
+    public void StoreMaze(Maze maze){
+        allMazes.add(maze);
+    }
+
+    private void populateDummyMazes(){
+        allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
+        allMazes.add(new Maze("Maze 2", "Zinedine Zidane", 5, 10));
+        allMazes.add(new Maze("Maze for the free world", "Nelson Mandela", 96, 96));
+        allMazes.add(new Maze("But its honest work", "Brad", 2, 2));
     }
 }
