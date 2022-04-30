@@ -30,8 +30,11 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     private JButton btnCreate;
     private JButton btnFind;
     private JButton btnDisplay;
+    private JButton btnExport;
+   // private JButton btnDisplay;
 
     private JFrame frame;
+
 
 
 
@@ -39,6 +42,8 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         JFrame frame = new JFrame("Maze Generator");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
 
         JPanel pane = new JPanel(new GridBagLayout());
         frame.setContentPane(pane);
@@ -52,47 +57,90 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         constraints.gridx = 1;
         constraints.gridwidth = 2;
         constraints.gridy = 0;
+        headerLabel.setFont(new Font("Test", Font.PLAIN, 30));
         pane.add(headerLabel, constraints);
 
         btnCreate = new JButton("Create Maze");
         constraints.gridx = 1;
-        constraints.gridwidth = 1;
-        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        constraints.gridy = 3;
+        constraints.ipady = 40;
+        constraints.ipadx = 240;
         pane.add(btnCreate, constraints);
 
         btnDisplay = new JButton("Display Maze");
-        constraints.gridx = 1;
+        constraints.gridx = 3;
         constraints.gridwidth = 1;
-        constraints.gridy = 2;
+        constraints.gridy = 1;
+        constraints.ipady = 0;
+        constraints.ipadx = 0;
         pane.add(btnDisplay, constraints);
 
-        btnFind = new JButton("Find Previous Maze");
-        constraints.gridx = 1;
+        btnExport = new JButton("Export Maze");
+        constraints.gridx = 3;
+        constraints.gridwidth = 1;
+        constraints.gridy = 2;
+        constraints.ipady = 0;
+        pane.add(btnExport, constraints);
+
+        /*btnFind = new JButton("Find Previous Maze");
+        constraints.gridx = 3;
         constraints.gridwidth = 1;
         constraints.gridy = 3;
-        pane.add(btnFind, constraints);
+        constraints.ipady = 40;
+        pane.add(btnFind, constraints);*/
 
         btnCreate.addActionListener(this);
-        btnFind.addActionListener(this);
+      //  btnFind.addActionListener(this);
         btnDisplay.addActionListener(this);
+        btnExport.addActionListener(this);
 
-        pnlTwo = createPanel(Color.BLACK);
-        getContentPane().add(pnlTwo,BorderLayout.WEST);
+        //JPanel pane = new JPanel();
+       // frame.setContentPane(pane);
 
-        pnlBtn = createPanel(Color.BLACK);
-        getContentPane().add(pnlBtn, constraints.gridx = 0);
-        pnlFour = createPanel(Color.BLACK);
-        getContentPane().add(pnlFour,BorderLayout.NORTH);
-        pnlFive = createPanel(Color.BLACK);
-        getContentPane().add(pnlFive,BorderLayout.EAST);
+        String [] columnNames = {"Author Name","Date","Maze Title","Export"};
+        Object [] [] data = {
+                {"Bradley McGrath","20/3/22","Maze 3",true},
+                {"Sam Fleming","22/3/22","Maze 1",false},
+                {"Leila Hunt","21/3/22","Maze 2",true},
+                {"Thomas Beal","24/3/22","Maze 5",false},
+                {"Corey Parker","25/3/22","Maze 4",false},
+                {"Bradley McGrath","20/3/22","Maze 3",true},
+                {"Sam Fleming","22/3/22","Maze 1",false},
+                {"Leila Hunt","21/3/22","Maze 2",true},
+                {"Thomas Beal","24/3/22","Maze 5",false},
+                {"Corey Parker","25/3/22","Maze 4",false}
+        };
+        JTable tableMaze = new JTable(data, columnNames){
+            public Class getColumnClass(int column) {
+                //return Boolean.class
+                return getValueAt(0, column).getClass();
+            }
+        };
+
+        tableMaze.setAutoCreateRowSorter(true);
+
+        tableMaze.setPreferredScrollableViewportSize(new Dimension(500, 300));
+        tableMaze.setFillsViewportHeight(true);
+
+        JScrollPane scrollPane = new JScrollPane(tableMaze);
+        constraints.gridx = 0;
+        constraints.gridwidth = 3;
+        constraints.gridheight = 2;
+        constraints.gridy = 1;
+        constraints.ipady = 0;
+        frame.add(scrollPane,constraints);
+
+
+
         repaint();
-
+        //frame.pack();
         frame.setVisible(true); //Show the window
     }
 
 
 
-    private void createCreationGui(){
+   /* private void createCreationGui(){
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -112,8 +160,16 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         pnlFive = createPanel(Color.BLACK);
         getContentPane().add(pnlFive,BorderLayout.EAST);
         repaint();
+
+
         setVisible(true);
     }
+
+    public void MazeGenerator (){
+
+
+
+    }*/
 
     private JPanel createPanel(Color c) {
         //Create a JPanel object and store it in a local var
@@ -204,11 +260,15 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             CreateMaze Create = new CreateMaze();
             System.out.println("pressed");
         }
-        if(e.getSource()==btnFind){
+        /*if(e.getSource()==btnFind){
             System.out.println("pressed");
-        }
+        }*/
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
+        }
+        if(e.getSource() == btnExport){
+            System.out.println("EXPORT");
+            Export exp = new Export();
         }
         
     }
