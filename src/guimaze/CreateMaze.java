@@ -36,7 +36,7 @@ public class CreateMaze implements ActionListener, Runnable{
     CreateMaze(){
 
 
-        CreateMazeGUI();
+        CreateMazeGUI(); //eventually DisplayGUI (from interface)
         btnAutomatic.addActionListener(this);
         btnManual.addActionListener(this);
 
@@ -47,6 +47,7 @@ public class CreateMaze implements ActionListener, Runnable{
     private void CreateMazeGUI(){
 
         frame.setSize(800, 800);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel pnlInputs = new JPanel(new GridBagLayout());
@@ -148,6 +149,7 @@ public class CreateMaze implements ActionListener, Runnable{
         int y;
         if(e.getSource()==btnAutomatic) {
             System.out.println("btn pressed, automatically generate maze");
+
             //Catch exceptions related to incorrect input - display appropriate dialog
             try {
                 title = Title.getText();
@@ -157,7 +159,7 @@ public class CreateMaze implements ActionListener, Runnable{
                 CreateAutomatic(title, author, x, y);
             } catch (Exception c) {
                 System.out.println(c.getMessage());
-                errorDialog();
+                errorDialog(); // "errorDialog" unfinished
             }
 
 
@@ -183,10 +185,14 @@ public class CreateMaze implements ActionListener, Runnable{
 
     private void errorDialog(){
         JDialog d = new JDialog(frame, "Input Error");
+        JPanel p = new JPanel();
+        p.setBorder(BorderFactory.createLineBorder(Color.black));
         JTextField inputError = new JTextField("Uh oh. Incorrect data input; make sure your dimensions and whole numbers and " +
                 "title/author is a string literal");
-        d.setSize(200, 200);
-        d.add(inputError);
+        inputError.setSize(100, 100);
+        d.setSize(400, 200);
+        p.add(inputError);
+        d.add(p);
         d.setVisible(true);
     }
 
@@ -202,7 +208,7 @@ public class CreateMaze implements ActionListener, Runnable{
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
-
+        AutomaticGeneration createAuto = new AutomaticGeneration(maze);
 
     }
 
@@ -211,5 +217,7 @@ public class CreateMaze implements ActionListener, Runnable{
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
+        ManualGeneration createManual = new ManualGeneration(maze);
+
     }
 }
