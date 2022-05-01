@@ -201,36 +201,6 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         jp.add(c, constraints);
     }
 
-   /* private void layoutButtonPanel() {
-        GridBagLayout layout = new GridBagLayout();
-        pnlOne.setLayout(layout);
-        //Lots of layout code here
-        //pnlOne.add(btnCreate, new GridBagConstraints());
-        //pnlOne.add(btnFind, new GridBagConstraints());
-      //  pnlOne.add(btnDisplay, new GridBagConstraints());
-        //add components to grid
-        GridBagConstraints constraints = new GridBagConstraints();
-        //Defaults
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.anchor = GridBagConstraints.CENTER;
-        //constraints.weightx = 10;
-       // constraints.weighty = 10;
-
-
-
-        addToPanel(pnlOne,btnCreate,constraints,400,200,2,1);
-        //addToPanel(pnlBtn, btnUnload,constraints,3,0,2,1);
-        addToPanel(pnlOne, btnFind,constraints,10,0,2,1);
-
-        addToPanel(pnlOne, btnDisplay,constraints,3,10,2,1);
-    } */
-
-    private void layoutButtonPanel(){
-       // JPanel pane = new JPanel(new GridBagLayout()); //Create a pane to house all content, and give it a GridBagLayout
-     //   frame.setContentPane(pane);
-    }
-
-
 
     @Override
     public void run() {
@@ -265,6 +235,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         }*/
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
+            Display dis = new Display();
         }
         if(e.getSource() == btnExport){
             System.out.println("EXPORT");
