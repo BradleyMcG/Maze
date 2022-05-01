@@ -7,6 +7,7 @@ public class Maze{
     //constructor fields
     protected String title;
     protected String author;
+    protected String date;
     protected int length;
     protected int height;
 
@@ -16,11 +17,13 @@ public class Maze{
     protected int[] finishCell = new int[2];
 
 
-    public Maze(String title, String author, int length, int height){
+    public Maze(String title,String date,String author, int length, int height){
         this.title = title;
         this.author = author;
         this.length = length;
         this.height = height;
+        this.date = date;
+
 
 
     }

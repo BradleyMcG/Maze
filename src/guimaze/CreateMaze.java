@@ -156,7 +156,8 @@ public class CreateMaze implements ActionListener, Runnable{
                 author = Author.getText();
                 x = Integer.parseInt(length.getText());
                 y = Integer.parseInt(height.getText());
-                CreateAutomatic(title, author, x, y);
+                String date ="14/12/2000";
+                CreateAutomatic(title,date,author, x, y);
             } catch (Exception c) {
                 System.out.println(c.getMessage());
                 errorDialog(); // "errorDialog" unfinished
@@ -171,7 +172,8 @@ public class CreateMaze implements ActionListener, Runnable{
                 author = Author.getText();
                 x = Integer.parseInt(length.getText());
                 y = Integer.parseInt(height.getText());
-                CreateManual(title, author, x, y);
+                String date ="14/12/2000";
+                CreateManual(title,date,author, x, y);
             } catch (Exception c) {
                 System.out.println(c.getMessage());
                 errorDialog(); // "errorDialog" unfinished
@@ -203,8 +205,8 @@ public class CreateMaze implements ActionListener, Runnable{
 
 
 
-    private void CreateAutomatic(String title, String author, int x, int y){
-        maze = new Maze(title, author, x, y);
+    private void CreateAutomatic(String title,String date ,String author, int x, int y){
+        maze = new Maze(title,date,author, x, y);
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
@@ -212,8 +214,8 @@ public class CreateMaze implements ActionListener, Runnable{
 
     }
 
-    private void CreateManual(String title, String author, int x, int y){
-        maze = new Maze(title, author, x, y);
+    private void CreateManual(String title,String date, String author, int x, int y){
+        maze = new Maze(title,date,author, x, y);
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve

@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+/**
+ * @author bradley.mcgrath
+ * @version 1
+ */
 
 public class Export implements ActionListener, Runnable {
 
@@ -11,7 +15,7 @@ public class Export implements ActionListener, Runnable {
     public static final int HEIGHT = 800;
 
     JLabel headerLabel = new JLabel("Export");
-    JButton btnBack = new JButton("Back");
+    JButton btnBack = new JButton("Submit");
 
     Export(){
         ExportGUI();
@@ -68,6 +72,7 @@ public class Export implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnBack){
             System.out.println("RETURN TO HOME SCREEN");
+            MazeGenerator rnd = new MazeGenerator();
         }
     }
 

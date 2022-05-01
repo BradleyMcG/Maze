@@ -138,6 +138,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
+            MazeGenerator rnd = new MazeGenerator();
         }
 
     }

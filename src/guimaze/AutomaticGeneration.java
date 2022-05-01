@@ -157,6 +157,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
+            MazeGenerator rnd = new MazeGenerator();
         }
 
     }

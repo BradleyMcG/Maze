@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-
+/**
+ * @author bradley.mcgrath
+ * @version 1
+ */
 
 public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
@@ -34,6 +36,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
    // private JButton btnDisplay;
 
     private JFrame frame;
+    Object[][] data;
 
 
 
@@ -99,7 +102,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
        // frame.setContentPane(pane);
 
         String [] columnNames = {"Author Name","Date","Maze Title","Export"};
-        Object [] [] data = {
+      /*  Object [] [] data = {
                 {"Bradley McGrath","20/3/22","Maze 3",true},
                 {"Sam Fleming","22/3/22","Maze 1",false},
                 {"Leila Hunt","21/3/22","Maze 2",true},
@@ -110,7 +113,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
                 {"Leila Hunt","21/3/22","Maze 2",true},
                 {"Thomas Beal","24/3/22","Maze 5",false},
                 {"Corey Parker","25/3/22","Maze 4",false}
-        };
+        };      */
         JTable tableMaze = new JTable(data, columnNames){
             public Class getColumnClass(int column) {
                 //return Boolean.class
@@ -135,6 +138,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
         repaint();
         //frame.pack();
+
         frame.setVisible(true); //Show the window
     }
 
@@ -201,14 +205,33 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         jp.add(c, constraints);
     }
 
+    MazeGenerator(){
 
+        populateDummyMazes();
+        data = PopulateObject(allMazes);
+        createGUI();
+    }
+
+
+
+    private Object[][] PopulateObject(List<Maze> mazes){
+        Object[][] obj = new Object[mazes.size()][4];
+        for(int i = 0; i < mazes.size(); i++){
+            Maze current = mazes.get(i);
+            obj[i][0] = current.author;
+            obj[i][1] = current.date;
+            obj[i][2] = current.title;
+            obj[i][3] = false;
+
+        }
+        return obj;
+    }
+
+         //  Object[][] data = PopulateObject(allMazes);
+    
     @Override
     public void run() {
         // SwingUtilities.invokeLater(new FramesAndPanels("BorderLayout"));
-
-        createGUI();
-
-
 
     }
 
@@ -235,7 +258,9 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         }*/
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
-            Display dis = new Display();
+            //allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
+            System.out.println(allMazes.get(0));
+            Display dis = new Display(allMazes.get(1));
         }
         if(e.getSource() == btnExport){
             System.out.println("EXPORT");
@@ -249,9 +274,10 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
     private void populateDummyMazes(){
-        allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
-        allMazes.add(new Maze("Maze 2", "Zinedine Zidane", 5, 10));
-        allMazes.add(new Maze("Maze for the free world", "Nelson Mandela", 96, 96));
-        allMazes.add(new Maze("But its honest work", "Brad", 2, 2));
+        allMazes.add(new Maze("Maze 1", "14/12/2000","Jim Jameson" ,10, 7));
+        allMazes.add(new Maze("Maze 2", "13/12/2000","Zinedine Zidane" ,5, 10));
+        allMazes.add(new Maze("Maze for the free world","12/12/2000" ,"Nelson Mandela", 96, 96));
+        allMazes.add(new Maze("Amazing Work","14/2/2022", "Brad", 2, 2));
+        allMazes.add(new Maze("Even more amazing work","14/2/2022", "Sam", 2, 2));
     }
 }
