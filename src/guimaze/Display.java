@@ -162,6 +162,7 @@ public class Display extends JFrame implements ActionListener, Runnable {
             System.out.println("RETURN TO HOME SCREEN");
 
             MazeGenerator temp = new MazeGenerator();
+            //MazeGenerator();
 
         }
         if(e.getSource() == btnRoute){

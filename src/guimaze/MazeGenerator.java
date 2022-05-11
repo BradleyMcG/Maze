@@ -144,36 +144,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
 
-   /* private void createCreationGui(){
-        setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        //Panel related code will go here
-        // pnlOne = createPanel(Color.WHITE);
-        getContentPane().add(pnlOne,BorderLayout.CENTER);
-        pnlOne = new JPanel(new GridLayout(5, 2, 5, 5));
 
-        pnlTwo = createPanel(Color.BLACK);
-        getContentPane().add(pnlTwo,BorderLayout.WEST);
-        pnlBtn = createPanel(Color.BLACK);
-        getContentPane().add(pnlBtn,BorderLayout.SOUTH);
-
-        pnlFour = createPanel(Color.BLACK);
-        getContentPane().add(pnlFour,BorderLayout.NORTH);
-
-        pnlFive = createPanel(Color.BLACK);
-        getContentPane().add(pnlFive,BorderLayout.EAST);
-        repaint();
-
-
-        setVisible(true);
-    }
-
-    public void MazeGenerator (){
-
-
-
-    }*/
 
     private JPanel createPanel(Color c) {
         //Create a JPanel object and store it in a local var
@@ -222,7 +193,6 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             obj[i][1] = current.date;
             obj[i][2] = current.title;
             obj[i][3] = false;
-
         }
         return obj;
     }
