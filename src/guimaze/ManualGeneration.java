@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class ManualGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 1
+     * @version 2
      */
 
     //Logical Fields
@@ -36,6 +36,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     private JLabel optimal;
     private JLabel deadEnds;
     private JLabel dead;
+
+    private JDialog wall_remove_dialog;
 
 
 
@@ -126,6 +128,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         float result = (float)rand.nextInt(100-1) + 1;
         return result;
         //dummy value - random percentage
+    }
+
+    private List<int[]> wallDialog(){
+
+        return new ArrayList<int[]>();
     }
 
     @Override
