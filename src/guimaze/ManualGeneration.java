@@ -52,13 +52,13 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
 
-        DisplayGUI();
+        CreateGUI();
         btnUpdate.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
     }
 
-    private void DisplayGUI(){ //will eventually be from GUI interface
+    private void CreateGUI(){ //will eventually be from GUI interface
 
 
         displayPanel = new JPanel();
@@ -145,9 +145,18 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
-            MazeGenerator rnd = new MazeGenerator();
+            HideGUI();
+            MazeGenerator.GetInstance().NewMaze(this.maze);
         }
 
     }
+
+    private void HideGUI(){
+        frame.setVisible(false);
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
+    }
+
 
 }

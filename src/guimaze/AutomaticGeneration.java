@@ -41,7 +41,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
 
-    private void DisplayGUI(){ //will eventually be from GUI interface
+    private void CreateGUI(){ //will eventually be from GUI interface
 
 
         displayPanel = new JPanel();
@@ -103,7 +103,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
         Generate();
-        DisplayGUI();
+        CreateGUI();
         btnRegen.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
@@ -157,10 +157,17 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
-            MazeGenerator rnd = new MazeGenerator();
+            HideGUI();
+            MazeGenerator.GetInstance().NewMaze(this.maze);
         }
 
     }
 
+    private void HideGUI(){
+        frame.setVisible(false);
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
+    }
 
 }

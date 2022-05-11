@@ -39,11 +39,11 @@ public class Display extends JFrame implements ActionListener, Runnable {
         this.maze = maze;
         AuthorLabel = new JLabel("Author:" + maze.author);
         TitleLabel = new JLabel(maze.title);
-        DisplayGUI();
+        CreateGUI();
         //this.maze = maze;
     }
 
-    private void DisplayGUI(){
+    private void CreateGUI(){
         frame = new JFrame("Display GUI");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -180,6 +180,13 @@ public class Display extends JFrame implements ActionListener, Runnable {
     @Override
     public void run() {
         //ExportGUI();
+    }
+
+    private void HideGUI(){
+        frame.setVisible(false);
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
     }
 
 }
