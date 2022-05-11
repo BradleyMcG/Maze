@@ -73,6 +73,7 @@ public class Export implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnBack){
             System.out.println("RETURN TO HOME SCREEN");
+            HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
     }
@@ -83,7 +84,7 @@ public class Export implements ActionListener, Runnable {
     }
 
     private void HideGUI(){
-        frame.setVisible(false);
+        frame.dispose();
     }
     public void DisplayGUI(){
         frame.setVisible(true);

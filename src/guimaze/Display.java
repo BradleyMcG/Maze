@@ -160,17 +160,18 @@ public class Display extends JFrame implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnBack){
             System.out.println("RETURN TO HOME SCREEN");
-
-            MazeGenerator temp = new MazeGenerator();
-
+            HideGUI();
+            MazeGenerator.GetInstance().ShowGUI();
         }
         if(e.getSource() == btnRoute){
             OptimalRoute();
         }
         if(e.getSource() == btnEdit){
+            HideGUI();
             EditMaze();
         }
         if(e.getSource() == btnExport){
+            HideGUI();
             Export temp = new Export();
         }
 
@@ -183,7 +184,7 @@ public class Display extends JFrame implements ActionListener, Runnable {
     }
 
     private void HideGUI(){
-        frame.setVisible(false);
+        frame.dispose();
     }
     public void DisplayGUI(){
         frame.setVisible(true);

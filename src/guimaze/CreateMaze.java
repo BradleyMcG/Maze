@@ -157,6 +157,7 @@ public class CreateMaze implements ActionListener, Runnable{
                 x = Integer.parseInt(length.getText());
                 y = Integer.parseInt(height.getText());
                 String date ="14/12/2000";
+                HideGUI();
                 CreateAutomatic(title,date,author, x, y);
             } catch (Exception c) {
                 System.out.println(c.getMessage());
@@ -172,7 +173,8 @@ public class CreateMaze implements ActionListener, Runnable{
                 author = Author.getText();
                 x = Integer.parseInt(length.getText());
                 y = Integer.parseInt(height.getText());
-                String date ="14/12/2000";
+                String date ="14/12/2000"; //Dummy data for date
+                HideGUI();
                 CreateManual(title,date,author, x, y);
             } catch (Exception c) {
                 System.out.println(c.getMessage());
@@ -210,6 +212,7 @@ public class CreateMaze implements ActionListener, Runnable{
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
+        MazeGenerator.GetInstance().NewMaze(this.maze);
         AutomaticGeneration createAuto = new AutomaticGeneration(maze);
 
     }
@@ -219,7 +222,16 @@ public class CreateMaze implements ActionListener, Runnable{
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
+        MazeGenerator.GetInstance().NewMaze(this.maze);
         ManualGeneration createManual = new ManualGeneration(maze);
 
     }
+
+    protected void HideGUI(){
+        frame.dispose();
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
+    }
+
 }

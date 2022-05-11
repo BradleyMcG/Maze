@@ -60,7 +60,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
     private void CreateGUI(){ //will eventually be from GUI interface
 
-
+        super.HideGUI();
         displayPanel = new JPanel();
         displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,500, 500);
@@ -146,13 +146,13 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
             HideGUI();
-            MazeGenerator.GetInstance().NewMaze(this.maze);
+            MazeGenerator.GetInstance().ShowGUI();
         }
 
     }
 
-    private void HideGUI(){
-        frame.setVisible(false);
+    protected void HideGUI(){
+        frame.dispose();
     }
     public void DisplayGUI(){
         frame.setVisible(true);

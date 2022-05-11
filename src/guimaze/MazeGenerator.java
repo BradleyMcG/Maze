@@ -247,7 +247,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         allMazes.add(new Maze("Even more amazing work","14/2/2022", "Sam", 2, 2));
     }
 
-    private void HideGUI(){
+    private void HideGUI() {
         frame.dispose();
     }
     public void ShowGUI(){
@@ -259,6 +259,6 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     public void NewMaze(Maze maze){
         allMazes.add(maze);
         data = PopulateObject(allMazes);
-        createGUI();
+
     }
 }
