@@ -22,12 +22,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-    private JPanel pnlOne;
-    private JPanel pnlTwo;
-    private JPanel pnlBtn;
-    private JPanel pnlFour;
-    private JPanel pnlFive;
-    private JPanel centrePnl;
+
 
     private JButton btnCreate;
     private JButton btnFind;
@@ -38,11 +33,24 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     private JFrame frame;
     Object[][] data;
 
+    MazeGenerator(){
+
+        populateDummyMazes();
+        data = PopulateObject(allMazes);
+        createGUI();
+    }
 
 
+    private static class SingletonHolder{
+        private final static MazeGenerator Program = new MazeGenerator();
+    }
+
+    public static MazeGenerator GetInstance(){
+        return SingletonHolder.Program;
+    }
 
     private void createGUI() {
-        JFrame frame = new JFrame("Maze Generator");
+        frame = new JFrame("Maze Generator");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,18 +110,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
        // frame.setContentPane(pane);
 
         String [] columnNames = {"Author Name","Date","Maze Title","Export"};
-      /*  Object [] [] data = {
-                {"Bradley McGrath","20/3/22","Maze 3",true},
-                {"Sam Fleming","22/3/22","Maze 1",false},
-                {"Leila Hunt","21/3/22","Maze 2",true},
-                {"Thomas Beal","24/3/22","Maze 5",false},
-                {"Corey Parker","25/3/22","Maze 4",false},
-                {"Bradley McGrath","20/3/22","Maze 3",true},
-                {"Sam Fleming","22/3/22","Maze 1",false},
-                {"Leila Hunt","21/3/22","Maze 2",true},
-                {"Thomas Beal","24/3/22","Maze 5",false},
-                {"Corey Parker","25/3/22","Maze 4",false}
-        };      */
+
         JTable tableMaze = new JTable(data, columnNames){
             public Class getColumnClass(int column) {
                 //return Boolean.class
@@ -176,12 +173,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         jp.add(c, constraints);
     }
 
-    MazeGenerator(){
 
-        populateDummyMazes();
-        data = PopulateObject(allMazes);
-        createGUI();
-    }
 
 
 
@@ -197,7 +189,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         return obj;
     }
 
-         //  Object[][] data = PopulateObject(allMazes);
+
     
     @Override
     public void run() {
@@ -207,7 +199,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
     public static void main(String[] args){
 
-        SwingUtilities.invokeLater(new MazeGenerator());
+        SwingUtilities.invokeLater(GetInstance());
         /*
         //eventually need to utilise a singleton pattern to maintain MazeGenerator (Program)
         //is only instantiated once without being static - needs to be instantiated to store mazes
@@ -220,6 +212,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnCreate){
+            HideGUI();
             CreateMaze Create = new CreateMaze();
             System.out.println("pressed");
         }
@@ -230,10 +223,12 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             System.out.println("pressed");
             //allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
             System.out.println(allMazes.get(0));
+            HideGUI();
             Display dis = new Display(allMazes.get(1));
         }
         if(e.getSource() == btnExport){
             System.out.println("EXPORT");
+            HideGUI();
             Export exp = new Export();
         }
         
@@ -249,5 +244,20 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         allMazes.add(new Maze("Maze for the free world","12/12/2000" ,"Nelson Mandela", 96, 96));
         allMazes.add(new Maze("Amazing Work","14/2/2022", "Brad", 2, 2));
         allMazes.add(new Maze("Even more amazing work","14/2/2022", "Sam", 2, 2));
+    }
+
+    private void HideGUI() {
+        frame.dispose();
+    }
+    public void ShowGUI(){
+        //frame.setVisible(true);
+        System.out.println("Show GUI");
+        createGUI();
+    }
+
+    public void NewMaze(Maze maze){
+        allMazes.add(maze);
+        data = PopulateObject(allMazes);
+
     }
 }

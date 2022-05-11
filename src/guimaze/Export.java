@@ -16,13 +16,14 @@ public class Export implements ActionListener, Runnable {
 
     JLabel headerLabel = new JLabel("Export");
     JButton btnBack = new JButton("Submit");
+    JFrame frame;
 
     Export(){
         ExportGUI();
     }
 
     private void ExportGUI(){
-        JFrame frame = new JFrame("Export GUI");
+        frame = new JFrame("Export GUI");
         frame.setSize(WIDTH, HEIGHT);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,12 +73,20 @@ public class Export implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnBack){
             System.out.println("RETURN TO HOME SCREEN");
-            MazeGenerator rnd = new MazeGenerator();
+            HideGUI();
+            MazeGenerator.GetInstance().ShowGUI();
         }
     }
 
     @Override
     public void run() {
         //ExportGUI();
+    }
+
+    private void HideGUI(){
+        frame.dispose();
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
     }
 }

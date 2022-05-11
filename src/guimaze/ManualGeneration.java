@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class ManualGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 1
+     * @version 2
      */
 
     //Logical Fields
@@ -37,6 +37,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     private JLabel deadEnds;
     private JLabel dead;
 
+    private JDialog wall_remove_dialog;
+
 
 
     public ManualGeneration(Maze maze) {
@@ -50,15 +52,15 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
 
-        DisplayGUI();
+        CreateGUI();
         btnUpdate.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
     }
 
-    private void DisplayGUI(){ //will eventually be from GUI interface
+    private void CreateGUI(){ //will eventually be from GUI interface
 
-
+        super.HideGUI();
         displayPanel = new JPanel();
         displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,500, 500);
@@ -128,6 +130,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         //dummy value - random percentage
     }
 
+    private List<int[]> wallDialog(){
+
+        return new ArrayList<int[]>();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnUpdate){
@@ -138,9 +145,18 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
-            MazeGenerator rnd = new MazeGenerator();
+            HideGUI();
+            MazeGenerator.GetInstance().ShowGUI();
         }
 
     }
+
+    protected void HideGUI(){
+        frame.dispose();
+    }
+    public void DisplayGUI(){
+        frame.setVisible(true);
+    }
+
 
 }
