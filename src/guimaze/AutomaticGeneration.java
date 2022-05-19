@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class AutomaticGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 1
+     * @version 2
      *
      */
 
@@ -102,8 +102,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
+
         Generate();
         CreateGUI();
+
         btnRegen.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
@@ -123,10 +125,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         this.currentCell = new int[2];
     }
 
-    private void Generate(){
-        //Where the Maze generation algorithm with ensue
-        System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
-    }
+
 
     private float OptimalPercentage(){
         Random rand = new Random();
@@ -160,6 +159,51 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
+
+    }
+
+    private void Generate(){
+        //Where the Maze generation algorithm with ensue
+        System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
+    }
+
+    private void AutoGenerate(){
+
+
+        while(enteredCells.size() < (maze.length * maze.height)){
+            int move;
+            List<Integer> nextDirect = Arrays.asList(0, 1, 2, 3);
+            while (!nextDirect.isEmpty()){
+                move = RandomMove(nextDirect);
+            }
+
+
+        }
+
+    }
+
+    private int RandomMove(List<Integer> nextDirect){
+        Random rand = new Random();
+        int randDirection = nextDirect.get(rand.nextInt(nextDirect.size()));
+        return randDirection;
+    }
+
+    private boolean CheckRandomDirection(int move){ //int move is the direction
+        /**
+         * @param move - index correlating to randomly generated direction of next move
+         */
+        /*
+        int[] moveCoords = directions.get(move);
+        if (moveInEntered(moveCoords)){
+            return false;
+        }if (!moveInDomain(moveCoords)){
+            return false;
+        }else{
+            return true;
+        }
+
+         */
+        return false;
 
     }
 
