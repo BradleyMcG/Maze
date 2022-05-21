@@ -140,6 +140,22 @@ public class CreateMaze implements ActionListener, Runnable{
     }
 
 
+    public void inputHandler(){
+        //Catch exceptions related to incorrect input - display appropriate dialog
+        try {
+            String title = Title.getText();
+            String author = Author.getText();
+            int x = Integer.parseInt(length.getText());
+            int y = Integer.parseInt(height.getText());
+            String date ="14/12/2000";
+            HideGUI();
+            CreateAutomatic(title,date,author, x, y);
+        } catch (Exception c) {
+            System.out.println(c.getMessage());
+            errorDialog(); // "errorDialog" unfinished
+        }
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -149,40 +165,10 @@ public class CreateMaze implements ActionListener, Runnable{
         int y;
         if(e.getSource()==btnAutomatic) {
             System.out.println("btn pressed, automatically generate maze");
-
-            //Catch exceptions related to incorrect input - display appropriate dialog
-            try {
-                title = Title.getText();
-                author = Author.getText();
-                x = Integer.parseInt(length.getText());
-                y = Integer.parseInt(height.getText());
-                String date ="14/12/2000";
-                HideGUI();
-                CreateAutomatic(title,date,author, x, y);
-            } catch (Exception c) {
-                System.out.println(c.getMessage());
-                errorDialog(); // "errorDialog" unfinished
-            }
-
-
+            inputHandler();
         }else if(e.getSource() == btnManual){
             System.out.println("btn pressed, manually generate maze");
-            //Catch exceptions related to incorrect input - display appropriate dialog
-            try {
-                title = Title.getText();
-                author = Author.getText();
-                x = Integer.parseInt(length.getText());
-                y = Integer.parseInt(height.getText());
-                String date ="14/12/2000"; //Dummy data for date
-                HideGUI();
-                CreateManual(title,date,author, x, y);
-            } catch (Exception c) {
-                System.out.println(c.getMessage());
-                errorDialog(); // "errorDialog" unfinished
-
-            }
-
-
+            inputHandler();
         }
 
     }

@@ -22,6 +22,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private int[] currentCell = new int[2];
     private final List<int[]> directions = new ArrayList<int[]>(
             Arrays.asList(new int[]{0, 1}, new int[]{0,-1}, new int[]{-1,0}, new int[]{1,0} ));
+    private List<Integer> nextDirect = Arrays.asList(0, 1, 2, 3);
 
     //GUI Fields
     private JFrame frame;
@@ -103,8 +104,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
 
-        Generate();
+        Generate(); //AutoGenerate
         CreateGUI();
+        //this.maze.Draw(displayPanel);
+            //for some reason, when uncommented, CreateMaze.errorDialog() is called
 
         btnRegen.addActionListener(this);
         btnInsertImg.addActionListener(this);
@@ -171,24 +174,45 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
         while(enteredCells.size() < (maze.length * maze.height)){
-            int move;
-            List<Integer> nextDirect = Arrays.asList(0, 1, 2, 3);
-            while (!nextDirect.isEmpty()){
-                move = RandomMove(nextDirect);
-            }
 
+            AutoMove();
 
         }
 
     }
 
-    private int RandomMove(List<Integer> nextDirect){
+    private void AutoMove(){
+        boolean done = false;
+        Reset_nextDirect();
+        while (!nextDirect.isEmpty()||done){
+            int move = GetRandomMove(nextDirect);
+
+            if (MoveIsValid(move)){
+                //break_exit_wall()
+                //make_next_current()
+                //breakEntryWall()
+                //addToEntered()
+                //done = true;
+            }else{
+                //ReplaceMove()
+            }
+
+        }
+        if (!done){
+            //change_current_cell()
+            Reset_nextDirect();
+        }
+    }
+
+
+
+    private int GetRandomMove(List<Integer> nextDirect){
         Random rand = new Random();
         int randDirection = nextDirect.get(rand.nextInt(nextDirect.size()));
         return randDirection;
     }
 
-    private boolean CheckRandomDirection(int move){ //int move is the direction
+    private boolean MoveIsValid(int move){ //int move is the direction
         /**
          * @param move - index correlating to randomly generated direction of next move
          */
@@ -205,6 +229,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          */
         return false;
 
+    }
+
+    private void Reset_nextDirect(){
+        nextDirect = Arrays.asList(0, 1, 2, 3);
     }
 
     protected void HideGUI(){

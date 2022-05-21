@@ -1,6 +1,7 @@
 package guimaze;
 
 import java.util.*;
+import javax.swing.JPanel;
 
 public class Maze{
 
@@ -40,10 +41,31 @@ public class Maze{
         }
     }
 
-    public void Draw(){
+    public void Draw(JPanel pane){
+
+        /**
+         * @param pane - Reference to the JPanel to be drawn on
+         */
+
+        int pane_x = pane.getWidth();
+        int pane_y = pane.getHeight();
+        int longest_side;
+
+        if (pane_x != pane_y){
+            System.out.println("Invalid Display Panel");
+        }
+        if (length >= height){
+            longest_side = length;
+        }else{
+            longest_side = height;
+        }
+
+        int cellPixels = (int)((double)pane_x/(double)longest_side);//length/height of each cells in pixels
+
+
         for (int l = 0; l < length; l ++){
-            for (int h = 0; h < length; h++ ){
-                cells[l][h].Draw();
+            for (int h = 0; h < height; h++ ){
+                cells[l][h].Draw(pane, cellPixels, l, h);
             }
         }
     }
