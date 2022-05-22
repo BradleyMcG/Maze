@@ -60,7 +60,8 @@ public class Maze{
             longest_side = height;
         }
 
-        int cellPixels = (int)((double)pane_x/(double)longest_side);//length/height of each cells in pixels
+        int cellPixels = (int)((double)pane_x/(double)longest_side);
+            //pixel size of each cell (rounded down)
 
 
         for (int l = 0; l < length; l ++){

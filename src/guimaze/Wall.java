@@ -1,15 +1,32 @@
 package guimaze;
 
-public class Wall {
+import javax.swing.*;
+import java.awt.*;
 
-    private boolean upward;
+public class Wall extends JPanel{
+
+    private boolean enabled;
+    private String position;
 
     public Wall(boolean direction){
-        this.upward = direction;
+
+        this.enabled = direction;
+    }
+
+    public Wall(String position){
+        this.position = position;
+        enabled = true;
     }
 
     public void Draw(){
 
+        if (enabled){
+            setBackground(Color.BLACK);
+        }else{
+            setBackground(Color.WHITE);
+        }
     }
+
+
 
 }
