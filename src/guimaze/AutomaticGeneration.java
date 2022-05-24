@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class AutomaticGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 1
+     * @version 2
      *
      */
 
@@ -22,10 +22,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private int[] currentCell = new int[2];
     private final List<int[]> directions = new ArrayList<int[]>(
             Arrays.asList(new int[]{0, 1}, new int[]{0,-1}, new int[]{-1,0}, new int[]{1,0} ));
+    private List<Integer> nextDirect = Arrays.asList(0, 1, 2, 3);
 
     //GUI Fields
     private JFrame frame;
     private JPanel displayPanel;
+    private final int displayLength = 500;
+    private final int displayHeight = 500;
 
     private JPanel buttonPanel;
     private JButton btnInsertImg;
@@ -45,9 +48,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         super.HideGUI();
         displayPanel = new JPanel();
+        displayPanel.setLayout(null);
         displayPanel.setBackground(Color.GREEN);
-        displayPanel.setBounds(25,25,500, 500);
-        displayPanel.add(new JLabel("[Area for working Maze]"));
+        displayPanel.setBounds(25,25,displayLength, displayHeight);
+        //displayPanel.add(new JLabel("[Area for working Maze]"));
+
+        this.maze.Draw(displayPanel);
+
 
 
 
@@ -98,12 +105,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          */
         super();
         this.maze = maze;
-        initializeMazeArray();
+        //initializeMazeArray();
 
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
-        Generate();
+
+        Generate(); //AutoGenerate
         CreateGUI();
+        //this.maze.Draw(displayPanel);
+            //for some reason, when uncommented, CreateMaze.errorDialog() is called
+
         btnRegen.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
@@ -113,7 +124,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private void initializeMazeArray() {
         this.maze.cells = new Cell[this.maze.length][this.maze.height];
-
     }
 
 
@@ -123,10 +133,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         this.currentCell = new int[2];
     }
 
-    private void Generate(){
-        //Where the Maze generation algorithm with ensue
-        System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
-    }
+
 
     private float OptimalPercentage(){
         Random rand = new Random();
@@ -161,6 +168,76 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             MazeGenerator.GetInstance().ShowGUI();
         }
 
+    }
+
+    private void Generate(){
+        //Where the Maze generation algorithm with ensue
+        System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
+    }
+
+    private void AutoGenerate(){
+
+
+        while(enteredCells.size() < (maze.length * maze.height)){
+
+            AutoMove();
+
+        }
+
+    }
+
+    private void AutoMove(){
+        boolean done = false;
+        Reset_nextDirect();
+        while (!nextDirect.isEmpty()||done){
+            int move = GetRandomMove(nextDirect);
+
+            if (MoveIsValid(move)){
+                //break_exit_wall()
+                //make_next_current()
+                //breakEntryWall()
+                //addToEntered()
+                //done = true;
+            }else{
+                //ReplaceMove()
+            }
+
+        }
+        if (!done){
+            //change_current_cell()
+            Reset_nextDirect();
+        }
+    }
+
+
+
+    private int GetRandomMove(List<Integer> nextDirect){
+        Random rand = new Random();
+        int randDirection = nextDirect.get(rand.nextInt(nextDirect.size()));
+        return randDirection;
+    }
+
+    private boolean MoveIsValid(int move){ //int move is the direction
+        /**
+         * @param move - index correlating to randomly generated direction of next move
+         */
+        /*
+        int[] moveCoords = directions.get(move);
+        if (moveInEntered(moveCoords)){
+            return false;
+        }if (!moveInDomain(moveCoords)){
+            return false;
+        }else{
+            return true;
+        }
+
+         */
+        return false;
+
+    }
+
+    private void Reset_nextDirect(){
+        nextDirect = Arrays.asList(0, 1, 2, 3);
     }
 
     protected void HideGUI(){
