@@ -27,6 +27,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     //GUI Fields
     private JFrame frame;
     private JPanel displayPanel;
+    private final int displayLength = 500;
+    private final int displayHeight = 500;
 
     private JPanel buttonPanel;
     private JButton btnInsertImg;
@@ -46,9 +48,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         super.HideGUI();
         displayPanel = new JPanel();
+        displayPanel.setLayout(null);
         displayPanel.setBackground(Color.GREEN);
-        displayPanel.setBounds(25,25,500, 500);
-        displayPanel.add(new JLabel("[Area for working Maze]"));
+        displayPanel.setBounds(25,25,displayLength, displayHeight);
+        //displayPanel.add(new JLabel("[Area for working Maze]"));
+
+        this.maze.Draw(displayPanel);
+
 
 
 
@@ -99,7 +105,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          */
         super();
         this.maze = maze;
-        initializeMazeArray();
+        //initializeMazeArray();
 
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
@@ -118,7 +124,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private void initializeMazeArray() {
         this.maze.cells = new Cell[this.maze.length][this.maze.height];
-
     }
 
 

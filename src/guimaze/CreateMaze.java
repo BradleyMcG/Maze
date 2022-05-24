@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
 
 
 public class CreateMaze implements ActionListener, Runnable{
@@ -140,22 +140,38 @@ public class CreateMaze implements ActionListener, Runnable{
     }
 
 
-    public void inputHandler(){
+    private void inputHandler(boolean Auto) throws NumberFormatException{
+        /**
+         * @param Auto - an indicator for which button has been pressed (Auto OR Manual)
+         */
         //Catch exceptions related to incorrect input - display appropriate dialog
-        try {
-            String title = Title.getText();
-            String author = Author.getText();
-            int x = Integer.parseInt(length.getText());
-            int y = Integer.parseInt(height.getText());
-            String date ="14/12/2000";
-            HideGUI();
+        String title = Title.getText();
+        String author = Author.getText();
+        int x = Integer.parseInt(length.getText());
+        System.out.println("input length : " + x);
+        int y = Integer.parseInt(height.getText());
+        System.out.println("input height: " + y);
+        String date ="14/12/2000";
+        HideGUI();
+        if (Auto){
             CreateAutomatic(title,date,author, x, y);
-        } catch (Exception c) {
+        }else{
+            CreateManual(title,date,author, x, y);
+        }
+    }
+
+
+    private void InputExceptionHandler(boolean Auto){
+        /**
+         * @param Auto - an indicator for which button has been pressed (Auto OR Manual)
+         */
+        try{
+          inputHandler(Auto);
+        } catch(NumberFormatException c){
             System.out.println(c.getMessage());
             errorDialog(); // "errorDialog" unfinished
         }
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -165,10 +181,10 @@ public class CreateMaze implements ActionListener, Runnable{
         int y;
         if(e.getSource()==btnAutomatic) {
             System.out.println("btn pressed, automatically generate maze");
-            inputHandler();
+            InputExceptionHandler(true);
         }else if(e.getSource() == btnManual){
             System.out.println("btn pressed, manually generate maze");
-            inputHandler();
+            InputExceptionHandler(false);
         }
 
     }
