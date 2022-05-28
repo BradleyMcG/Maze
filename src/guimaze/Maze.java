@@ -1,20 +1,21 @@
 package guimaze;
 
 import java.util.*;
+import javax.swing.JPanel;
 
 public class Maze{
 
     //constructor fields
-    protected String title;
-    protected String author;
-    protected String date;
-    protected int length;
-    protected int height;
+    public String title;
+    public String author;
+    public String date;
+    public int length;
+    public int height;
 
-    protected Cell[][] cells;
+    public Cell[][] cells;
 
-    protected int[] startCell = new int[2];
-    protected int[] finishCell = new int[2];
+    public int[] startCell = new int[2];
+    public int[] finishCell = new int[2];
 
 
     public Maze(String title,String date,String author, int length, int height){
@@ -23,27 +24,57 @@ public class Maze{
         this.length = length;
         this.height = height;
         this.date = date;
+        cells = new Cell[length][height];
 
-
+        populateMazeArray();
 
     }
 
-
-
-
-
     private void populateMazeArray(){
-        for (int l = 0; l < length; l ++){
-            for (int h = 0; h < length; h++ ){
-                this.cells[l][h] = new Cell();
+
+        for (int len = 0; len < length; len ++){
+            System.out.println("len =" + len);
+            for (int hei = 0; hei < height; hei++ ){
+                System.out.println("hei =" + hei);
+                int[] coords = {len, hei};
+                System.out.println("Cell at pos; " + len + ", " + hei + " created");
+                this.cells[len][hei] = new Cell(coords);
+
             }
         }
     }
 
-    public void Draw(){
-        for (int l = 0; l < length; l ++){
-            for (int h = 0; h < length; h++ ){
-                cells[l][h].Draw();
+    public void Draw(JPanel pane){
+
+        /**
+         * @param pane - Reference to the JPanel to be drawn on
+         */
+
+        int pane_x = pane.getWidth();
+        int pane_y = pane.getHeight();
+        int longest_side;
+
+        //checks that displaypanel is square
+        if (pane_x != pane_y){
+            System.out.println("Invalid Display Panel");
+        }
+
+        if (length >= height){
+            longest_side = length;
+        }else{
+            longest_side = height;
+        }
+
+        int cellPixels = (int)((double)pane_x/(double)longest_side);
+            //pixel size of each cell (rounded down)
+
+
+        for (int l = 0; l < this.length; l++){
+            //System.out.println("l =" + l);
+            for (int h = 0; h < this.height; h++ ){
+                //System.out.println("h =" + h);
+                this.cells[l][h].Draw(pane, cellPixels, l, h);
+                    //evaluates as null for some reason
             }
         }
     }
