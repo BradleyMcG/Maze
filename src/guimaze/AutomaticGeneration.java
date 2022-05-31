@@ -170,6 +170,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+    public void updateFrame(){
+        //updates the window for after logical changes
+    }
+
     private void Generate(){
         //Where the Maze generation algorithm with ensue
         System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
@@ -183,7 +187,24 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             AutoMove();
 
         }
+        //implement this when img/block cells are implemented
+        /*
+        while (enteredCells.size() < validCells()){
+            AutoMove();
+        }
 
+         */
+
+    }
+
+    private int validCells(){
+        int num;
+        num = (maze.length * maze.height) - this.maze.invalidCells.size();
+        return num;
+    }
+
+    private int invalidCells(){
+        return 0;
     }
 
     private void AutoMove(){
@@ -212,6 +233,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
     private int GetRandomMove(List<Integer> nextDirect){
+        /**
+         * returns random move direction as integer
+         */
         Random rand = new Random();
         int randDirection = nextDirect.get(rand.nextInt(nextDirect.size()));
         return randDirection;
@@ -220,20 +244,55 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private boolean MoveIsValid(int move){ //int move is the direction
         /**
          * @param move - index correlating to randomly generated direction of next move
+         *
          */
         /*
+        move is invalid when
+            - move points outside of domain
+            - move points to an invalid cell (img or blacked out)
+            - move points to an already entered cell
+         ie, move is onlt valid when
+            - move points to an unentered valid cell within domain
+         */
         int[] moveCoords = directions.get(move);
+        /*
+
         if (moveInEntered(moveCoords)){
             return false;
-        }if (!moveInDomain(moveCoords)){
+        }else if (!moveInDomain(moveCoords)){
+            return false;
+        }else if(moveIsAvail(moveCoords)){
             return false;
         }else{
             return true;
         }
 
          */
+
+
         return false;
 
+    }
+
+    private boolean moveInEntered(int[] Coords){
+        /**
+         * @param Coords - index of next enetered cells coordinates from 'directions'
+         */
+        return false;
+    }
+
+    private boolean moveInDomain(int[] Coords){
+        /**
+         * @param Coords - index of next enetered cells coordinates from 'directions'
+         */
+        return false;
+    }
+
+    private boolean moveIsAvail(int[] Coords){
+        /**
+         * @param Coords - index of next enetered cells coordinates from 'directions'
+         */
+        return false;
     }
 
     private void Reset_nextDirect(){

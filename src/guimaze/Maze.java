@@ -13,6 +13,7 @@ public class Maze{
     public int height;
 
     public Cell[][] cells;
+    public List<int[]> invalidCells = new ArrayList<int[]>();
 
     public int[] startCell = new int[2];
     public int[] finishCell = new int[2];
