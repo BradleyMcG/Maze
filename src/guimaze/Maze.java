@@ -15,6 +15,8 @@ public class Maze{
     public Cell[][] cells;
     public List<int[]> invalidCells = new ArrayList<int[]>();
 
+
+
     public int[] startCell = new int[2];
     public int[] finishCell = new int[2];
 
@@ -26,6 +28,8 @@ public class Maze{
         this.height = height;
         this.date = date;
         cells = new Cell[length][height];
+        startCell[0] = 0;
+        startCell[1] = 0;
 
         populateMazeArray();
 
@@ -34,11 +38,11 @@ public class Maze{
     private void populateMazeArray(){
 
         for (int len = 0; len < length; len ++){
-            System.out.println("len =" + len);
+            //System.out.println("len =" + len);
             for (int hei = 0; hei < height; hei++ ){
-                System.out.println("hei =" + hei);
+                //System.out.println("hei =" + hei);
                 int[] coords = {len, hei};
-                System.out.println("Cell at pos; " + len + ", " + hei + " created");
+                //System.out.println("Cell at pos; " + len + ", " + hei + " created");
                 this.cells[len][hei] = new Cell(coords);
 
             }

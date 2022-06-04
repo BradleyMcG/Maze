@@ -18,11 +18,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
      */
 
     //Logical Fields
-    private List<int[]> enteredCells = new ArrayList<int[]>();
+    private ArrayList<int[]> enteredCells = new ArrayList<>();
     private int[] currentCell = new int[2];
-    private final List<int[]> directions = new ArrayList<int[]>(
-            Arrays.asList(new int[]{0, 1}, new int[]{0,-1}, new int[]{-1,0}, new int[]{1,0} ));
-    private List<Integer> nextDirect = Arrays.asList(0, 1, 2, 3);
+    private final ArrayList<int[]> directions = new ArrayList<int[]>(
+            Arrays.asList(new int[]{0, -1}, new int[]{0,1}, new int[]{1,0}, new int[]{-1,0} ));
+    private final String[] directions_str = {"NORTH", "SOUTH", "EAST", "WEST"};
+
+    private List<Integer> nextDirect = new ArrayList<>();
 
     //GUI Fields
     private JFrame frame;
@@ -54,8 +56,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         //displayPanel.add(new JLabel("[Area for working Maze]"));
 
         this.maze.Draw(displayPanel);
-
-
 
 
         buttonPanel = new JPanel(new GridLayout(1, 3));
@@ -107,10 +107,19 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         this.maze = maze;
         //initializeMazeArray();
 
-        currentCell = this.maze.startCell;
-        enteredCells.add(currentCell);
+        //currentCell = this.maze.startCell; - doesn't work - reference type logical errors
+        currentCell[0] = this.maze.startCell[0];
+        currentCell[1] = this.maze.startCell[1];
 
-        Generate(); //AutoGenerate
+        //initialize enteredCells
+        int[] cell_add = new int[2];
+        enteredCells.add(cell_add);
+        cell_add[0] = currentCell[0];
+        cell_add[1] = currentCell[1];
+        Reset_nextDirect();
+
+        //Generate();
+        AutoGenerate();
         CreateGUI();
         //this.maze.Draw(displayPanel);
             //for some reason, when uncommented, CreateMaze.errorDialog() is called
@@ -119,6 +128,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
     }
+
+
 
 
 
@@ -177,63 +188,133 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private void Generate(){
         //Where the Maze generation algorithm with ensue
         System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
+        int move = GetRandomMove(nextDirect);
+        System.out.println("The Move is: " + move);
     }
 
     private void AutoGenerate(){
 
-
-        while(enteredCells.size() < (maze.length * maze.height)){
-
-            AutoMove();
-
-        }
         //implement this when img/block cells are implemented
-        /*
-        while (enteredCells.size() < validCells()){
+        System.out.println("Invalid Cells: " + this.maze.invalidCells.size());
+        System.out.println("Entered Cells: " + enteredCells.get(0)[0] + "," + enteredCells.get(0)[1]);
+        while (enteredCells.size() <= validCells_size()){
+            //System.out.println("Num Entered Cells: " + enteredCells.size());
             AutoMove();
         }
-
-         */
 
     }
 
-    private int validCells(){
+    private int validCells_size(){
         int num;
         num = (maze.length * maze.height) - this.maze.invalidCells.size();
         return num;
     }
 
-    private int invalidCells(){
-        return 0;
-    }
 
     private void AutoMove(){
+        System.out.println("New AutoMove");
         boolean done = false;
         Reset_nextDirect();
-        while (!nextDirect.isEmpty()||done){
+        while (!nextDirect.isEmpty()&&!done){
             int move = GetRandomMove(nextDirect);
-
+            System.out.println("Move is (" + move + ") " + directions_str[move] + " " + directions.get(move)[0] + "," + directions.get(move)[1]);
             if (MoveIsValid(move)){
-                //break_exit_wall()
-                //make_next_current()
-                //breakEntryWall()
-                //addToEntered()
-                //done = true;
+                break_exit_wall(move);
+                break_entry_wall(move);
+                //check_enteredCells();
+                make_next_current(move);
+                //check_enteredCells();
+                int[] new_cell = new int[2];
+                enteredCells.add(new_cell);
+                new_cell[0] = currentCell[0];
+                new_cell[1] = currentCell[1];
+                //check_enteredCells();
+                System.out.println(currentCell[0] + "," + currentCell[1] + " added to 'enteredCells'");
+                //System.out.println("Entered: " + enteredCells);
+                done = true;
             }else{
-                //ReplaceMove()
+                Replace_nextDirect(move);
             }
 
         }
         if (!done){
-            //change_current_cell()
+            change_current_cell();
             Reset_nextDirect();
         }
     }
 
+    private void AddTo_enteredCells(){
+        int[] new_cell = new int[2];
+        enteredCells.add(new_cell);
+        new_cell[0] = currentCell[0];
+        new_cell[1] = currentCell[1];
+    }
 
+    private void change_current_cell(){
+        Random rand = new Random();
+        int rand_cell_index = rand.nextInt(enteredCells.size());
+        currentCell = enteredCells.get(rand_cell_index);
+    }
+
+    private void check_enteredCells(){
+        for (int i = 0; i < enteredCells.size(); i++){
+            System.out.print("Index: " + i + ",   ");
+            System.out.print(" (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + "), ");
+        }
+    }
+
+    private void make_next_current(int move){
+        //check_enteredCells();
+        print_entered();
+        int x = directions.get(move)[0] + currentCell[0];
+        int y = directions.get(move)[1] + currentCell[1];
+        currentCell[0] = x;
+        currentCell[1] = y;
+        System.out.println("");
+        print_entered();
+        //check_enteredCells();
+
+        //All elements of enteredCells are references/storages of the same instance 'currentCell'
+            //- therefore whenever currentCell is changes, all elements in enteredCells are changed
+    }
+
+    private void print_entered(){
+        for (int i = 0; i < enteredCells.size(); i++){
+            System.out.print(" (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + "), ");
+        }
+        System.out.println("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")");
+    }
+    
+    private void break_exit_wall(int move){
+        this.maze.cells[currentCell[0]][currentCell[1]].break_Wall(move);
+        System.out.println("Break wall " + move + " at cell: " + currentCell[0] + "," + currentCell[1]);
+    }
+    
+    private void break_entry_wall(int move){
+        int wall = 0;
+        switch (move){
+            case 0:
+                wall = 1;
+                break;
+            case 1:
+                wall = 0;
+                break;
+            case 2:
+                wall = 3;
+                break;
+            case 3:
+                wall = 2;
+                break;
+        }
+        int next_x = currentCell[0]+ directions.get(move)[0];
+        int next_y = currentCell[1]+directions.get(move)[1];
+        this.maze.cells[next_x][next_y].break_Wall(wall);
+        System.out.println("Break wall " + wall + " at cell: " + next_x + "," + next_y);
+    }
 
     private int GetRandomMove(List<Integer> nextDirect){
         /**
+         * @param nextDirect - the arrayList of components for each directional move
          * returns random move direction as integer
          */
         Random rand = new Random();
@@ -255,49 +336,94 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             - move points to an unentered valid cell within domain
          */
         int[] moveCoords = directions.get(move);
-        /*
+        int next_x = currentCell[0] + moveCoords[0];
+        int next_y = currentCell[1] + moveCoords[1];
 
-        if (moveInEntered(moveCoords)){
+
+        if (moveInEntered(moveCoords, next_x, next_y)){
+            System.out.println("Invalid, Move is Already Entered");
             return false;
-        }else if (!moveInDomain(moveCoords)){
+        }else if (!moveInDomain(next_x, next_y)){
+            System.out.println("Invalid, Move is outside domain");
             return false;
-        }else if(moveIsAvail(moveCoords)){
+        }else if(!moveIsAvail(moveCoords, next_x, next_y)){
+            System.out.println("Invalid, Move is not available");
             return false;
         }else{
+            System.out.println("Move is Valid");
             return true;
         }
-
-         */
-
-
-        return false;
-
     }
 
-    private boolean moveInEntered(int[] Coords){
+    private boolean moveInEntered(int[] Coords, int next_x, int next_y){
         /**
          * @param Coords - index of next enetered cells coordinates from 'directions'
          */
-        return false;
+
+        //int[] xy = {next_x, next_y};
+        boolean already_entered = CoordsExistsIn(Coords);
+
+        if(already_entered){
+            return true;
+        }else{
+            System.out.println("Cell " + next_x +","+ next_y + " isn't in entered");
+            return false;
+        }
+
     }
 
-    private boolean moveInDomain(int[] Coords){
+    private boolean moveInDomain(int next_x, int next_y){
         /**
          * @param Coords - index of next enetered cells coordinates from 'directions'
          */
-        return false;
+        boolean x = 0<=next_x && next_x <= this.maze.length-1;
+        boolean y = 0<=next_y && next_y <= this.maze.height-1;
+        if(x && y){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
-    private boolean moveIsAvail(int[] Coords){
+    private boolean moveIsAvail(Object Coords, int next_x, int next_y){
         /**
          * @param Coords - index of next enetered cells coordinates from 'directions'
          */
-        return false;
+        return true;
     }
 
     private void Reset_nextDirect(){
-        nextDirect = Arrays.asList(0, 1, 2, 3);
+        for (int j = nextDirect.size(); j < 4; j++){
+            nextDirect.add(0);
+        }
+        for (int i = 0; i < 4; i++){
+            nextDirect.set(i, i);
+        }
+
     }
+
+    private void Replace_nextDirect(int move){
+        for (int i = 0; i < nextDirect.size(); i++){
+            if (nextDirect.get(i) == move){
+                nextDirect.remove(i);
+            }
+        }
+    }
+
+    private boolean CoordsExistsIn(int[] Coords){
+        int[] next = {currentCell[0] + Coords[0], currentCell[1] + Coords[1]};
+        for (int i = 0; i < enteredCells.size(); i++){
+            //System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
+            //System.out.println("  vs  " + "Checked Cell: (" + next[0] + "," + next[1] + ")");
+            if((next[0] == enteredCells.get(i)[0])&&(next[1] == enteredCells.get(i)[1])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     protected void HideGUI(){
         frame.dispose();

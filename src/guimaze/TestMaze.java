@@ -33,7 +33,7 @@ public class TestMaze {
     public void SimpleTest(){
         int x = 5;
         int y = 5;
-        System.out.println(x+y);
+        assertEquals(x, y);
     }
 
 

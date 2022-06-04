@@ -43,9 +43,9 @@ public class Cell {
         JPanel cell = new JPanel();
         int lengthPos = (x*cellPixels);
         int heightPos = (y*cellPixels);
-        System.out.println("Display dimensions: " + pane.getWidth() + " " + pane.getHeight());
+        //System.out.println("Display dimensions: " + pane.getWidth() + " " + pane.getHeight());
         cell.setBounds(lengthPos, heightPos, cellPixels, cellPixels);
-        System.out.println("in display pane, x=" + lengthPos + " y=" + heightPos + " and is " + cellPixels + " square");
+        //System.out.println("in display pane, x=" + lengthPos + " y=" + heightPos + " and is " + cellPixels + " square");
         cell.setBackground(Color.WHITE);
 
 
@@ -64,8 +64,9 @@ public class Cell {
                 case 2:
                     cell.add(walls[i], BorderLayout.EAST);
                     break;
-                default:
+                case 3:
                     cell.add(walls[i], BorderLayout.WEST);
+                    break;
 
             }
 
@@ -81,6 +82,10 @@ public class Cell {
         pane.add(cell);
 
 
+    }
+
+    public void break_Wall(int wall){
+        walls[wall].Disable();
     }
 
 
