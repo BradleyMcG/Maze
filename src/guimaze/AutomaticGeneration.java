@@ -197,10 +197,14 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         //implement this when img/block cells are implemented
         System.out.println("Invalid Cells: " + this.maze.invalidCells.size());
         System.out.println("Entered Cells: " + enteredCells.get(0)[0] + "," + enteredCells.get(0)[1]);
-        while (enteredCells.size() <= validCells_size()){
-            //System.out.println("Num Entered Cells: " + enteredCells.size());
+        while (enteredCells.size() <= validCells_size()-1){
+
             AutoMove();
+
         }
+        System.out.println("Num Entered Cells: " + enteredCells.size());
+        Check_enteredCells_dupes();
+
 
     }
 
@@ -229,7 +233,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
                 new_cell[0] = currentCell[0];
                 new_cell[1] = currentCell[1];
                 //check_enteredCells();
-                System.out.println(currentCell[0] + "," + currentCell[1] + " added to 'enteredCells'");
+                //System.out.println(currentCell[0] + "," + currentCell[1] + " added to 'enteredCells'");
                 //System.out.println("Entered: " + enteredCells);
                 done = true;
             }else{
@@ -253,7 +257,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private void change_current_cell(){
         Random rand = new Random();
         int rand_cell_index = rand.nextInt(enteredCells.size());
-        currentCell = enteredCells.get(rand_cell_index);
+        int[] cell = enteredCells.get(rand_cell_index);
+        currentCell[0] = cell[0];
+        currentCell[1] = cell[1];
+        //currentCell = enteredCells.get(rand_cell_index);
+        //currentCell[0] = enteredCells.get(rand_cell_index)[0];
+        //currentCell[1] = enteredCells.get(rand_cell_index)[1];
+        System.out.println("New Random Current: " + currentCell[0] + currentCell[1]);
     }
 
     private void check_enteredCells(){
@@ -265,7 +275,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private void make_next_current(int move){
         //check_enteredCells();
-        print_entered();
+        //print_entered();
         int x = directions.get(move)[0] + currentCell[0];
         int y = directions.get(move)[1] + currentCell[1];
         currentCell[0] = x;
@@ -414,8 +424,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private boolean CoordsExistsIn(int[] Coords){
         int[] next = {currentCell[0] + Coords[0], currentCell[1] + Coords[1]};
         for (int i = 0; i < enteredCells.size(); i++){
-            //System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
-            //System.out.println("  vs  " + "Checked Cell: (" + next[0] + "," + next[1] + ")");
+            System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
+            System.out.println("  vs  " + "Checked Cell: (" + next[0] + "," + next[1] + ")");
             if((next[0] == enteredCells.get(i)[0])&&(next[1] == enteredCells.get(i)[1])){
                 return true;
             }
@@ -423,6 +433,36 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         return false;
     }
 
+    private void Check_enteredCells_dupes(){
+        ArrayList<int[]> dupes = new ArrayList<>();
+        int[] cell_tally = new int[enteredCells.size()];
+        String str = "";
+        for (int i = 0; i < enteredCells.size(); i++){
+            int[] tester = enteredCells.get(i);
+            int tally = 0;
+            for (int j = 0; j < enteredCells.size(); j++){
+                int[] checker = enteredCells.get(j);
+                if(checker[0] == tester[0] && checker[1] == tester[1]){
+                    tally += 1;
+                }
+            }
+            cell_tally[i] = tally;
+        }
+        for (int i = 0; i < cell_tally.length; i++){
+            if (cell_tally[i] > 1){
+                int[] next = new int[2];
+                dupes.add(next);
+                next[0] = enteredCells.get(i)[0];
+                next[1] = enteredCells.get(i)[1];
+            }
+        }
+        for (int k = 0; k < dupes.size(); k++){
+            str = str.concat(", (" + dupes.get(k)[0] + "," + dupes.get(k)[1] + ")");
+        }
+        double dupl = (dupes.size()/2);
+        System.out.print(dupl + " duplicates in entered Cells: ");
+        System.out.println(str);
+    }
 
 
     protected void HideGUI(){
