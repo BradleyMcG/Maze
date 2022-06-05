@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Wall extends JPanel{
 
-    private boolean enabled;
+    public boolean enabled;
     private String position;
 
     public Wall(boolean direction){
@@ -41,6 +41,8 @@ public class Wall extends JPanel{
             setBackground(Color.WHITE);
         }
     }
+
+
 
     public void Disable(){
         enabled = false;

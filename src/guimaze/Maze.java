@@ -49,6 +49,37 @@ public class Maze{
         }
     }
 
+    public float DeadEnd_Percentage(){
+        float percentage = 0;
+        int total = Total_DeadEnd();
+
+        System.out.println("Dead End Cells Total:  " + total);
+        float totalValid = (float)NumValidCells();
+        float f_total = (float)total;
+        percentage = (f_total/totalValid)*100;
+        System.out.println("Dead end Percentage: " + percentage);
+        return percentage;
+    }
+
+    public int Total_DeadEnd(){
+        int tally = 0;
+        for (int i = 0; i < length; i++){
+            for (int j = 0; j < height; j++){
+                if (cells[i][j].NumWallsEnabled() == 3 && cells[i][j].live){
+                    tally += 1;
+                }
+            }
+
+        }
+        return tally;
+    }
+
+    public int NumValidCells(){
+        int num;
+        num = (length * height) - invalidCells.size();
+        return num;
+    }
+
     public void Draw(JPanel pane){
 
         /**

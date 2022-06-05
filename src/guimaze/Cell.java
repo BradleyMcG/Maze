@@ -14,7 +14,7 @@ import static java.awt.BorderLayout.WEST;
 
 public class Cell {
 
-    private boolean live;
+    public boolean live;
     public String[] wallPos = {"NORTH", "SOUTH", "EAST", "WEST"};
     private Wall[] walls;
     public int[] coords;
@@ -22,7 +22,7 @@ public class Cell {
     public Cell(int[] xy){
         coords = xy;
         walls = new Wall[4];
-        live = false;
+        live = true;
         initializeWalls();
     }
 
@@ -82,6 +82,16 @@ public class Cell {
         pane.add(cell);
 
 
+    }
+
+    public int NumWallsEnabled(){
+        int tally = 0;
+        for (int i = 0; i < 4; i ++){
+            if(walls[i].enabled){
+                tally += 1;
+            }
+        }
+        return tally;
     }
 
     public void break_Wall(int wall){

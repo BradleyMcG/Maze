@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class AutomaticGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 2
+     * @version 4
      *
      */
 
@@ -118,7 +118,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         cell_add[1] = currentCell[1];
         Reset_nextDirect();
 
-        //Generate();
+
         AutoGenerate();
         CreateGUI();
         //this.maze.Draw(displayPanel);
@@ -147,6 +147,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
     private float OptimalPercentage(){
+        /**
+         * @return - percentage of cells in the optimal (shortest) solution to maze
+         */
         Random rand = new Random();
         float result = (float)rand.nextInt(100-1) + 1;
         return result;
@@ -154,10 +157,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private float DeadEndPercentage(){
+        /**
+         * @return - percentage of cells that are a dead end (have 3 walls present)
+         */
+        /*
         Random rand = new Random();
-        float result = (float)rand.nextInt(100-1) + 1;
+        double result = (double)rand.nextInt(100-1) + 1;
         return result;
         //dummy value - random percentage
+         */
+        return this.maze.DeadEnd_Percentage();
     }
 
     @Override
@@ -185,19 +194,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         //updates the window for after logical changes
     }
 
-    private void Generate(){
-        //Where the Maze generation algorithm with ensue
-        System.out.println("[Maze: " + maze.title + " solution generated automatically ]");
-        int move = GetRandomMove(nextDirect);
-        System.out.println("The Move is: " + move);
-    }
 
     private void AutoGenerate(){
-
+        /**
+         * Condition controlled loop excecutes 'AutoMoves' which populate collection enteredCells to automatically
+         * generate the maze. Will stop performing moves once maze is fully generated.
+         */
         //implement this when img/block cells are implemented
         System.out.println("Invalid Cells: " + this.maze.invalidCells.size());
         System.out.println("Entered Cells: " + enteredCells.get(0)[0] + "," + enteredCells.get(0)[1]);
-        while (enteredCells.size() <= validCells_size()-1){
+        while (enteredCells.size() <= maze.NumValidCells()-1){
 
             AutoMove();
 
@@ -208,7 +214,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+    //originally where NumValidCells() was called
     private int validCells_size(){
+        /**
+         * @return - the number of cells in maze that aren't disabled
+         */
         int num;
         num = (maze.length * maze.height) - this.maze.invalidCells.size();
         return num;
@@ -216,6 +226,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
     private void AutoMove(){
+        /**
+         * From its starting state, currentCell, randomly generates directions to move into, break the respective
+         * walls, and add new cell to eneteredCells . If no directions are available, will randomly change
+         * currentCell to try again
+         */
         System.out.println("New AutoMove");
         boolean done = false;
         Reset_nextDirect();
@@ -248,6 +263,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void AddTo_enteredCells(){
+        /**
+         * adds the currentCell to enteredCells avoiding reference type mishaps
+         */
         int[] new_cell = new int[2];
         enteredCells.add(new_cell);
         new_cell[0] = currentCell[0];
@@ -255,6 +273,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void change_current_cell(){
+        /**
+         * After no available directions, the currentCell changed to a radnom
+         * one that already has been entered - so next move can ensue
+         */
         Random rand = new Random();
         int rand_cell_index = rand.nextInt(enteredCells.size());
         int[] cell = enteredCells.get(rand_cell_index);
@@ -267,6 +289,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void check_enteredCells(){
+        /**
+         * used in development
+         */
         for (int i = 0; i < enteredCells.size(); i++){
             System.out.print("Index: " + i + ",   ");
             System.out.print(" (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + "), ");
@@ -274,6 +299,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void make_next_current(int move){
+        /**
+         * Makes the next cell (the checking cell) the now current cell after completing a move
+         *
+         * @param move - the integer index for a move either N,S,E or W (ref directions_str)
+         */
         //check_enteredCells();
         //print_entered();
         int x = directions.get(move)[0] + currentCell[0];
@@ -289,6 +319,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void print_entered(){
+        /**
+         * - used in development - to print entire collection 'enteredCells'
+         */
         for (int i = 0; i < enteredCells.size(); i++){
             System.out.print(" (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + "), ");
         }
@@ -296,11 +329,21 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
     
     private void break_exit_wall(int move){
+        /**
+         * Disables the wall fom the exiting cell
+         *
+         * @param move - the integer index for a move either N,S,E or W (ref directions_str)
+         */
         this.maze.cells[currentCell[0]][currentCell[1]].break_Wall(move);
         System.out.println("Break wall " + move + " at cell: " + currentCell[0] + "," + currentCell[1]);
     }
     
     private void break_entry_wall(int move){
+        /**
+         * Disables the wall in the entering cell
+         *
+         * @param move - the integer index for a move either N,S,E or W (ref directions_str)
+         */
         int wall = 0;
         switch (move){
             case 0:
@@ -325,7 +368,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private int GetRandomMove(List<Integer> nextDirect){
         /**
          * @param nextDirect - the arrayList of components for each directional move
-         * returns random move direction as integer
+         * @return - the integer index for a move either N,S,E or W (ref directions_str)
          */
         Random rand = new Random();
         int randDirection = nextDirect.get(rand.nextInt(nextDirect.size()));
@@ -334,8 +377,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private boolean MoveIsValid(int move){ //int move is the direction
         /**
-         * @param move - index correlating to randomly generated direction of next move
-         *
+         * @param move - the integer index for a move either N,S,E or W (ref directions_str)
+         * @return - indicator whether checked cell can be entered
          */
         /*
         move is invalid when
@@ -367,7 +410,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private boolean moveInEntered(int[] Coords, int next_x, int next_y){
         /**
-         * @param Coords - index of next enetered cells coordinates from 'directions'
+         * @param Coords - index of new x,y components for checked cell from 'directions'
+         * @param next_x - the length coordinate for the cell being checked
+         * @param next_y - the height coordinate for the cell being checked
+         * @return - indicator whether next checked cell has already been entered
          */
 
         //int[] xy = {next_x, next_y};
@@ -384,7 +430,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private boolean moveInDomain(int next_x, int next_y){
         /**
-         * @param Coords - index of next enetered cells coordinates from 'directions'
+         * @param next_x - the length coordinate for the cell being checked
+         * @param next_y - the height coordinate for the cell being checked
+         * @return - indicator whether checked cell is within maze length&width domain
          */
         boolean x = 0<=next_x && next_x <= this.maze.length-1;
         boolean y = 0<=next_y && next_y <= this.maze.height-1;
@@ -398,7 +446,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private boolean moveIsAvail(Object Coords, int next_x, int next_y){
         /**
-         * @param Coords - index of next enetered cells coordinates from 'directions'
+         * @param Coords
+         * @param next_x - the length coordinate for the cell being checked
+         * @param next_y - the height coordinate for the cell being checked
+         * @return - indicator whether checked cell is not disabled
          */
         return true;
     }
@@ -414,6 +465,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void Replace_nextDirect(int move){
+        /**
+         * @param move - the integer index for a move either N,S,E or W (ref directions_str)
+         */
         for (int i = 0; i < nextDirect.size(); i++){
             if (nextDirect.get(i) == move){
                 nextDirect.remove(i);
@@ -422,6 +476,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private boolean CoordsExistsIn(int[] Coords){
+        /**
+         * @param Coords - index of new x,y components for checked cell from 'directions'
+         * @return - Indicator whether checked cell is already entered
+         */
         int[] next = {currentCell[0] + Coords[0], currentCell[1] + Coords[1]};
         for (int i = 0; i < enteredCells.size(); i++){
             System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
