@@ -176,6 +176,7 @@ public class Display extends JFrame implements ActionListener, Runnable {
         btnBack.addActionListener(this);
         btnRoute.addActionListener(this);
         btnEdit.addActionListener(this);
+        btnExport.addActionListener(this);
 
         /*
         //IMAGE MAZE
