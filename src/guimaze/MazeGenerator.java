@@ -46,6 +46,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
     public static MazeGenerator GetInstance(){
+
         return SingletonHolder.Program;
     }
 
@@ -182,7 +183,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         for(int i = 0; i < mazes.size(); i++){
             Maze current = mazes.get(i);
             obj[i][0] = current.author;
-            obj[i][1] = current.date;
+            obj[i][1] = current.createDate;
             obj[i][2] = current.title;
             obj[i][3] = false;
 
@@ -240,7 +241,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
     private void populateDummyMazes(){
-        allMazes.add(new Maze("Maze 1", "14/12/2000","Jim Jameson" ,10, 7));
+        allMazes.add(new Maze("Maze 1", "14/12/2000","Jim Jameson" ,5, 5));
         allMazes.add(new Maze("Maze 2", "13/12/2000","Zinedine Zidane" ,5, 10));
         allMazes.add(new Maze("Maze for the free world","12/12/2000" ,"Nelson Mandela", 96, 96));
         allMazes.add(new Maze("Amazing Work","14/2/2022", "Brad", 2, 2));
