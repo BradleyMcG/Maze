@@ -104,6 +104,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          * updates content(state) of GUI elements contained in JFrame
          */
 
+        frame.setVisible(false);
+
         String opt = Float.toString(OptimalPercentage()) + "%";
         optimal = new JLabel(opt);
 
@@ -118,6 +120,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         System.out.println("frame has been updated");
 
         this.maze.Draw(displayPanel);
+        frame.setVisible(true);
 
         /*
         FOR SOME REASON THE ABOVE DOES NOT UPDATE WHAT APPEARS IN THE GUI WHEN CALLED IN THE FUNCTION 'Regen()' WHICH

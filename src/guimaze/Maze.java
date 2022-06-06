@@ -17,7 +17,6 @@ public class Maze{
     public List<int[]> invalidCells = new ArrayList<int[]>();
 
 
-
     public int[] startCell = new int[2];
     public int[] finishCell = new int[2];
 
@@ -90,6 +89,7 @@ public class Maze{
 
     public void Draw(JPanel pane){
 
+        pane.removeAll();
         /**
          * @param pane - Reference to the JPanel to be drawn on
          */
