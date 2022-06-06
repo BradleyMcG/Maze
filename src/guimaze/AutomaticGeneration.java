@@ -36,6 +36,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JButton btnInsertImg;
     private JButton btnSubmit;
     private JButton btnRegen;
+    private JButton btnOptimal;
 
     private JPanel labelPanel;
     private JLabel optimalSolve;
@@ -98,6 +99,19 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
 
+    public void updateFrame(){
+        /**
+         * updates content(state) of GUI elements contained in JFrame
+         */
+        String opt = Float.toString(OptimalPercentage()) + "%";
+        optimal = new JLabel(opt);
+
+        String deadper = Float.toString(DeadEndPercentage()) + "%";
+        dead = new JLabel(deadper);
+
+        this.maze.Draw(displayPanel);
+    }
+
 
     public AutomaticGeneration(Maze maze) {
         /**
@@ -107,16 +121,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         this.maze = maze;
         //initializeMazeArray();
 
-        //currentCell = this.maze.startCell; - doesn't work - reference type logical errors
-        currentCell[0] = this.maze.startCell[0];
-        currentCell[1] = this.maze.startCell[1];
 
-        //initialize enteredCells
-        int[] cell_add = new int[2];
-        enteredCells.add(cell_add);
-        cell_add[0] = currentCell[0];
-        cell_add[1] = currentCell[1];
-        Reset_nextDirect();
+        AutoGenInitialize();
 
 
         AutoGenerate();
@@ -129,7 +135,18 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         btnSubmit.addActionListener(this);
     }
 
+    private void AutoGenInitialize(){
+        //currentCell = this.maze.startCell; - doesn't work - reference type logical errors
+        currentCell[0] = this.maze.startCell[0];
+        currentCell[1] = this.maze.startCell[1];
 
+        //initialize enteredCells
+        int[] cell_add = new int[2];
+        enteredCells.add(cell_add);
+        cell_add[0] = currentCell[0];
+        cell_add[1] = currentCell[1];
+        Reset_nextDirect();
+    }
 
 
 
@@ -174,10 +191,19 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+
+    private void Regen(){
+        System.out.println("pressed 'Regen'");
+        //maze.populateMazeArray();
+        //AutoGenInitialize();
+        //AutoGenerate();
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnRegen){
-            System.out.println("pressed 'Regen'");
+            Regen();
         }
         if(e.getSource()==btnInsertImg){
             System.out.println("pressed 'insert img'");
@@ -188,10 +214,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             MazeGenerator.GetInstance().ShowGUI();
         }
 
-    }
-
-    public void updateFrame(){
-        //updates the window for after logical changes
     }
 
 
@@ -243,10 +265,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
                 //check_enteredCells();
                 make_next_current(move);
                 //check_enteredCells();
-                int[] new_cell = new int[2];
-                enteredCells.add(new_cell);
-                new_cell[0] = currentCell[0];
-                new_cell[1] = currentCell[1];
+
+                AddTo_enteredCells();
+
                 //check_enteredCells();
                 //System.out.println(currentCell[0] + "," + currentCell[1] + " added to 'enteredCells'");
                 //System.out.println("Entered: " + enteredCells);

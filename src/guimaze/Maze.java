@@ -35,7 +35,7 @@ public class Maze{
 
     }
 
-    private void populateMazeArray(){
+    public void populateMazeArray(){
 
         for (int len = 0; len < length; len ++){
             //System.out.println("len =" + len);
