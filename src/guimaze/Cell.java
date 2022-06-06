@@ -19,6 +19,8 @@ public class Cell {
     private Wall[] walls;
     public int[] coords;
 
+    //public JPanel cell;
+
     public Cell(int[] xy){
         coords = xy;
         walls = new Wall[4];

@@ -28,8 +28,8 @@ public class Display extends JFrame implements ActionListener, Runnable {
     JLabel lblHeader = new JLabel("Display");
     JLabel lblAuthor;
     JLabel lblTitle;
-    JLabel lblEditDate = new JLabel("Last Edit: 29/03/21");
-    JLabel lblCreateDate = new JLabel("Creation Date: 25/03/21");
+    JLabel lblEditDate;
+    JLabel lblCreateDate;
     JLabel lblLength;
     JLabel lblHeight;
     JLabel lblOptimal;
