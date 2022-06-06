@@ -52,7 +52,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         super.HideGUI();
         displayPanel = new JPanel();
         displayPanel.setLayout(null);
-        displayPanel.setBackground(Color.GREEN);
+        //displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,displayLength, displayHeight);
         //displayPanel.add(new JLabel("[Area for working Maze]"));
 
@@ -60,7 +60,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
         buttonPanel = new JPanel(new GridLayout(1, 3));
-        buttonPanel.setBackground(Color.RED);
+        //buttonPanel.setBackground(Color.RED);
         buttonPanel.setBounds(25, 600, 700, 150);
         btnRegen = new JButton("Regenerate");
         btnInsertImg = new JButton("Insert Image");
@@ -103,13 +103,27 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         /**
          * updates content(state) of GUI elements contained in JFrame
          */
+
         String opt = Float.toString(OptimalPercentage()) + "%";
         optimal = new JLabel(opt);
 
         String deadper = Float.toString(DeadEndPercentage()) + "%";
         dead = new JLabel(deadper);
 
+        //SwingUtilities.updateComponentTreeUI(frame);
+
+        displayPanel.repaint();
+        labelPanel.repaint();
+        frame.repaint();
+        System.out.println("frame has been updated");
+
         this.maze.Draw(displayPanel);
+
+        /*
+        FOR SOME REASON THE ABOVE DOES NOT UPDATE WHAT APPEARS IN THE GUI WHEN CALLED IN THE FUNCTION 'Regen()' WHICH
+        IS CALLED VIA THE ACTION LISTENER FOR THE BUTTON btnRegen LABELLED "Regenerate".
+         */
+
     }
 
 
@@ -141,6 +155,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         currentCell[1] = this.maze.startCell[1];
 
         //initialize enteredCells
+        enteredCells = new ArrayList<>();
         int[] cell_add = new int[2];
         enteredCells.add(cell_add);
         cell_add[0] = currentCell[0];
@@ -177,12 +192,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         /**
          * @return - percentage of cells that are a dead end (have 3 walls present)
          */
-        /*
-        Random rand = new Random();
-        double result = (double)rand.nextInt(100-1) + 1;
-        return result;
-        //dummy value - random percentage
-         */
+
         return this.maze.DeadEnd_Percentage();
     }
 
@@ -194,9 +204,10 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private void Regen(){
         System.out.println("pressed 'Regen'");
-        //maze.populateMazeArray();
-        //AutoGenInitialize();
-        //AutoGenerate();
+        maze.populateMazeArray();
+        AutoGenInitialize();
+        AutoGenerate();
+        updateFrame();
 
     }
 
