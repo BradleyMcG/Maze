@@ -36,11 +36,12 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JButton btnInsertImg;
     private JButton btnSubmit;
     private JButton btnRegen;
-    private JButton btnOptimal;
+
 
     private JPanel labelPanel;
     private JLabel optimalSolve;
     private JLabel optimal;
+    private JButton btnOptimal;
     private JLabel deadEnds;
     private JLabel dead;
 
@@ -52,15 +53,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         super.HideGUI();
         displayPanel = new JPanel();
         displayPanel.setLayout(null);
-        //displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,displayLength, displayHeight);
-        //displayPanel.add(new JLabel("[Area for working Maze]"));
 
         this.maze.Draw(displayPanel);
 
-
         buttonPanel = new JPanel(new GridLayout(1, 3));
-        //buttonPanel.setBackground(Color.RED);
         buttonPanel.setBounds(25, 600, 700, 150);
         btnRegen = new JButton("Regenerate");
         btnInsertImg = new JButton("Insert Image");
@@ -75,13 +72,17 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         optimalSolve = new JLabel("Optimal Solve(%):");
         String opt = Float.toString(OptimalPercentage()) + "%";
         optimal = new JLabel(opt);
+        btnOptimal = new JButton("Show Solution");
+
         deadEnds = new JLabel("Dead End Cells (%)");
         String deadper = Float.toString(DeadEndPercentage()) + "%";
         dead = new JLabel(deadper);
-        labelPanel.add(optimalSolve);
-        labelPanel.add(optimal);
         labelPanel.add(deadEnds);
         labelPanel.add(dead);
+        labelPanel.add(optimalSolve);
+        labelPanel.add(optimal);
+        labelPanel.add(btnOptimal);
+
 
         frame = new JFrame("Automatic Maze Generation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,6 +116,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         displayPanel.repaint();
         labelPanel.repaint();
         frame.repaint();
+
         System.out.println("frame has been updated");
 
         this.maze.Draw(displayPanel);
@@ -147,6 +149,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         btnRegen.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
+
     }
 
     private void AutoGenInitialize(){
