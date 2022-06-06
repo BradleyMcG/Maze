@@ -359,6 +359,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         }
         System.out.println("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")");
     }
+
+
     
     private void break_exit_wall(int move){
         /**
@@ -392,7 +394,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
                 break;
         }
         int next_x = currentCell[0]+ directions.get(move)[0];
-        int next_y = currentCell[1]+directions.get(move)[1];
+        int next_y = currentCell[1]+ directions.get(move)[1];
         this.maze.cells[next_x][next_y].break_Wall(wall);
         System.out.println("Break wall " + wall + " at cell: " + next_x + "," + next_y);
     }

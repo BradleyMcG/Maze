@@ -183,7 +183,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         for(int i = 0; i < mazes.size(); i++){
             Maze current = mazes.get(i);
             obj[i][0] = current.author;
-            obj[i][1] = current.date;
+            obj[i][1] = current.createDate;
             obj[i][2] = current.title;
             obj[i][3] = false;
 

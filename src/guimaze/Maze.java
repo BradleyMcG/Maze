@@ -8,7 +8,8 @@ public class Maze{
     //constructor fields
     public String title;
     public String author;
-    public String date;
+    public String createDate;
+    public String editDate;
     public int length;
     public int height;
 
@@ -26,7 +27,8 @@ public class Maze{
         this.author = author;
         this.length = length;
         this.height = height;
-        this.date = date;
+        this.createDate = date;
+        this.editDate = date;
         cells = new Cell[length][height];
         startCell[0] = 0;
         startCell[1] = 0;
@@ -34,6 +36,8 @@ public class Maze{
         populateMazeArray();
 
     }
+
+
 
     public void populateMazeArray(){
 
@@ -72,6 +76,10 @@ public class Maze{
 
         }
         return tally;
+    }
+
+    public String TotalCellOptimal(){
+        return "[not yeat implemented]";
     }
 
     public int NumValidCells(){
