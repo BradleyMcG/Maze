@@ -30,7 +30,7 @@ public class Maze{
 
     }
 
-    private void populateMazeArray(){
+    public void populateMazeArray(){
 
         for (int len = 0; len < length; len ++){
             System.out.println("len =" + len);
@@ -46,12 +46,15 @@ public class Maze{
 
     public void Draw(JPanel pane){
 
+        pane.removeAll();
         /**
          * @param pane - Reference to the JPanel to be drawn on
          */
 
         int pane_x = pane.getWidth();
         int pane_y = pane.getHeight();
+        System.out.println("Width of Pane is" + pane_x);
+        System.out.println("Height of Pane is" + pane_y);
         int longest_side;
 
         //checks that displaypanel is square

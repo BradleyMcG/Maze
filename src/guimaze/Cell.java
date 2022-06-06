@@ -76,11 +76,15 @@ public class Cell {
                 //this functionality is more robust, just don't know how to implement
         }
 
-
-
         pane.add(cell);
 
+    }
 
+    public void break_Wall(int wall){
+        walls[wall].Disable();
+    }
+    public void add_Wall(int wall){
+        walls[wall].Enable();
     }
 
 

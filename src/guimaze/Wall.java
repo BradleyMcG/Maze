@@ -33,6 +33,7 @@ public class Wall extends JPanel{
                 break;
             case "WEST":
                 this.setPreferredSize(new Dimension(smaller, cellPixels));
+                // setBackground(Color.WHITE);
                 break;
         }
         if (enabled){
@@ -40,6 +41,14 @@ public class Wall extends JPanel{
         }else{
             setBackground(Color.WHITE);
         }
+    }
+
+    public void Disable(){
+        enabled = false;
+    }
+
+    public void Enable(){
+        enabled = true;
     }
 
 
