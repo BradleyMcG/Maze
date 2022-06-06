@@ -100,6 +100,8 @@ public class Cell {
         walls[wall].Disable();
     }
 
-
+    public void add_Wall(int wall){
+        walls[wall].Enable();
+    }
 
 }

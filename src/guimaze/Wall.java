@@ -52,6 +52,10 @@ public class Wall extends JPanel{
 
     }
 
+    public void Enable(){
+        enabled = true;
+    }
+
 
 
 }
