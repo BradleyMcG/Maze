@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.util.Date;
 
 
 public class CreateMaze implements ActionListener, Runnable{
@@ -13,29 +17,44 @@ public class CreateMaze implements ActionListener, Runnable{
     protected Maze maze;
     private final int WIDTH = 800;
     private final int HEIGHT = 800;
+    private boolean auto = true;
+
 
 
 
 
     //GUI Fields
-    JFrame frame = new JFrame();
+    private JFrame frame = new JFrame();
+    private final Font labels = new Font("Arial", Font.PLAIN, 20);
 
-    JPanel pnlFields;
-    JPanel pnlEnds;
+    private JPanel pnlFields;
+    private JLabel mazeLength = new JLabel("x:");
+    private JTextField length = new JTextField("100<x<0");
+    private JLabel mazeHeight = new JLabel("y:");
+    private JTextField height = new JTextField("100<y<0");
+    private JLabel authorName = new JLabel("Author:");
+    private JTextField Author = new JTextField("");
+    private JLabel mazeTitle = new JLabel("Title:");
+    private JTextField Title = new JTextField("");
+    private JButton btnAutomatic = new JButton("Generate Automatically");
+    private JButton btnManual = new JButton("Generate Manually");
 
-    JLabel CreateSign = new JLabel("Create Maze");
-    JLabel dimensions = new JLabel("Dimensions");
-    JLabel mazeLength = new JLabel("x:");
-    JTextField length = new JTextField("100<x<0");
-    JLabel mazeHeight = new JLabel("y:");
-    JTextField height = new JTextField("100<y<0");
-    JLabel authorName = new JLabel("Author:");
-    JTextField Author = new JTextField("");
-    JLabel mazeTitle = new JLabel("Title:");
-    JTextField Title = new JTextField("");
+    private JPanel pnlEnds;
+    private JButton btnSubmit;
+    private JLabel lblStart;
+    private JTextField txt_xs;
+    private JTextField txt_ys;
+    private JLabel lblEnd;
+    private JTextField txt_xe;
+    private JTextField txt_ye;
 
-    JButton btnAutomatic = new JButton("Generate Automatically");
-    JButton btnManual = new JButton("Generate Manually");
+
+    private JLabel CreateSign = new JLabel("Create Maze");
+    private JLabel dimensions = new JLabel("Dimensions");
+
+
+
+
 
 
 
@@ -55,7 +74,7 @@ public class CreateMaze implements ActionListener, Runnable{
     }
 
     private void CreateFields(){
-        Font labels = new Font("Arial", Font.PLAIN, 20);
+
 
         mazeTitle = new JLabel("Title: ");
         mazeTitle.setBounds(0,0, 100, 75);
@@ -75,17 +94,16 @@ public class CreateMaze implements ActionListener, Runnable{
 
         mazeLength = new JLabel("Maze Length: ");
         mazeLength.setBounds(0, 200, 100, 75);
-
         pnlFields.add(mazeLength);
         length = new JTextField();
-        length.setBounds(100, 200, 225, 75);
+        length.setBounds(100, 215, 75, 45);
         pnlFields.add(length);
 
         mazeHeight = new JLabel("Maze Height: ");
         mazeHeight.setBounds(375, 200, 100, 75);
         pnlFields.add(mazeHeight);
         height = new JTextField();
-        height.setBounds(475, 200, 225, 75);
+        height.setBounds(475, 215, 75, 45);
         pnlFields.add(height);
 
         btnAutomatic = new JButton("Generate Automatically");
@@ -97,14 +115,49 @@ public class CreateMaze implements ActionListener, Runnable{
         pnlFields.add(btnManual);
         btnManual.addActionListener(this);
 
-
-
-
-
     }
 
     private void CreateEnds(){
 
+        frame.setVisible(false);
+        //pnlFields.removeAll();
+        //CreateFields();
+        DisableFields();
+
+        lblStart = new JLabel("Start Cell (x, y): ");
+        lblStart.setBounds(0, 0, 150, 75);
+        lblStart.setFont(labels);
+        pnlEnds.add(lblStart);
+        txt_xs = new JTextField();
+        txt_xs.setBounds(200, 15, 75, 45);
+        pnlEnds.add(txt_xs);
+        txt_ys = new JTextField();
+        txt_ys.setBounds(300, 15, 75, 45);
+        pnlEnds.add(txt_ys);
+
+        lblEnd = new JLabel("End Cell (x, y): ");
+        lblEnd.setBounds(0, 100, 150, 75);
+        lblEnd.setFont(labels);
+        pnlEnds.add(lblEnd);
+        txt_xe = new JTextField();
+        txt_xe.setBounds(200, 115, 75, 45);
+        pnlEnds.add(txt_xe);
+        txt_ye = new JTextField();
+        txt_ye.setBounds(300, 115, 75, 45);
+        pnlEnds.add(txt_ye);
+
+        frame.add(pnlEnds);
+        frame.setVisible(true);
+
+    }
+
+    private void DisableFields(){
+        btnAutomatic.setEnabled(false);
+        btnManual.setEnabled(false);
+        length.setEditable(false);
+        height.setEditable(false);
+        Author.setEditable(false);
+        Title.setEditable(false);
     }
 
     private void CreateGUI(){
@@ -121,12 +174,13 @@ public class CreateMaze implements ActionListener, Runnable{
         pnlEnds = new JPanel();
         pnlEnds.setLayout(null);
         pnlEnds.setBounds(25, 525, 750, 200); //750 x 200 pixels
-        CreateEnds();
+        //CreateEnds();
 
         frame.add(pnlFields);
-        frame.add(pnlEnds);
+        //frame.add(pnlEnds);
         frame.setVisible(true);
 
+        System.out.println("Date is: " + GetDate());
 
     }
 
@@ -229,7 +283,7 @@ public class CreateMaze implements ActionListener, Runnable{
 
 
 
-    private void inputHandler(boolean Auto) throws NumberFormatException{
+    private void inputHandler() throws NumberFormatException{
         /**
          * @param Auto - an indicator for which button has been pressed (Auto OR Manual)
          */
@@ -240,22 +294,37 @@ public class CreateMaze implements ActionListener, Runnable{
         System.out.println("input length : " + x);
         int y = Integer.parseInt(height.getText());
         System.out.println("input height: " + y);
-        String date ="14/12/2000";
-        HideGUI();
-        if (Auto){
-            CreateAutomatic(title,date,author, x, y);
+
+        String date = GetDate();
+        //HideGUI();
+        if (auto){
+            //CreateAutomatic(title,date,author, x, y);
+            CreateEnds();
         }else{
-            CreateManual(title,date,author, x, y);
+            //CreateManual(title,date,author, x, y);
+            CreateEnds();
         }
     }
 
+    private void Cell_inputHandler() throws NumberFormatException{
 
-    private void InputExceptionHandler(boolean Auto){
+    }
+
+    private String GetDate(){
+        String str = "";
+        int day = LocalDate.now().getDayOfMonth();
+        int month = LocalDate.now().getMonthValue();
+        int year = LocalDate.now().getYear();
+        str = str.concat(day + "/"+ month +"/"+ year);
+        return str;
+    }
+
+    private void InputExceptionHandler(){
         /**
          * @param Auto - an indicator for which button has been pressed (Auto OR Manual)
          */
         try{
-          inputHandler(Auto);
+          inputHandler();
         } catch(NumberFormatException c){
             System.out.println(c.getMessage());
             errorDialog(); // "errorDialog" unfinished
@@ -270,22 +339,25 @@ public class CreateMaze implements ActionListener, Runnable{
         int y;
         if(e.getSource()==btnAutomatic) {
             System.out.println("btn pressed, automatically generate maze");
-            InputExceptionHandler(true);
+            auto = true;
+            InputExceptionHandler();
         }else if(e.getSource() == btnManual){
             System.out.println("btn pressed, manually generate maze");
-            InputExceptionHandler(false);
+            auto = false;
+            InputExceptionHandler();
         }
 
     }
 
     private void errorDialog(){
         JDialog d = new JDialog(frame, "Input Error");
+        d.setSize(400, 200);
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createLineBorder(Color.black));
         JTextField inputError = new JTextField("Uh oh. Incorrect data input; make sure your dimensions and whole numbers and " +
-                "title/author is a string literal");
+                "title/author is a string literal"); //format to wrap text
         inputError.setSize(100, 100);
-        d.setSize(400, 200);
+
         p.add(inputError);
         d.add(p);
         d.setVisible(true);
