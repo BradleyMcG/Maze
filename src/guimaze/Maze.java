@@ -36,7 +36,22 @@ public class Maze{
 
     }
 
+    public Maze(String title,String date,String author, int length, int height, int[]start, int[]end){
+        this.title = title;
+        this.author = author;
+        this.length = length;
+        this.height = height;
+        this.createDate = date;
+        this.editDate = date;
+        cells = new Cell[length][height];
+        startCell[0] = start[0];
+        startCell[1] = start[1];
+        finishCell[0] = end[0];
+        finishCell[1] = end[1];
 
+        populateMazeArray();
+
+    }
 
     public void populateMazeArray(){
 

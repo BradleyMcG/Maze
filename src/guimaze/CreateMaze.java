@@ -19,6 +19,11 @@ public class CreateMaze implements ActionListener, Runnable{
     private final int HEIGHT = 800;
     private boolean auto = true;
 
+    private String title;
+    private String author;
+    private int maze_length;
+    private int maze_height;
+    private String date;
     private int xs;
     private int ys;
     private int xe;
@@ -296,14 +301,14 @@ public class CreateMaze implements ActionListener, Runnable{
          * @param Auto - an indicator for which button has been pressed (Auto OR Manual)
          */
         //Catch exceptions related to incorrect input - display appropriate dialog
-        String title = Title.getText();
-        String author = Author.getText();
-        int x = Integer.parseInt(length.getText());
-        System.out.println("input length : " + x);
-        int y = Integer.parseInt(height.getText());
-        System.out.println("input height: " + y);
+        title = Title.getText();
+        author = Author.getText();
+        maze_length = Integer.parseInt(length.getText());
+        System.out.println("input length : " + maze_length);
+        maze_height = Integer.parseInt(height.getText());
+        System.out.println("input height: " + maze_height);
 
-        String date = GetDate();
+        date = GetDate();
         //HideGUI();
         if (auto){
             //CreateAutomatic(title,date,author, x, y);
@@ -314,19 +319,27 @@ public class CreateMaze implements ActionListener, Runnable{
         }
     }
 
-    private void Cell_inputHandler(String title,String date ,String author, int x, int y) throws Exception{
+    private void Cell_inputHandler() throws Exception{
         xs = Integer.parseInt(txt_xs.getText());
         ys = Integer.parseInt(txt_ys.getText());
         xe = Integer.parseInt(txt_xe.getText());
         ye = Integer.parseInt(txt_ye.getText());
 
-        if (auto){
-            CreateAutomatic(title,date,author, x, y);
+        int[] startCell = {xs, ys};
+        int[] endCell = {xe, ye};
 
+        boolean start_domain = (0<=xs && xs<=(maze_length-1))&&(0<=ys && ys<=(maze_height-1));
+        boolean end_domain = (0<=xe && xe<=(maze_length-1))&&(0<=ye && ye<=(maze_height-1));
+        if(start_domain && end_domain){
+            if (auto){
+                CreateAutomatic(title,date,author, maze_length, maze_height, startCell, endCell);
+            }else{
+                CreateManual(title,date,author, maze_length, maze_height, startCell, endCell);
+            }
         }else{
-            CreateManual(title,date,author, x, y);
-
+            errorDialog(); //make more general
         }
+
 
 
     }
@@ -352,9 +365,9 @@ public class CreateMaze implements ActionListener, Runnable{
         }
     }
 
-    private void CellExceptionHandler(String title,String date ,String author, int x, int y){
+    private void CellExceptionHandler(){
         try{
-            Cell_inputHandler(title, date, author, x, y);
+            Cell_inputHandler();
         } catch(Exception c){
             System.out.println(c.getMessage());
             errorDialog(); // "errorDialog" unfinished
@@ -363,10 +376,13 @@ public class CreateMaze implements ActionListener, Runnable{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        /*
         String title;
         String author;
         int x;
         int y;
+
+         */
         if(e.getSource()==btnAutomatic) {
             System.out.println("btn pressed, automatically generate maze");
             auto = true;
@@ -375,6 +391,8 @@ public class CreateMaze implements ActionListener, Runnable{
             System.out.println("btn pressed, manually generate maze");
             auto = false;
             InputExceptionHandler();
+        }else if (e.getSource() == btnSubmit){
+            CellExceptionHandler();
         }
 
     }
@@ -400,8 +418,9 @@ public class CreateMaze implements ActionListener, Runnable{
 
 
 
-    private void CreateAutomatic(String title,String date ,String author, int x, int y){
-        maze = new Maze(title,date,author, x, y);
+    private void CreateAutomatic(String title,String date ,String author, int x, int y, int[] start, int[] end){
+        HideGUI();
+        maze = new Maze(title,date,author, x, y, start, end);
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
@@ -410,8 +429,9 @@ public class CreateMaze implements ActionListener, Runnable{
 
     }
 
-    private void CreateManual(String title,String date, String author, int x, int y){
-        maze = new Maze(title,date,author, x, y);
+    private void CreateManual(String title,String date, String author, int x, int y, int[] start, int[] end){
+        HideGUI();
+        maze = new Maze(title,date,author, x, y, start, end);
         //MazeGenerator.StoreMaze(maze);
         //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
             // Dont know how to resolve
