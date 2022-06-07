@@ -9,7 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 /**
  * @author bradley.mcgrath
- * @version 1
+ * @version 3
  */
 
 public class MazeGenerator extends JFrame implements ActionListener, Runnable {
@@ -22,12 +22,14 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-
+    private List<Integer> refMaze = new ArrayList<>();
 
     private JButton btnCreate;
     private JButton btnFind;
     private JButton btnDisplay;
     private JButton btnExport;
+
+    private JTable tableMaze; // ADDED
    // private JButton btnDisplay;
 
     private JFrame frame;
@@ -112,7 +114,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
         String [] columnNames = {"Author Name","Date","Maze Title","Export"};
 
-        JTable tableMaze = new JTable(data, columnNames){
+        tableMaze = new JTable(data, columnNames){
             public Class getColumnClass(int column) {
                 //return Boolean.class
                 return getValueAt(0, column).getClass();
@@ -141,6 +143,25 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
 
+    private void checkTickBox(){
+        int rowNumber = tableMaze.getRowCount();
+        int columnNumber = tableMaze.getColumnCount();
+
+        String[][] obj = new String[rowNumber][columnNumber];
+
+        for(int i = 0; i<rowNumber; i++){
+
+                obj[i][3] = (tableMaze.getValueAt(i,3).toString());
+
+                System.out.println("Values together are " + obj[i][3]);
+                //System.out.println(obj[i][j]);
+                if(obj[i][3] == "true"){
+                    refMaze.add(i);
+                }
+
+
+        }
+    }
 
 
 
@@ -224,14 +245,31 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
             //allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
-            System.out.println(allMazes.get(0));
-            HideGUI();
-            Display dis = new Display(allMazes.get(1));
+           // System.out.println(allMazes.get(0));
+
+            checkTickBox();
+
+
+            if(refMaze.size() == 1){
+                HideGUI();
+                Display dis = new Display(allMazes.get(refMaze.get(0)));
+                refMaze.clear();
+            } else {
+                errorDialog();
+                refMaze.clear();
+            }
+
+
         }
         if(e.getSource() == btnExport){
             System.out.println("EXPORT");
-            HideGUI();
-            Export exp = new Export();
+            checkTickBox();
+
+            if(refMaze.size() == 1){
+
+            }
+            //HideGUI();
+            //Export exp = new Export();
         }
         
     }
@@ -239,6 +277,20 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     public void StoreMaze(Maze maze){
         allMazes.add(maze);
     }
+    private void errorDialog(){
+        JDialog d = new JDialog(frame, "Input Error");
+        JPanel p = new JPanel();
+        p.setBorder(BorderFactory.createLineBorder(Color.black));
+        JLabel inputError = new JLabel("You have selected too many tick boxes, " +
+                "please make sure only one is selected to Display the maze");
+        inputError.setSize(200, 200);
+        d.setSize(600, 200);
+        p.add(inputError);
+        d.add(p);
+        d.setVisible(true);
+    }
+
+
 
     private void populateDummyMazes(){
         allMazes.add(new Maze("Maze 1", "14/12/2000","Jim Jameson" ,5, 5));
