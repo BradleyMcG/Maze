@@ -40,9 +40,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private JPanel labelPanel;
     private JLabel optimalSolve;
-    private JLabel optimal;
+    private JLabel lbloptimal;
     private JLabel deadEnds;
-    private JLabel dead;
+    private JLabel lbldead;
+    private JLabel lblStart;
+    private JLabel lblFinish;
 
 
 
@@ -58,30 +60,15 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         this.maze.Draw(displayPanel);
 
-
         buttonPanel = new JPanel(new GridLayout(1, 3));
         //buttonPanel.setBackground(Color.RED);
         buttonPanel.setBounds(25, 600, 700, 150);
-        btnRegen = new JButton("Regenerate");
-        btnInsertImg = new JButton("Insert Image");
-        btnSubmit = new JButton("Submit");
-        buttonPanel.add(btnRegen);
-        buttonPanel.add(btnInsertImg);
-        buttonPanel.add(btnSubmit);
+        createButtons();
 
 
-        labelPanel = new JPanel(new GridLayout(3,2));
+        labelPanel = new JPanel(new GridLayout(5,2));
         labelPanel.setBounds(550, 25, 225, 500);
-        optimalSolve = new JLabel("Optimal Solve(%):");
-        String opt = Float.toString(OptimalPercentage()) + "%";
-        optimal = new JLabel(opt);
-        deadEnds = new JLabel("Dead End Cells (%)");
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
-        dead = new JLabel(deadper);
-        labelPanel.add(optimalSolve);
-        labelPanel.add(optimal);
-        labelPanel.add(deadEnds);
-        labelPanel.add(dead);
+        createLabels();
 
         frame = new JFrame("Automatic Maze Generation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,34 +85,65 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+    private void createLabels(){
+        String opt_1 = "Optimal Solve (%):";
+        String opt = "";
+        opt = opt.concat(opt_1 + Float.toString(OptimalPercentage()) + "%");
+        lbloptimal = new JLabel(opt);
+
+        String deadper_1 = "Dead End Cells (%): ";
+        String deadper = "";
+        deadper = deadper.concat(deadper_1 + Float.toString(DeadEndPercentage()) + "%");
+        lbldead = new JLabel(deadper);
+
+        String start = "";
+        start = start.concat("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")" );
+        lblStart = new JLabel(start);
+
+        String finish = "";
+        finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
+        lblFinish = new JLabel(finish);
+
+        labelPanel.add(lblStart);
+        labelPanel.add(lblFinish);
+        //labelPanel.add(optimalSolve);
+        labelPanel.add(lbloptimal);
+        //labelPanel.add(deadEnds);
+        labelPanel.add(lbldead);
+
+    }
+
+    private void createButtons(){
+
+        btnRegen = new JButton("Regenerate");
+        btnInsertImg = new JButton("Insert Image");
+        btnSubmit = new JButton("Submit");
+        buttonPanel.add(btnRegen);
+        buttonPanel.add(btnInsertImg);
+        buttonPanel.add(btnSubmit);
+
+        btnRegen.addActionListener(this);
+        btnInsertImg.addActionListener(this);
+        btnSubmit.addActionListener(this);
+    }
+
 
     public void updateFrame(){
         /**
-         * updates content(state) of GUI elements contained in JFrame
+         * updates content(state) of GUI elements contained in JFrame by rebuilding each panel individually
+         * in the JFrame
          */
-
+        buttonPanel.removeAll();
+        labelPanel.removeAll();
         frame.setVisible(false);
 
-        String opt = Float.toString(OptimalPercentage()) + "%";
-        optimal = new JLabel(opt);
-
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
-        dead = new JLabel(deadper);
-
-        //SwingUtilities.updateComponentTreeUI(frame);
-
-        displayPanel.repaint();
-        labelPanel.repaint();
-        frame.repaint();
         System.out.println("frame has been updated");
 
         this.maze.Draw(displayPanel);
-        frame.setVisible(true);
+        createButtons();
+        createLabels();
 
-        /*
-        FOR SOME REASON THE ABOVE DOES NOT UPDATE WHAT APPEARS IN THE GUI WHEN CALLED IN THE FUNCTION 'Regen()' WHICH
-        IS CALLED VIA THE ACTION LISTENER FOR THE BUTTON btnRegen LABELLED "Regenerate".
-         */
+        frame.setVisible(true);
 
     }
 
@@ -144,12 +162,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         AutoGenerate();
         CreateGUI();
-        //this.maze.Draw(displayPanel);
-            //for some reason, when uncommented, CreateMaze.errorDialog() is called
-
-        btnRegen.addActionListener(this);
-        btnInsertImg.addActionListener(this);
-        btnSubmit.addActionListener(this);
     }
 
     private void AutoGenInitialize(){
