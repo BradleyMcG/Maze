@@ -9,12 +9,19 @@ import java.io.IOException;
 
 public class CreateMaze implements ActionListener, Runnable{
 
-    //public MazeGenerator program;
+    //Logical Fields
     protected Maze maze;
+    private final int WIDTH = 800;
+    private final int HEIGHT = 800;
 
+
+
+
+    //GUI Fields
     JFrame frame = new JFrame();
 
-
+    JPanel pnlFields;
+    JPanel pnlEnds;
 
     JLabel CreateSign = new JLabel("Create Maze");
     JLabel dimensions = new JLabel("Dimensions");
@@ -35,14 +42,94 @@ public class CreateMaze implements ActionListener, Runnable{
 
     CreateMaze(){
 
-
+/*
         CreateMazeGUI(); //eventually DisplayGUI (from interface)
         btnAutomatic.addActionListener(this);
         btnManual.addActionListener(this);
 
+ */
+        CreateGUI();
+
 
 
     }
+
+    private void CreateFields(){
+        Font labels = new Font("Arial", Font.PLAIN, 20);
+
+        mazeTitle = new JLabel("Title: ");
+        mazeTitle.setBounds(0,0, 100, 75);
+        mazeTitle.setFont(labels);
+        pnlFields.add(mazeTitle);
+        Title = new JTextField();
+        Title.setBounds(150, 0, 550, 75);
+        pnlFields.add(Title);
+
+        authorName = new JLabel("Author: ");
+        authorName.setBounds(0, 100, 100, 75);
+        authorName.setFont(labels);
+        pnlFields.add(authorName);
+        Author = new JTextField();
+        Author.setBounds(150, 100, 550, 75);
+        pnlFields.add(Author);
+
+        mazeLength = new JLabel("Maze Length: ");
+        mazeLength.setBounds(0, 200, 100, 75);
+
+        pnlFields.add(mazeLength);
+        length = new JTextField();
+        length.setBounds(100, 200, 225, 75);
+        pnlFields.add(length);
+
+        mazeHeight = new JLabel("Maze Height: ");
+        mazeHeight.setBounds(375, 200, 100, 75);
+        pnlFields.add(mazeHeight);
+        height = new JTextField();
+        height.setBounds(475, 200, 225, 75);
+        pnlFields.add(height);
+
+        btnAutomatic = new JButton("Generate Automatically");
+        btnAutomatic.setBounds(50, 300, 275, 125);
+        pnlFields.add(btnAutomatic);
+        btnAutomatic.addActionListener(this);
+        btnManual = new JButton("Generate Manually");
+        btnManual.setBounds(425, 300, 275, 125);
+        pnlFields.add(btnManual);
+        btnManual.addActionListener(this);
+
+
+
+
+
+    }
+
+    private void CreateEnds(){
+
+    }
+
+    private void CreateGUI(){
+        frame = new JFrame();
+        frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(WIDTH, HEIGHT);
+
+        pnlFields = new JPanel();
+        pnlFields.setLayout(null);
+        pnlFields.setBounds(25, 25, 750, 450);//750  x 450 pixels
+        CreateFields();
+
+        pnlEnds = new JPanel();
+        pnlEnds.setLayout(null);
+        pnlEnds.setBounds(25, 525, 750, 200); //750 x 200 pixels
+        CreateEnds();
+
+        frame.add(pnlFields);
+        frame.add(pnlEnds);
+        frame.setVisible(true);
+
+
+    }
+
 
     private void CreateMazeGUI(){
 
@@ -138,6 +225,8 @@ public class CreateMaze implements ActionListener, Runnable{
 
 
     }
+
+
 
 
     private void inputHandler(boolean Auto) throws NumberFormatException{
