@@ -19,7 +19,10 @@ public class CreateMaze implements ActionListener, Runnable{
     private final int HEIGHT = 800;
     private boolean auto = true;
 
-
+    private int xs;
+    private int ys;
+    private int xe;
+    private int ye;
 
 
 
@@ -145,6 +148,11 @@ public class CreateMaze implements ActionListener, Runnable{
         txt_ye = new JTextField();
         txt_ye.setBounds(300, 115, 75, 45);
         pnlEnds.add(txt_ye);
+
+        btnSubmit = new JButton("Submit");
+        btnSubmit.setBounds(450, 50, 200, 100);
+        pnlEnds.add(btnSubmit);
+        btnSubmit.addActionListener(this);
 
         frame.add(pnlEnds);
         frame.setVisible(true);
@@ -306,7 +314,20 @@ public class CreateMaze implements ActionListener, Runnable{
         }
     }
 
-    private void Cell_inputHandler() throws NumberFormatException{
+    private void Cell_inputHandler(String title,String date ,String author, int x, int y) throws Exception{
+        xs = Integer.parseInt(txt_xs.getText());
+        ys = Integer.parseInt(txt_ys.getText());
+        xe = Integer.parseInt(txt_xe.getText());
+        ye = Integer.parseInt(txt_ye.getText());
+
+        if (auto){
+            CreateAutomatic(title,date,author, x, y);
+
+        }else{
+            CreateManual(title,date,author, x, y);
+
+        }
+
 
     }
 
@@ -326,6 +347,15 @@ public class CreateMaze implements ActionListener, Runnable{
         try{
           inputHandler();
         } catch(NumberFormatException c){
+            System.out.println(c.getMessage());
+            errorDialog(); // "errorDialog" unfinished
+        }
+    }
+
+    private void CellExceptionHandler(String title,String date ,String author, int x, int y){
+        try{
+            Cell_inputHandler(title, date, author, x, y);
+        } catch(Exception c){
             System.out.println(c.getMessage());
             errorDialog(); // "errorDialog" unfinished
         }
