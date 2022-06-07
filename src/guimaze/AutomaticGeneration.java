@@ -40,9 +40,11 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private JPanel labelPanel;
     private JLabel optimalSolve;
-    private JLabel optimal;
+    private JLabel lbloptimal;
     private JLabel deadEnds;
-    private JLabel dead;
+    private JLabel lbldead;
+    private JLabel lblStart;
+    private JLabel lblFinish;
 
 
 
@@ -64,7 +66,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         createButtons();
 
 
-        labelPanel = new JPanel(new GridLayout(3,2));
+        labelPanel = new JPanel(new GridLayout(5,2));
         labelPanel.setBounds(550, 25, 225, 500);
         createLabels();
 
@@ -84,16 +86,31 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void createLabels(){
-        optimalSolve = new JLabel("Optimal Solve(%):");
-        String opt = Float.toString(OptimalPercentage()) + "%";
-        optimal = new JLabel(opt);
-        deadEnds = new JLabel("Dead End Cells (%)");
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
-        dead = new JLabel(deadper);
-        labelPanel.add(optimalSolve);
-        labelPanel.add(optimal);
-        labelPanel.add(deadEnds);
-        labelPanel.add(dead);
+        String opt_1 = "Optimal Solve (%):";
+        String opt = "";
+        opt = opt.concat(opt_1 + Float.toString(OptimalPercentage()) + "%");
+        lbloptimal = new JLabel(opt);
+
+        String deadper_1 = "Dead End Cells (%): ";
+        String deadper = "";
+        deadper = deadper.concat(deadper_1 + Float.toString(DeadEndPercentage()) + "%");
+        lbldead = new JLabel(deadper);
+
+        String start = "";
+        start = start.concat("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")" );
+        lblStart = new JLabel(start);
+
+        String finish = "";
+        finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
+        lblFinish = new JLabel(finish);
+
+        labelPanel.add(lblStart);
+        labelPanel.add(lblFinish);
+        //labelPanel.add(optimalSolve);
+        labelPanel.add(lbloptimal);
+        //labelPanel.add(deadEnds);
+        labelPanel.add(lbldead);
+
     }
 
     private void createButtons(){
@@ -113,20 +130,12 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     public void updateFrame(){
         /**
-         * updates content(state) of GUI elements contained in JFrame
+         * updates content(state) of GUI elements contained in JFrame by rebuilding each panel individually
+         * in the JFrame
          */
         buttonPanel.removeAll();
         labelPanel.removeAll();
         frame.setVisible(false);
-
-        String opt = Float.toString(OptimalPercentage()) + "%";
-        optimal = new JLabel(opt);
-
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
-        dead = new JLabel(deadper);
-
-        //SwingUtilities.updateComponentTreeUI(frame);
-
 
         System.out.println("frame has been updated");
 
@@ -135,11 +144,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         createLabels();
 
         frame.setVisible(true);
-
-        /*
-        FOR SOME REASON THE ABOVE DOES NOT UPDATE WHAT APPEARS IN THE GUI WHEN CALLED IN THE FUNCTION 'Regen()' WHICH
-        IS CALLED VIA THE ACTION LISTENER FOR THE BUTTON btnRegen LABELLED "Regenerate".
-         */
 
     }
 
