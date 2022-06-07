@@ -310,13 +310,21 @@ public class CreateMaze implements ActionListener, Runnable{
 
         date = GetDate();
         //HideGUI();
-        if (auto){
-            //CreateAutomatic(title,date,author, x, y);
-            CreateEnds();
+        boolean length_error = maze_length < 3 || maze_length > 100;
+        boolean height_error = maze_height < 3 || maze_height > 100;
+        if(length_error || height_error){
+            errorDialog();
         }else{
-            //CreateManual(title,date,author, x, y);
-            CreateEnds();
+            if (auto){
+                //CreateAutomatic(title,date,author, x, y);
+                CreateEnds();
+            }else{
+                //CreateManual(title,date,author, x, y);
+                CreateEnds();
+            }
         }
+
+
     }
 
     private void Cell_inputHandler() throws Exception{
