@@ -1,6 +1,7 @@
 package guimaze;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
 public class ManualGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author bradley mcgrath
-     * @version 6
+     * @version 7
      */
 
     //Logical Fields
@@ -64,7 +65,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
          */
         super();
         this.maze = maze;
-
+        this.maze.editDate = GetDate();
 
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
@@ -334,6 +335,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
+
             HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
@@ -345,6 +347,15 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         }
 
+    }
+
+    private String GetDate(){
+        String str = "";
+        int day = LocalDate.now().getDayOfMonth();
+        int month = LocalDate.now().getMonthValue();
+        int year = LocalDate.now().getYear();
+        str = str.concat(day + "/"+ month +"/"+ year);
+        return str;
     }
 
 
