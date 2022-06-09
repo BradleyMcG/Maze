@@ -414,7 +414,7 @@ public class CreateMaze implements ActionListener, Runnable{
         String errorMsg = "Uh oh, incorrect data input. Make sure your are entering integers for the dimensions " +
                 "(MazeLength and MazeHeight) and cell coordinates (Start Cell and End Cell). " +
                 "Ensure the maze is between a 3x3 and 100x100 in size and that the start and end cells are" +
-                " within these boundaries.";
+                " within these boundaries. (Cell co-ordinates start at 0)";
         JTextArea txtaInputError = new JTextArea(errorMsg);
         txtaInputError.setSize(300, 100);
         //txtaInputError.setBounds(50, 50, 300, 100);
