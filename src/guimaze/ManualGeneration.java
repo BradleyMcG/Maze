@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class ManualGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author bradley mcgrath
-     * @version 3
+     * @version 6
      */
 
     //Logical Fields
@@ -78,11 +78,9 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         CreateGUI();
 
-        btnUpdate.addActionListener(this);
-        btnInsertImg.addActionListener(this);
-        btnSubmit.addActionListener(this);
-        btnRemoveWalls.addActionListener(this);
     }
+
+
 
     public void updateFrame(){
         /**
@@ -96,8 +94,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         System.out.println("frame has been updated");
 
         this.maze.Draw(displayPanel);
-        //createButtons();
-        //createLabels();
+        createButtons();
+        createLabels();
 
         frame.setVisible(true);
 
@@ -113,6 +111,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         buttonPanel.add(btnInsertImg);
         buttonPanel.add(btnSubmit);
         buttonPanel.add(btnRemoveWalls);
+
+        btnUpdate.addActionListener(this);
+        btnInsertImg.addActionListener(this);
+        btnSubmit.addActionListener(this);
+        btnRemoveWalls.addActionListener(this);
     }
 
     private void createLabels(){
@@ -186,10 +189,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     private float DeadEndPercentage(){
-        Random rand = new Random();
-        float result = (float)rand.nextInt(100-1) + 1;
-        return result;
-        //dummy value - random percentage
+        /**
+         * @return - percentage of cells that are a dead end (have 3 walls present)
+         */
+
+        return this.maze.DeadEnd_Percentage();
     }
 
     private List<int[]> wallDialog(){
