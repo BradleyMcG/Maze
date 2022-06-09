@@ -35,8 +35,13 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     private JFrame frame;
     Object[][] data;
 
-    MazeGenerator(){
+    public static class Connect{
+        JDBCConnection connection = new JDBCConnection();
+    }
 
+
+    MazeGenerator(){
+        new Connect();
         populateDummyMazes();
         data = PopulateObject(allMazes);
         createGUI();

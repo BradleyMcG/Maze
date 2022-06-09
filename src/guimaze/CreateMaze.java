@@ -5,11 +5,47 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class CreateMaze implements ActionListener, Runnable{
 
     //public MazeGenerator program;
+
+
+    //////////CHANGES
+    public static final String CREATE_TABLE =
+            "CREATE TABLE IF NOT EXISTS mazes ("
+                    + "idx INTEGER PRIMARY KEY /*!40101 AUTO_INCREMENT */ NOT NULL UNIQUE,"
+                    + "title VARCHAR(30),"
+                    + "length VARCHAR(30),"
+                    + "height VARCHAR(20),"
+                    + "author VARCHAR(10),"
+                    + "date VARCHAR(30)" + ");";
+
+    private PreparedStatement addMaze;
+
+    private static final String INSERT_MAZE = "INSERT INTO mazes (title, length, height, author, date) VALUES (?, ?, ?, ?, ?);";
+
+    private static final String GET_NAMES = "SELECT name FROM address";
+
+    private static final String GET_PERSON = "SELECT * FROM address WHERE name=?";
+
+    private static final String DELETE_PERSON = "DELETE FROM address WHERE name=?";
+
+    private static final String COUNT_ROWS = "SELECT COUNT(*) FROM address";
+
+    private Connection connection;
+
+
+
+
+    ///////// CHAGNES
+
+
     protected Maze maze;
 
     JFrame frame = new JFrame();
@@ -30,11 +66,36 @@ public class CreateMaze implements ActionListener, Runnable{
     JButton btnAutomatic = new JButton("Generate Automatically");
     JButton btnManual = new JButton("Generate Manually");
 
-
-
+    ///changes
+    public void addMaze() {
+        try {
+            /* BEGIN MISSING CODE */
+            addMaze.setString(1, Title.getText());
+            addMaze.setString(2, length.getText());
+            addMaze.setString(3, height.getText());
+            addMaze.setString(4, authorName.getText());
+            addMaze.setString(5, maze.createDate);
+            addMaze.execute();
+            /* END MISSING CODE */
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    //changes
 
     CreateMaze(){
 
+
+        connection = JDBCConnection.getInstance();
+        try {
+            Statement st = connection.createStatement();
+            st.execute(CREATE_TABLE);
+            /* BEGIN MISSING CODE */
+            addMaze = connection.prepareStatement(INSERT_MAZE);
+            /* END MISSING CODE */
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
         CreateMazeGUI(); //eventually DisplayGUI (from interface)
         btnAutomatic.addActionListener(this);
