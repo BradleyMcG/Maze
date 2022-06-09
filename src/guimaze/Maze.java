@@ -31,6 +31,8 @@ public class Maze{
         cells = new Cell[length][height];
         startCell[0] = 0;
         startCell[1] = 0;
+        finishCell[0] = length - 1;
+        finishCell[1] = height -1;
 
         populateMazeArray();
 
@@ -52,6 +54,8 @@ public class Maze{
         populateMazeArray();
 
     }
+
+
 
     public void populateMazeArray(){
 

@@ -49,6 +49,7 @@ public class CreateMaze implements ActionListener, Runnable{
 
     private JPanel pnlEnds;
     private JButton btnSubmit;
+    private JButton btnDefault;
     private JLabel lblStart;
     private JTextField txt_xs;
     private JTextField txt_ys;
@@ -154,9 +155,13 @@ public class CreateMaze implements ActionListener, Runnable{
         txt_ye.setBounds(300, 115, 75, 45);
         pnlEnds.add(txt_ye);
 
-        btnSubmit = new JButton("Submit");
-        btnSubmit.setBounds(450, 50, 200, 100);
+        btnDefault = new JButton("Submit Default");
+        btnDefault.setBounds(450, 15, 200, 45);
+        pnlEnds.add(btnDefault);
+        btnSubmit = new JButton("Submit Start/End");
+        btnSubmit.setBounds(450, 115, 200, 45);
         pnlEnds.add(btnSubmit);
+        btnDefault.addActionListener(this);
         btnSubmit.addActionListener(this);
 
         frame.add(pnlEnds);
@@ -348,8 +353,6 @@ public class CreateMaze implements ActionListener, Runnable{
             errorDialog(); //make more general
         }
 
-
-
     }
 
     private String GetDate(){
@@ -401,6 +404,13 @@ public class CreateMaze implements ActionListener, Runnable{
             InputExceptionHandler();
         }else if (e.getSource() == btnSubmit){
             CellExceptionHandler();
+        }else if (e.getSource() == btnDefault){
+            System.out.println("Default Pressed");
+            if (auto){
+                CreateAutomatic(title,date,author, maze_length, maze_height);
+            }else{
+                CreateManual(title,date,author, maze_length, maze_height);
+            }
         }
 
     }
@@ -436,9 +446,14 @@ public class CreateMaze implements ActionListener, Runnable{
     private void CreateAutomatic(String title,String date ,String author, int x, int y, int[] start, int[] end){
         HideGUI();
         maze = new Maze(title,date,author, x, y, start, end);
-        //MazeGenerator.StoreMaze(maze);
-        //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
-            // Dont know how to resolve
+        MazeGenerator.GetInstance().NewMaze(this.maze);
+        AutomaticGeneration createAuto = new AutomaticGeneration(maze);
+
+    }
+
+    private void CreateAutomatic(String title,String date ,String author, int x, int y){
+        HideGUI();
+        maze = new Maze(title,date,author, x, y);
         MazeGenerator.GetInstance().NewMaze(this.maze);
         AutomaticGeneration createAuto = new AutomaticGeneration(maze);
 
@@ -447,9 +462,14 @@ public class CreateMaze implements ActionListener, Runnable{
     private void CreateManual(String title,String date, String author, int x, int y, int[] start, int[] end){
         HideGUI();
         maze = new Maze(title,date,author, x, y, start, end);
-        //MazeGenerator.StoreMaze(maze);
-        //requires StoreMaze to be static, but therefore StoreMaze can only be called with one set of params
-            // Dont know how to resolve
+        MazeGenerator.GetInstance().NewMaze(this.maze);
+        ManualGeneration createManual = new ManualGeneration(maze);
+
+    }
+
+    private void CreateManual(String title,String date, String author, int x, int y){
+        HideGUI();
+        maze = new Maze(title,date,author, x, y);
         MazeGenerator.GetInstance().NewMaze(this.maze);
         ManualGeneration createManual = new ManualGeneration(maze);
 

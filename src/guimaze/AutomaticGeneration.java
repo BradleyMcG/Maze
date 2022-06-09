@@ -1,6 +1,7 @@
 package guimaze;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.awt.event.ActionListener;
 public class AutomaticGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 4
+     * @version 5
      *
      */
 
@@ -154,6 +155,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          */
         super();
         this.maze = maze;
+        this.maze.editDate = GetDate();
         //initializeMazeArray();
 
 
@@ -163,6 +165,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         AutoGenerate();
         CreateGUI();
     }
+
+
 
     private void AutoGenInitialize(){
         //currentCell = this.maze.startCell; - doesn't work - reference type logical errors
@@ -178,7 +182,14 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         Reset_nextDirect();
     }
 
-
+    private String GetDate(){
+        String str = "";
+        int day = LocalDate.now().getDayOfMonth();
+        int month = LocalDate.now().getMonthValue();
+        int year = LocalDate.now().getYear();
+        str = str.concat(day + "/"+ month +"/"+ year);
+        return str;
+    }
 
     private void initializeMazeArray() {
         this.maze.cells = new Cell[this.maze.length][this.maze.height];
@@ -218,6 +229,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
     private void Regen(){
+        /**
+         * Regenerates the maze to update the GUI
+         */
         System.out.println("pressed 'Regen'");
         maze.populateMazeArray();
         AutoGenInitialize();
@@ -541,6 +555,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private void Check_enteredCells_dupes(){
+        /**
+         * method used in development
+         */
         ArrayList<int[]> dupes = new ArrayList<>();
         int[] cell_tally = new int[enteredCells.size()];
         String str = "";
