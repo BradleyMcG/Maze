@@ -3,6 +3,8 @@ package guimaze;
 import java.util.*;
 import javax.swing.JPanel;
 
+
+
 public class Maze{
 
     //constructor fields
@@ -14,11 +16,19 @@ public class Maze{
     public int height;
 
     public Cell[][] cells;
-    public List<int[]> invalidCells = new ArrayList<int[]>();
+    public List<int[]> invalidCells;
+    public List<Relation> rels;
 
 
     public int[] startCell = new int[2];
     public int[] finishCell = new int[2];
+
+    static class Solution{
+
+
+
+
+    }
 
 
     public Maze(String title,String date,String author, int length, int height){
@@ -55,9 +65,35 @@ public class Maze{
 
     }
 
+    private List<int[]> GetCellCoords(){
+        List<int[]> cellCoords = new ArrayList<int[]>();
+        for (int i = 0; i < length; i++){
+            for (int j = 0; i < height; i++){
+                int[] cell = {i, j};
+                if (cells[i][j].live){
+                    cellCoords.add(cell);
+                }
+            }
+        }
+        return cellCoords;
+    }
 
+    public void showRelations(){
+        System.out.println("Relations: ");
+        for (int i = 0; i < rels.size(); i++){
+            String str = "";
+            Relation rela = rels.get(i);
+            int[] first = rela.rel.get(0);
+            int[] second = rela.rel.get(1);
+            str = str.concat("("+ first[0] + "," + first[1] + "), (" + second[0] + "," + second[1] + ")");
+            System.out.println(str);
+
+        }
+    }
 
     public void populateMazeArray(){
+        invalidCells = new ArrayList<int[]>();
+        rels = new ArrayList<Relation>();
 
         for (int len = 0; len < length; len ++){
             //System.out.println("len =" + len);

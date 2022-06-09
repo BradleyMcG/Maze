@@ -238,6 +238,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         AutoGenerate();
         updateFrame();
 
+        this.maze.showRelations();
     }
 
     @Override
@@ -302,15 +303,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             if (MoveIsValid(move)){
                 break_exit_wall(move);
                 break_entry_wall(move);
-                //check_enteredCells();
+
+                int[] old = {currentCell[0], currentCell[1]};
+
                 make_next_current(move);
-                //check_enteredCells();
 
                 AddTo_enteredCells();
+                int[] current_pass = {currentCell[0], currentCell[1]};
+                Relation new_rel = new Relation(old, current_pass);
+                this.maze.rels.add(new_rel);
 
-                //check_enteredCells();
-                //System.out.println(currentCell[0] + "," + currentCell[1] + " added to 'enteredCells'");
-                //System.out.println("Entered: " + enteredCells);
                 done = true;
             }else{
                 Replace_nextDirect(move);
