@@ -9,6 +9,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ManualGenDialog implements ActionListener {
+    /**
+     * @author bradley mcgrath
+     * @version 4
+     *
+     */
 
     public ManualGeneration ManualGen;
 
@@ -238,6 +243,7 @@ public class ManualGenDialog implements ActionListener {
             ManualGen.RemoveWalls(transferData(deleteTable));
             // super.UpdateDisplay();
             //SendData();
+            ManualGen.updateFrame();
 
 
         }
