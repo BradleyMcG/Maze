@@ -55,6 +55,8 @@ public class Maze{
 
     }
 
+
+
     public void populateMazeArray(){
 
         for (int len = 0; len < length; len ++){
