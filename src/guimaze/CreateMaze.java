@@ -409,12 +409,19 @@ public class CreateMaze implements ActionListener, Runnable{
         JDialog d = new JDialog(frame, "Input Error");
         d.setSize(400, 200);
         JPanel p = new JPanel();
+        //p.setLayout(null);
         p.setBorder(BorderFactory.createLineBorder(Color.black));
-        JTextField inputError = new JTextField("Uh oh. Incorrect data input; make sure your dimensions and whole numbers and " +
-                "title/author is a string literal"); //format to wrap text
-        inputError.setSize(100, 100);
+        String errorMsg = "Uh oh, incorrect data input. Make sure your are entering integers for the dimensions " +
+                "(MazeLength and MazeHeight) and cell coordinates (Start Cell and End Cell). " +
+                "Ensure the maze is between a 3x3 and 100x100 in size and that the start and end cells are" +
+                " within these boundaries.";
+        JTextArea txtaInputError = new JTextArea(errorMsg);
+        txtaInputError.setSize(300, 100);
+        //txtaInputError.setBounds(50, 50, 300, 100);
+        txtaInputError.setLineWrap(true);
+        txtaInputError.setWrapStyleWord(true);
 
-        p.add(inputError);
+        p.add(txtaInputError);
         d.add(p);
         d.setVisible(true);
     }
