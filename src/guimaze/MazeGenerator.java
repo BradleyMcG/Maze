@@ -114,7 +114,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
         //String [] columnNames = {"Author Name","Date","Maze Title","Export"}; //old version
 
-        String [] columnNames = {"Author Name", "Maze Title", "Dimensions", "Date Created", "Last Edit","Select"};
+        String [] columnNames = {"Maze Number", "Author Name", "Maze Title", "Dimensions", "Date Created", "Last Edit","Select"};
 
         tableMaze = new JTable(data, columnNames){
             public Class getColumnClass(int column) {
@@ -149,7 +149,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     private void checkTickBox(){
         int rowNumber = tableMaze.getRowCount();
         int columnNumber = tableMaze.getColumnCount();
-        int tick_num = 5; //for original configuration = 3
+        int tick_num = 6; //for original configuration = 3
 
         String[][] obj = new String[rowNumber][columnNumber];
 
@@ -160,7 +160,8 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
                 System.out.println("Values together are " + obj[i][tick_num]);
                 //System.out.println(obj[i][j]);
                 if(obj[i][tick_num] == "true"){
-                    refMaze.add(i);
+                    //refMaze.add(i);
+                    refMaze.add((Integer) tableMaze.getValueAt(i, 0));
                 }
 
 
@@ -222,17 +223,18 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
     private Object[][] PopulateObject(List<Maze> mazes){
-        Object[][] obj = new Object[mazes.size()][6];
+        Object[][] obj = new Object[mazes.size()][7];
         for(int i = 0; i < mazes.size(); i++){
             Maze current = mazes.get(i);
-            obj[i][0] = current.author;
-            obj[i][1] = current.title;
+            obj[i][0] = i;
+            obj[i][1] = current.author;
+            obj[i][2] = current.title;
             String dimensions = "";
             dimensions.concat(current.length + " x " + current.height);
-            obj[i][2] = dimensions;
-            obj[i][3] = current.createDate;
-            obj[i][4] = current.editDate;
-            obj[i][5] = false;
+            obj[i][3] = dimensions;
+            obj[i][4] = current.createDate;
+            obj[i][5] = current.editDate;
+            obj[i][6] = false;
         }
         return obj;
     }
