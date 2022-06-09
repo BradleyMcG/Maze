@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 public class AutomaticGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author sam.fleming
-     * @version 5
+     * @version 6
      *
      */
 

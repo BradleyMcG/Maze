@@ -7,6 +7,12 @@ import javax.swing.JPanel;
 
 public class Maze{
 
+    /**
+     * @author sam.fleming
+     * @version 5
+     *
+     */
+
     //constructor fields
     public String title;
     public String author;

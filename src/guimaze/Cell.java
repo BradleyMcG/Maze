@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.BorderLayout;
 
+
+
 /*
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.BorderLayout.SOUTH;
@@ -13,6 +15,12 @@ import static java.awt.BorderLayout.WEST;
  */
 
 public class Cell {
+
+    /**
+     * @author sam.fleming
+     * @version 5
+     *
+     */
 
     public boolean live;
     public String[] wallPos = {"NORTH", "SOUTH", "EAST", "WEST"};
