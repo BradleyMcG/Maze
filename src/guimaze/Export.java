@@ -1,9 +1,13 @@
 package guimaze;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.Buffer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,26 +22,37 @@ public class Export implements ActionListener, Runnable {
 
     protected Maze maze;
 
+    JPanel pnlDisplay;
+    private final int displayLength = 500;
+    private final int displayHeight = 500;
+
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
+
+
 
     JLabel headerLabel = new JLabel("Export");
     JButton btnBack = new JButton("Submit");
     JFrame frame;
-
+    ByteArrayInputStream blob;
+    FileInputStream in;
+    byte[] imageInByte;
+    ByteArrayInputStream bais;
+    ByteArrayOutputStream baos;
 
     //changes
 
     private PreparedStatement addMaze;
 
-    public static final String CREATE_TABLE =
+    public static final String CREATE_TABLE_1 =
             "CREATE TABLE IF NOT EXISTS mazes ("
                     + "idx INTEGER PRIMARY KEY /*!40101 AUTO_INCREMENT */ NOT NULL UNIQUE,"
                     + "title VARCHAR(30),"
                     + "length VARCHAR(30),"
                     + "height VARCHAR(20),"
                     + "author VARCHAR(10),"
-                    + "date VARCHAR(30)" + ");";
+                    + "date VARCHAR(30),"
+                    + "cells BLOB" + ");";
 
 
 
@@ -46,7 +61,7 @@ public class Export implements ActionListener, Runnable {
     private static final String INSERT_MAZE = "INSERT INTO mazes (title, length, height, author, date) VALUES (?, ?, ?, ?, ?);";
 
 
-    private static final String INSERT_MAZES = "INSERT INTO mazes (title, length, height, author, cells, date) VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_MAZES = "INSERT INTO mazes (title, length, height, author, date, cells) VALUES (?, ?, ?, ?, ?, ?);";
 
 
 
@@ -55,8 +70,6 @@ public class Export implements ActionListener, Runnable {
     ///changes
     public void addMaze() {
 
-
-
         try {
             /* BEGIN MISSING CODE */
             addMaze.setString(1, maze.title);
@@ -64,6 +77,7 @@ public class Export implements ActionListener, Runnable {
             addMaze.setString(3, String.valueOf(maze.height));
             addMaze.setString(4, maze.author);
             addMaze.setString(5, maze.createDate);
+            addMaze.setBytes(6, imageInByte);
             addMaze.execute();
             /* END MISSING CODE */
         } catch (SQLException ex) {
@@ -81,16 +95,17 @@ public class Export implements ActionListener, Runnable {
 
         try {
             Statement st = connection.createStatement();
-            st.execute(CREATE_TABLE);
+            st.execute(CREATE_TABLE_1);
 
             /* BEGIN MISSING CODE */
-            addMaze = connection.prepareStatement(INSERT_MAZE);
+            addMaze = connection.prepareStatement(INSERT_MAZES);
             addMaze();
             /* END MISSING CODE */
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
+        tempDraw(maze);
         ExportGUI();
     }
 
@@ -105,18 +120,57 @@ public class Export implements ActionListener, Runnable {
 
         try {
             Statement st = connection.createStatement();
-            st.execute(CREATE_TABLE);
+            st.execute(CREATE_TABLE_1);
 
             /* BEGIN MISSING CODE */
-            addMaze = connection.prepareStatement(INSERT_MAZE);
+            addMaze = connection.prepareStatement(INSERT_MAZES);
             addMaze();
             /* END MISSING CODE */
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
+        tempDraw(maze);
         ExportGUI();
     }
+
+    public void tempDraw(Maze maze){
+        pnlDisplay = new JPanel();
+        pnlDisplay.setLayout(null);
+        pnlDisplay.setBounds(25, 25, displayLength, displayHeight);
+        maze.Draw(pnlDisplay);
+
+        try {
+            image(pnlDisplay);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public BufferedImage image(JPanel panel) throws IOException {
+        int w = 500;
+        int h = 500;
+
+        BufferedImage temp = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = temp.createGraphics();
+        panel.paint(g);
+
+
+
+
+
+        baos = new ByteArrayOutputStream();
+        ImageIO.write(temp,"png",baos);
+        imageInByte = baos.toByteArray();
+        g.dispose();
+
+        return temp;
+    }
+
+
+
 
 
     private void ExportGUI(){

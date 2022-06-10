@@ -1,11 +1,14 @@
 package guimaze;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -335,6 +338,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnUpdate){
@@ -346,6 +350,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnInsertImg){
             System.out.println("pressed 'insert img'");
+
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
