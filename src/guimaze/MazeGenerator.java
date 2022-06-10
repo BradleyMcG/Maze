@@ -28,6 +28,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     private JButton btnFind;
     private JButton btnDisplay;
     private JButton btnExport;
+    private JButton btnExportOptimal;
 
     private JTable tableMaze; // ADDED
    // private JButton btnDisplay;
@@ -95,12 +96,19 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         constraints.ipadx = 0;
         pane.add(btnDisplay, constraints);
 
-        btnExport = new JButton("Export Maze");
+        btnExport = new JButton("Normal Export Maze");
         constraints.gridx = 3;
         constraints.gridwidth = 1;
         constraints.gridy = 2;
         constraints.ipady = 0;
         pane.add(btnExport, constraints);
+
+        btnExportOptimal = new JButton("Optimal Export Maze");
+        constraints.gridx = 3;
+        constraints.gridwidth = 1;
+        constraints.gridy = 3;
+        constraints.ipady = 0;
+        pane.add(btnExportOptimal, constraints);
 
         /*btnFind = new JButton("Find Previous Maze");
         constraints.gridx = 3;
@@ -278,8 +286,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         }*/
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
-            //allMazes.add(new Maze("Maze 1", "Jim Jameson", 10, 7));
-           // System.out.println(allMazes.get(0));
+
 
             checkTickBox();
 
@@ -299,11 +306,24 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             System.out.println("EXPORT");
             checkTickBox();
 
-            if(refMaze.size() == 1){
 
+            if(refMaze.size() == 1){
+                HideGUI();
+                Export exp = new Export(allMazes.get(refMaze.get(0)));
+                refMaze.clear();
+            } else {
+
+                for(int i = 0; i < refMaze.size(); i++){
+
+                    Export expmultiple = new Export(allMazes.get(refMaze.get(i)), true);
+                }
+                refMaze.clear();
             }
-            //HideGUI();
-            //Export exp = new Export();
+
+
+            HideGUI();
+
+
         }
         
     }
