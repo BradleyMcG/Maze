@@ -29,10 +29,113 @@ public class Maze{
     public int[] startCell = new int[2];
     public int[] finishCell = new int[2];
 
-    static class Solution{
+    class Solution{
+
+        private Maze maze;
+
+        public List<int[]> path;
+        public boolean solvable;
+        private List<int[]> cellCoords;
+
+        private Deque q;
+
+        public Solution(Maze maze){
+            this.maze = maze;
+            cellCoords = popCellCoords();
+            path = reconstructPath(this.maze.startCell, this.maze.finishCell, Solve());
+        }
+
+        private int[][][] Solve(){
+            q.add(this.maze.startCell);
+            Boolean[][] visited = initialiseVisited();
+
+            int[][][] prev = initialisePrev();
+            while(!q.isEmpty()){
+                int[] node = (int[]) q.getFirst();
+                q.remove(node);//get next in queue and remove it from queue
+
+                //find it's list of integers
+                List<int[]> neighbours = getNeighbours(node);
+
+                for(int i = 0; i < neighbours.size(); i++){
+                    int[] next = neighbours.get(i);
+                    int x = next[0];
+                    int y = next[1];
+                    if(!visited[x][y]){
+                        q.add(next);
+                        visited[x][y] = true;
+                        prev[x][y] = node;
+                    }
+                }
+            }
+            return prev;
+
+        }
+
+
+        private List<int[]> reconstructPath(int[] start, int[] end, int[][][] prev){
+            int[] current;
+            List<int[]> path_ = new ArrayList<>();
+
+            for(current = end; current != null; current = prev[current[0]][current[1]]){
+                path_.add(current);
+            }
+            Collections.reverse(path_);
+            if(path_.get(0) == start){
+                //path = path_;
+                solvable = true;
+            }else{
+                //path = null;
+                solvable = false;
+            }
+            return path_;
+        }
 
 
 
+        private List<int[]> getNeighbours(int[] node){
+            List<int[]> neighbours = new ArrayList<int[]>();
+            for (int i = 0; i < this.maze.rels.size(); i++){
+                Relation the_rel = this.maze.rels.get(i);
+                if(the_rel.rel.get(0) == node){
+                    neighbours.add(the_rel.rel.get(1));
+                }else if(the_rel.rel.get(1) == node){
+                    neighbours.add(the_rel.rel.get(0));
+                }
+            }
+            return neighbours;
+        }
+
+        private List<int[]> popCellCoords(){
+            List<int[]> cellCoords = new ArrayList<int[]>();
+            for (int i = 0; i < this.maze.length; i++){
+                for( int j = 0; j < this.maze.height; j++){
+                    int[] cell = {i, j};
+                    cellCoords.add(cell);
+                }
+            }
+            return cellCoords;
+        }
+
+        private Boolean[][] initialiseVisited(){
+            Boolean[][] visited = new Boolean[this.maze.length][this.maze.height];
+            for (int i = 0; i < this.maze.length; i++){
+                for( int j = 0; j < this.maze.height; j++){
+                    visited[i][j] = false;
+                }
+            }
+            return visited;
+        }
+
+        private int[][][] initialisePrev(){
+            int[][][] prev = new int[this.maze.length][this.maze.height][2];
+            for (int i = 0; i < this.maze.length; i++){
+                for( int j = 0; j < this.maze.height; j++){
+                    prev[i][j] = null;
+                }
+            }
+            return prev;
+        }
 
     }
 
