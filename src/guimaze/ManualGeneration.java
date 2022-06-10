@@ -1,6 +1,7 @@
 package guimaze;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
 public class ManualGeneration extends CreateMaze implements ActionListener, Runnable{
     /**
      * @author bradley mcgrath
-     * @version 3
+     * @version 7
      */
 
     //Logical Fields
@@ -64,7 +65,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
          */
         super();
         this.maze = maze;
-
+        this.maze.editDate = GetDate();
 
         currentCell = this.maze.startCell;
         enteredCells.add(currentCell);
@@ -78,10 +79,63 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         CreateGUI();
 
+    }
+
+
+
+    public void updateFrame(){
+        /**
+         * updates content(state) of GUI elements contained in JFrame by rebuilding each panel individually
+         * in the JFrame
+         */
+        buttonPanel.removeAll();
+        labelPanel.removeAll();
+        frame.setVisible(false);
+
+        System.out.println("frame has been updated");
+
+        this.maze.Draw(displayPanel);
+        createButtons();
+        createLabels();
+
+        frame.setVisible(true);
+
+    }
+
+    private void createButtons(){
+        btnUpdate = new JButton("Reset");
+        btnInsertImg = new JButton("Insert Image");
+        btnSubmit = new JButton("Submit Maze");
+        btnRemoveWalls = new JButton("Remove Walls");
+
+        buttonPanel.add(btnUpdate);
+        buttonPanel.add(btnInsertImg);
+        buttonPanel.add(btnSubmit);
+        buttonPanel.add(btnRemoveWalls);
+
         btnUpdate.addActionListener(this);
         btnInsertImg.addActionListener(this);
         btnSubmit.addActionListener(this);
         btnRemoveWalls.addActionListener(this);
+    }
+
+    private void createLabels(){
+
+        isSolvable = new JLabel("Currently Solvable: ");
+        solveable = new JLabel("Yes");
+        optimalSolve = new JLabel("Optimal Solve(%):");
+        String opt = Float.toString(OptimalPercentage()) + "%";
+        optimal = new JLabel(opt);
+        deadEnds = new JLabel("Dead End Cells (%)");
+        String deadper = Float.toString(DeadEndPercentage()) + "%";
+        dead = new JLabel(deadper);
+
+        labelPanel.add(isSolvable);
+        labelPanel.add(solveable);
+        labelPanel.add(optimalSolve);
+        labelPanel.add(optimal);
+        labelPanel.add(deadEnds);
+        labelPanel.add(dead);
     }
 
     private void CreateGUI(){ //will eventually be from GUI interface
@@ -96,36 +150,17 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         this.maze.Draw(displayPanel);
 
 
-
         buttonPanel = new JPanel(new GridLayout(1, 3));
         buttonPanel.setBackground(Color.RED);
         buttonPanel.setBounds(25, 600, 700, 150);
-        btnUpdate = new JButton("Reset");
-        btnInsertImg = new JButton("Insert Image");
-        btnSubmit = new JButton("Submit Maze");
-        btnRemoveWalls = new JButton("Remove Walls");
-        buttonPanel.add(btnUpdate);
-        buttonPanel.add(btnInsertImg);
-        buttonPanel.add(btnSubmit);
-        buttonPanel.add(btnRemoveWalls);
 
+        createButtons();
 
         labelPanel = new JPanel(new GridLayout(3,2));
         labelPanel.setBounds(550, 25, 225, 500);
-        isSolvable = new JLabel("Currently Solvable: ");
-        solveable = new JLabel("Yes");
-        optimalSolve = new JLabel("Optimal Solve(%):");
-        String opt = Float.toString(OptimalPercentage()) + "%";
-        optimal = new JLabel(opt);
-        deadEnds = new JLabel("Dead End Cells (%)");
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
-        dead = new JLabel(deadper);
-        labelPanel.add(isSolvable);
-        labelPanel.add(solveable);
-        labelPanel.add(optimalSolve);
-        labelPanel.add(optimal);
-        labelPanel.add(deadEnds);
-        labelPanel.add(dead);
+
+
+        createLabels();
 
         frame = new JFrame("Manual Maze Generation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,10 +190,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     private float DeadEndPercentage(){
-        Random rand = new Random();
-        float result = (float)rand.nextInt(100-1) + 1;
-        return result;
-        //dummy value - random percentage
+        /**
+         * @return - percentage of cells that are a dead end (have 3 walls present)
+         */
+
+        return this.maze.DeadEnd_Percentage();
     }
 
     private List<int[]> wallDialog(){
@@ -313,6 +349,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
+
             HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
@@ -324,6 +361,15 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         }
 
+    }
+
+    private String GetDate(){
+        String str = "";
+        int day = LocalDate.now().getDayOfMonth();
+        int month = LocalDate.now().getMonthValue();
+        int year = LocalDate.now().getYear();
+        str = str.concat(day + "/"+ month +"/"+ year);
+        return str;
     }
 
 
