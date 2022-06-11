@@ -322,8 +322,23 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 }
 
 
+
+                //old code:
                 maze.cells[currentCell[0]][currentCell[1]].break_Wall(walls);
                 maze.cells[nextCell[0]][nextCell[1]].break_Wall(nextWalls);
+
+
+                /*
+                int[] old_pass = {currentCell[0], currentCell[1]};
+                int[] new_pass = {nextCell[0], nextCell[1]};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(walls);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextWalls);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
+
+                 */
+
 
             }
         }
@@ -344,9 +359,22 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 temp = next[1];
             }
             for(int i = 0; i <= temp;i++){
+                //old code
                 maze.cells[current[0]][i].break_Wall(move);
 
                 maze.cells[next[0]][i].break_Wall(nextmove);
+
+
+                /*
+                int[] old_pass = {current[0], i};
+                int[] new_pass = {next[0], i};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(move);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextmove);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
+
+                 */
 
                 //System.out.println("Current Cells are:" + maze.cells[current[0]][i] + "Next Cells are" + maze.cells[next[0]][next[1]+i]);
             }
@@ -364,8 +392,21 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 temp = next[0];
             }
             for(int i = 0; i <= temp;i++){
+                //old code
                 maze.cells[i][current[1]].break_Wall(move);
                 maze.cells[i][next[1]].break_Wall(nextmove);
+
+
+                /*
+                int[] old_pass = { i, current[i]};
+                int[] new_pass = {i, next[1]};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(move);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextmove);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
+
+                 */
             }
 
             maze.cells[next[0]][next[1]].add_Wall(move);
