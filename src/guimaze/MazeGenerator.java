@@ -321,7 +321,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             }
 
 
-            HideGUI();
+
 
 
         }
