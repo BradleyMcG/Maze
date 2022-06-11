@@ -45,6 +45,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     private JLabel optimal;
     private JLabel deadEnds;
     private JLabel dead;
+    private JLabel lblStart;
+    private JLabel lblFinish;
 
     private String author;
     private String title;
@@ -124,21 +126,41 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
     private void createLabels(){
 
-        isSolvable = new JLabel("Currently Solvable: ");
-        solveable = new JLabel("Yes");
-        optimalSolve = new JLabel("Optimal Solve(%):");
-        String opt = Float.toString(OptimalPercentage()) + "%";
+        String opt_1 = "Optimal Solve (%):";
+        String opt = "";
+        float solve_percentage = OptimalPercentage();
+        if(solve_percentage == 0){
+            opt = "Maze is Unsolvable";
+        }else{
+            opt = opt.concat(opt_1 + Float.toString(solve_percentage) + "%");
+        }
         optimal = new JLabel(opt);
-        deadEnds = new JLabel("Dead End Cells (%)");
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
+        String deadper_1 = "Dead End Cells (%): ";
+        String deadper = "";
+        float dead_per = DeadEndPercentage();
+        if(solve_percentage == 0){
+            deadper = "No Dead Ends";
+        }else{
+            deadper = deadper.concat(deadper_1 + Float.toString(dead_per) + "%");
+        }
         dead = new JLabel(deadper);
 
-        labelPanel.add(isSolvable);
-        labelPanel.add(solveable);
-        labelPanel.add(optimalSolve);
+        String start = "";
+        start = start.concat("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")" );
+        lblStart = new JLabel(start);
+
+        String finish = "";
+        finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
+        lblFinish = new JLabel(finish);
+
+        labelPanel.add(lblStart);
+        labelPanel.add(lblFinish);
+
         labelPanel.add(optimal);
-        labelPanel.add(deadEnds);
+
         labelPanel.add(dead);
+
+
     }
 
     private void CreateGUI(){ //will eventually be from GUI interface
@@ -159,7 +181,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         createButtons();
 
-        labelPanel = new JPanel(new GridLayout(3,2));
+        labelPanel = new JPanel(new GridLayout(5,2));
         labelPanel.setBounds(550, 25, 225, 500);
 
 
@@ -186,10 +208,30 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     private float OptimalPercentage(){
+        /**
+         * @return - percentage of cells in the optimal (shortest) solution to maze
+         */
+        /*
         Random rand = new Random();
         float result = (float)rand.nextInt(100-1) + 1;
         return result;
         //dummy value - random percentage
+
+         */
+
+        float total = this.maze.Total_CellOptimal();
+        float percentage = total/validCells_size() * 100;
+        //OR float percentage = total/(this.maze.length * this.maze.height);
+        return percentage;
+    }
+
+    private int validCells_size(){
+        /**
+         * @return - the number of cells in maze that aren't disabled
+         */
+        int num;
+        num = (maze.length * maze.height) - this.maze.invalidCells.size();
+        return num;
     }
 
     private float DeadEndPercentage(){

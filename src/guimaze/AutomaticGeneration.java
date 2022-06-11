@@ -218,13 +218,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         /**
          * @return - percentage of cells in the optimal (shortest) solution to maze
          */
-        /*
-        Random rand = new Random();
-        float result = (float)rand.nextInt(100-1) + 1;
-        return result;
-        //dummy value - random percentage
-
-         */
 
         float total = this.maze.Total_CellOptimal();
         float percentage = total/validCells_size() * 100;
