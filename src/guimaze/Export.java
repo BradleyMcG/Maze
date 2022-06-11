@@ -15,7 +15,7 @@ import java.sql.Statement;
 
 /**
  * @author bradley.mcgrath
- * @version 1
+ * @version 3
  */
 
 public class Export implements ActionListener, Runnable {
@@ -39,7 +39,8 @@ public class Export implements ActionListener, Runnable {
     byte[] imageInByte;
     ByteArrayInputStream bais;
     ByteArrayOutputStream baos;
-
+    FileInputStream fis;
+    File file;
     //changes
 
     private PreparedStatement addMaze;
@@ -77,7 +78,8 @@ public class Export implements ActionListener, Runnable {
             addMaze.setString(3, String.valueOf(maze.height));
             addMaze.setString(4, maze.author);
             addMaze.setString(5, maze.createDate);
-            addMaze.setBytes(6, imageInByte);
+           // addMaze.setBytes(6, imageInByte);
+            addMaze.setBinaryStream(6, fis, (int) file.length());
             addMaze.execute();
             /* END MISSING CODE */
         } catch (SQLException ex) {
@@ -99,13 +101,14 @@ public class Export implements ActionListener, Runnable {
 
             /* BEGIN MISSING CODE */
             addMaze = connection.prepareStatement(INSERT_MAZES);
+            tempDraw(maze);
             addMaze();
             /* END MISSING CODE */
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        tempDraw(maze);
+
         ExportGUI();
     }
 
@@ -124,13 +127,15 @@ public class Export implements ActionListener, Runnable {
 
             /* BEGIN MISSING CODE */
             addMaze = connection.prepareStatement(INSERT_MAZES);
+            tempDraw(maze);
             addMaze();
+
             /* END MISSING CODE */
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-        tempDraw(maze);
+
         ExportGUI();
     }
 
@@ -141,8 +146,10 @@ public class Export implements ActionListener, Runnable {
         maze.Draw(pnlDisplay);
 
         try {
+            System.out.println("IMAGE METHOD SHOULD BE CALLED");
             image(pnlDisplay);
         } catch (IOException e) {
+            System.out.println("IMAGE METHOD NOT CALLED");
             e.printStackTrace();
         }
 
@@ -156,14 +163,14 @@ public class Export implements ActionListener, Runnable {
         BufferedImage temp = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
         Graphics2D g = temp.createGraphics();
         panel.paint(g);
+        ImageIO.write(temp,"png",new File(this.maze.title+".png"));
+
+
+        file = new File(this.maze.title+".png");
+        fis = new FileInputStream(file);
 
 
 
-
-
-        baos = new ByteArrayOutputStream();
-        ImageIO.write(temp,"png",baos);
-        imageInByte = baos.toByteArray();
         g.dispose();
 
         return temp;
