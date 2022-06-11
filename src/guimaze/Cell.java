@@ -6,13 +6,6 @@ import java.awt.BorderLayout;
 
 
 
-/*
-import static java.awt.BorderLayout.NORTH;
-import static java.awt.BorderLayout.SOUTH;
-import static java.awt.BorderLayout.EAST;
-import static java.awt.BorderLayout.WEST;
-
- */
 
 public class Cell {
 
@@ -27,7 +20,6 @@ public class Cell {
     private Wall[] walls;
     public int[] coords;
 
-    //public JPanel cell;
 
     public Cell(int[] xy){
         coords = xy;
