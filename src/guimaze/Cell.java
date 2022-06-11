@@ -32,7 +32,7 @@ public class Cell {
         for (int i = 0; i < 4; i++){
             walls[i] = new Wall(wallPos[i]);
         }
-
+        System.out.print("Walls Initialized");
     }
 
     public void Draw(JPanel pane, int cellPixels, int x, int y){
