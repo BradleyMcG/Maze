@@ -109,7 +109,7 @@ public class Export implements ActionListener, Runnable {
         }
 
 
-        ExportGUI();
+       // ExportGUI();
     }
 
     public Export(Maze maze, Boolean check){
@@ -136,7 +136,7 @@ public class Export implements ActionListener, Runnable {
         }
 
 
-        ExportGUI();
+        //ExportGUI();
     }
 
     public void tempDraw(Maze maze){
