@@ -1,19 +1,11 @@
 package guimaze;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.BorderLayout;
 
 
-
-
 public class Cell {
-
-    /**
-     * @author sam.fleming
-     * @version 5
-     *
-     */
 
     public boolean live;
     public String[] wallPos = {"NORTH", "SOUTH", "EAST", "WEST"};
@@ -21,11 +13,15 @@ public class Cell {
     public int[] coords;
 
 
+
     public Cell(int[] xy){
+
+
         coords = xy;
         walls = new Wall[4];
         live = true;
         initializeWalls();
+
     }
 
     private void initializeWalls(){
@@ -76,7 +72,7 @@ public class Cell {
 
 
             //cell.add(walls[i], BorderLayout.wallPos[i]);
-                //this functionality is more robust, just don't know how to implement
+            //this functionality is more robust, just don't know how to implement
         }
 
 
