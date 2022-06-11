@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class ManualGenDialog implements ActionListener {
     /**
@@ -240,9 +241,10 @@ public class ManualGenDialog implements ActionListener {
             System.out.println("pressed 'submit'");
 
             HideGUI();
+
+
+
             ManualGen.RemoveWalls(transferData(deleteTable));
-            // super.UpdateDisplay();
-            //SendData();
             ManualGen.updateFrame();
 
 
@@ -251,8 +253,25 @@ public class ManualGenDialog implements ActionListener {
 
             // ADD X1 == X2 || Y1 == Y2
             System.out.println("pressed 'Add'");
-            ID++;
-            model.addRow(obj);
+
+            try
+            {
+                Integer.parseInt(String. valueOf(obj[0]));
+                Integer.parseInt(String. valueOf(obj[1]));
+                Integer.parseInt(String. valueOf(obj[2]));
+                Integer.parseInt(String. valueOf(obj[3]));
+                Objects.nonNull(obj[0]);
+                Objects.nonNull(obj[1]);
+                Objects.nonNull(obj[2]);
+                Objects.nonNull(obj[3]);
+                ID++;
+                model.addRow(obj);
+            }
+            catch (NumberFormatException f)
+            {
+                errorDialog();
+            }
+
 
         }
         if(e.getSource()== btnDelete){
@@ -268,17 +287,55 @@ public class ManualGenDialog implements ActionListener {
         if(e.getSource() == btnUpdate){
             int i = deleteTable.getSelectedRow();
 
-            if(i>=0){
-                model.setValueAt(x1input.getText(),i,0);
-                model.setValueAt(x2input.getText(),i,1);
-                model.setValueAt(y1input.getText(),i,2);
-                model.setValueAt(y2input.getText(),i,3);
 
-            } else {
-                System.out.println("Update Error");
+            try
+            {
+                Integer.parseInt(String. valueOf(obj[0]));
+                Integer.parseInt(String. valueOf(obj[1]));
+                Integer.parseInt(String. valueOf(obj[2]));
+                Integer.parseInt(String. valueOf(obj[3]));
+                Objects.nonNull(obj[0]);
+                Objects.nonNull(obj[1]);
+                Objects.nonNull(obj[2]);
+                Objects.nonNull(obj[3]);
+                if(i>=0){
+                    model.setValueAt(x1input.getText(),i,0);
+                    model.setValueAt(x2input.getText(),i,1);
+                    model.setValueAt(y1input.getText(),i,2);
+                    model.setValueAt(y2input.getText(),i,3);
+
+                } else {
+                    System.out.println("Update Error");
+                }
+
             }
+            catch (NumberFormatException f)
+            {
+                errorDialog();
+            }
+
+
         }
 
+    }
+
+    private void errorDialog(){
+        JDialog d = new JDialog(frame, "Input Error");
+        d.setSize(400, 200);
+        JPanel p = new JPanel();
+        //p.setLayout(null);
+        p.setBorder(BorderFactory.createLineBorder(Color.black));
+        String errorMsg = "Uh oh, incorrect data input. Make sure your are entering integers for the dimensions";
+
+        JTextArea txtaInputError = new JTextArea(errorMsg);
+        txtaInputError.setSize(300, 100);
+        //txtaInputError.setBounds(50, 50, 300, 100);
+        txtaInputError.setLineWrap(true);
+        txtaInputError.setWrapStyleWord(true);
+
+        p.add(txtaInputError);
+        d.add(p);
+        d.setVisible(true);
     }
 
     protected void HideGUI(){
