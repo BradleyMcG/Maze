@@ -12,10 +12,7 @@ public class Cell {
     private Wall[] walls;
     public int[] coords;
 
-
-
     public Cell(int[] xy){
-
 
         coords = xy;
         walls = new Wall[4];
