@@ -89,12 +89,22 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private void createLabels(){
         String opt_1 = "Optimal Solve (%):";
         String opt = "";
-        opt = opt.concat(opt_1 + Float.toString(OptimalPercentage()) + "%");
+        float solve_percentage = OptimalPercentage();
+        if(solve_percentage == 0){
+            opt = "Maze is Unsolvable";
+        }else{
+            opt = opt.concat(opt_1 + Float.toString(solve_percentage) + "%");
+        }
         lbloptimal = new JLabel(opt);
 
         String deadper_1 = "Dead End Cells (%): ";
         String deadper = "";
-        deadper = deadper.concat(deadper_1 + Float.toString(DeadEndPercentage()) + "%");
+        float dead_per = DeadEndPercentage();
+        if(solve_percentage == 0){
+            deadper = "No Dead Ends";
+        }else{
+            deadper = deadper.concat(deadper_1 + Float.toString(dead_per) + "%");
+        }
         lbldead = new JLabel(deadper);
 
         String start = "";
