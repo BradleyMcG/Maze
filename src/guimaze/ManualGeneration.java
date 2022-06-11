@@ -314,7 +314,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
 
 
-        } else if (move == 2 || move == 3){
+        } else if (move == 2 || move == 3  ){
 
             if(current[0] > next[0]){
                 temp = current[0];
