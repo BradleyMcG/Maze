@@ -1,11 +1,14 @@
 package guimaze;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -293,18 +296,32 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         if(move == 0 ||move == 1 ){
 
-            for(int i = 0; i <= next[1];i++){
+            if(current[1] > next[1]){
+                temp = current[1];
+            } else {
+                temp = next[1];
+            }
+            for(int i = 0; i <= temp;i++){
                 maze.cells[current[0]][i].break_Wall(move);
 
                 maze.cells[next[0]][i].break_Wall(nextmove);
 
                 //System.out.println("Current Cells are:" + maze.cells[current[0]][i] + "Next Cells are" + maze.cells[next[0]][next[1]+i]);
             }
+
             maze.cells[current[0]][current[1]].add_Wall(nextmove);
             maze.cells[next[0]][next[1]].add_Wall(move);
 
+
+
         } else if (move == 2 || move == 3){
-            for(int i = 0; i <= next[0];i++){
+
+            if(current[0] > next[0]){
+                temp = current[0];
+            } else {
+                temp = next[0];
+            }
+            for(int i = 0; i <= temp;i++){
                 maze.cells[i][current[1]].break_Wall(move);
                 maze.cells[i][next[1]].break_Wall(nextmove);
             }
@@ -321,6 +338,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==btnUpdate){
@@ -332,6 +350,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         }
         if(e.getSource()==btnInsertImg){
             System.out.println("pressed 'insert img'");
+
         }
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");

@@ -1,8 +1,12 @@
 package guimaze;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /*
 import static java.awt.BorderLayout.NORTH;
@@ -18,10 +22,14 @@ public class Cell {
     public String[] wallPos = {"NORTH", "SOUTH", "EAST", "WEST"};
     private Wall[] walls;
     public int[] coords;
+    String date ="14/12/2000";
+
 
     //public JPanel cell;
 
     public Cell(int[] xy){
+
+
         coords = xy;
         walls = new Wall[4];
         live = true;

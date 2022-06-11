@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 public class ManualGenDialog implements ActionListener {
     /**
      * @author bradley mcgrath
-     * @version 4
+     * @version 5
      *
      */
 
@@ -149,10 +149,10 @@ public class ManualGenDialog implements ActionListener {
             @Override
             public void mouseClicked(MouseEvent e){
                 int i = deleteTable.getSelectedRow();
-                x1input.setText(model.getValueAt(i,1).toString());
-                x2input.setText(model.getValueAt(i,2).toString());
-                y1input.setText(model.getValueAt(i,3).toString());
-                y2input.setText(model.getValueAt(i,4).toString());
+                x1input.setText(model.getValueAt(i,0).toString());
+                x2input.setText(model.getValueAt(i,1).toString());
+                y1input.setText(model.getValueAt(i,2).toString());
+                y2input.setText(model.getValueAt(i,3).toString());
 
             }
         });
@@ -269,10 +269,10 @@ public class ManualGenDialog implements ActionListener {
             int i = deleteTable.getSelectedRow();
 
             if(i>=0){
-                model.setValueAt(x1input.getText(),i,1);
-                model.setValueAt(x2input.getText(),i,2);
-                model.setValueAt(y1input.getText(),i,3);
-                model.setValueAt(y2input.getText(),i,4);
+                model.setValueAt(x1input.getText(),i,0);
+                model.setValueAt(x2input.getText(),i,1);
+                model.setValueAt(y1input.getText(),i,2);
+                model.setValueAt(y2input.getText(),i,3);
 
             } else {
                 System.out.println("Update Error");
