@@ -13,6 +13,12 @@ import java.util.Date;
 
 public class CreateMaze implements ActionListener, Runnable{
 
+    /**
+     * @author sam.fleming
+     * @version 5
+     *
+     */
+
     //Logical Fields
     protected Maze maze;
     private final int WIDTH = 800;

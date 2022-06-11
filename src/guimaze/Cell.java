@@ -12,7 +12,10 @@ public class Cell {
     private Wall[] walls;
     public int[] coords;
 
+
+
     public Cell(int[] xy){
+
 
         coords = xy;
         walls = new Wall[4];
@@ -69,7 +72,7 @@ public class Cell {
 
 
             //cell.add(walls[i], BorderLayout.wallPos[i]);
-                //this functionality is more robust, just don't know how to implement
+            //this functionality is more robust, just don't know how to implement
         }
 
 
