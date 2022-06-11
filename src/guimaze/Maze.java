@@ -41,17 +41,21 @@ public class Maze{
 
         public Solution(Maze maze){
             this.maze = maze;
+            this.maze.showRelations();
             cellCoords = popCellCoords();
             path = reconstructPath(this.maze.startCell, this.maze.finishCell, Solve());
         }
 
         private int[][][] Solve(){
+            q = new LinkedList<int[]>();
             q.add(this.maze.startCell);
             Boolean[][] visited = initialiseVisited();
+            visited[startCell[0]][startCell[1]] = true;
 
             int[][][] prev = initialisePrev();
             while(!q.isEmpty()){
-                int[] node = (int[]) q.getFirst();
+                int[] node = (int[])q.getFirst();
+                System.out.println("New node: (" + node[0] + "," + node[1] + ")");
                 q.remove(node);//get next in queue and remove it from queue
 
                 //find it's list of integers
@@ -62,12 +66,14 @@ public class Maze{
                     int x = next[0];
                     int y = next[1];
                     if(!visited[x][y]){
+                        System.out.println("Queue (" + x + "," + y + ")");
                         q.add(next);
                         visited[x][y] = true;
                         prev[x][y] = node;
                     }
                 }
             }
+            System.out.println("Prev Size: " + prev.length);
             return prev;
 
         }
@@ -88,21 +94,41 @@ public class Maze{
                 //path = null;
                 solvable = false;
             }
+            print_path(path_, "Path: ");
             return path_;
         }
 
-
+        private void print_path(List<int[]> path, String str){
+            /**
+             * - used in development - to print entire collection 'enteredCells'
+             */
+            System.out.println(str);
+            for (int i = 0; i < path.size(); i++){
+                System.out.print(" (" + path.get(i)[0] + "," + path.get(i)[1] + "), ");
+            }
+            System.out.println("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")");
+        }
 
         private List<int[]> getNeighbours(int[] node){
+            System.out.println();
+            System.out.println("Get Neighbours of : (" + node[0] + "," + node[1] + ")");
             List<int[]> neighbours = new ArrayList<int[]>();
             for (int i = 0; i < this.maze.rels.size(); i++){
-                Relation the_rel = this.maze.rels.get(i);
-                if(the_rel.rel.get(0) == node){
-                    neighbours.add(the_rel.rel.get(1));
-                }else if(the_rel.rel.get(1) == node){
-                    neighbours.add(the_rel.rel.get(0));
+                Relation checked_rel = this.maze.rels.get(i);
+                //System.out.print("Checked rel: ");
+                checked_rel.printRel();
+                if(checked_rel.rel.get(0)[0] == node[0] && checked_rel.rel.get(0)[1] == node[1]){
+                    //System.out.println("(" + checked_rel.rel.get(1)[0] + "," + checked_rel.rel.get(1)[1] + ") is a neighbour");
+                    neighbours.add(checked_rel.rel.get(1));
+                }else if(checked_rel.rel.get(1)[0] == node[0] && checked_rel.rel.get(1)[1] == node[1]){
+                    //System.out.println("(" + checked_rel.rel.get(0)[0] + "," + checked_rel.rel.get(0)[1] + ") is a neighbour");
+                    neighbours.add(checked_rel.rel.get(0));
+                }else{
+                    //System.out.println("No Neighbour");
                 }
             }
+            System.out.println("Node (" + node[0] + "," + node[1] + "):");
+            print_path(neighbours, " has Neighbours: ");
             return neighbours;
         }
 
@@ -174,6 +200,13 @@ public class Maze{
 
     }
 
+    public void print_rels(){
+        System.out.println("Maze Relations:");
+        for (int i = 0; i < this.rels.size(); i++){
+            rels.get(i).printRel();
+        }
+    }
+
     private List<int[]> GetCellCoords(){
         List<int[]> cellCoords = new ArrayList<int[]>();
         for (int i = 0; i < length; i++){
@@ -218,6 +251,7 @@ public class Maze{
 
     public float DeadEnd_Percentage(){
         float percentage = 0;
+
         int total = Total_DeadEnd();
 
         System.out.println("Dead End Cells Total:  " + total);
@@ -242,7 +276,13 @@ public class Maze{
     }
 
     public String TotalCellOptimal(){
-        return "[not yeat implemented]";
+        return "[not yet implemented]";
+    }
+
+    public int Total_CellOptimal(){
+        Solution solve = new Solution(this);
+        System.out.println("Optimal Solve Size: " + solve.path.size());
+        return solve.path.size();
     }
 
     public int NumValidCells(){

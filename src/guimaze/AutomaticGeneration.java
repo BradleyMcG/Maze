@@ -208,10 +208,18 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         /**
          * @return - percentage of cells in the optimal (shortest) solution to maze
          */
+        /*
         Random rand = new Random();
         float result = (float)rand.nextInt(100-1) + 1;
         return result;
         //dummy value - random percentage
+
+         */
+
+        float total = this.maze.Total_CellOptimal();
+        float percentage = total/validCells_size() * 100;
+        //OR float percentage = total/(this.maze.length * this.maze.height);
+        return percentage;
     }
 
     private float DeadEndPercentage(){
@@ -294,12 +302,12 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          * walls, and add new cell to eneteredCells . If no directions are available, will randomly change
          * currentCell to try again
          */
-        System.out.println("New AutoMove");
+        //System.out.println("New AutoMove");
         boolean done = false;
         Reset_nextDirect();
         while (!nextDirect.isEmpty()&&!done){
             int move = GetRandomMove(nextDirect);
-            System.out.println("Move is (" + move + ") " + directions_str[move] + " " + directions.get(move)[0] + "," + directions.get(move)[1]);
+            //System.out.println("Move is (" + move + ") " + directions_str[move] + " " + directions.get(move)[0] + "," + directions.get(move)[1]);
             if (MoveIsValid(move)){
                 break_exit_wall(move);
                 break_entry_wall(move);
@@ -348,7 +356,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         //currentCell = enteredCells.get(rand_cell_index);
         //currentCell[0] = enteredCells.get(rand_cell_index)[0];
         //currentCell[1] = enteredCells.get(rand_cell_index)[1];
-        System.out.println("New Random Current: " + currentCell[0] + currentCell[1]);
+        //System.out.println("New Random Current: " + currentCell[0] + currentCell[1]);
     }
 
     private void check_enteredCells(){
@@ -374,7 +382,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         currentCell[0] = x;
         currentCell[1] = y;
         System.out.println("");
-        print_entered();
+        //print_entered();
         //check_enteredCells();
 
         //All elements of enteredCells are references/storages of the same instance 'currentCell'
@@ -400,7 +408,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          * @param move - the integer index for a move either N,S,E or W (ref directions_str)
          */
         this.maze.cells[currentCell[0]][currentCell[1]].break_Wall(move);
-        System.out.println("Break wall " + move + " at cell: " + currentCell[0] + "," + currentCell[1]);
+        //System.out.println("Break wall " + move + " at cell: " + currentCell[0] + "," + currentCell[1]);
     }
     
     private void break_entry_wall(int move){
@@ -427,7 +435,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         int next_x = currentCell[0]+ directions.get(move)[0];
         int next_y = currentCell[1]+ directions.get(move)[1];
         this.maze.cells[next_x][next_y].break_Wall(wall);
-        System.out.println("Break wall " + wall + " at cell: " + next_x + "," + next_y);
+        //System.out.println("Break wall " + wall + " at cell: " + next_x + "," + next_y);
     }
 
     private int GetRandomMove(List<Integer> nextDirect){
@@ -459,16 +467,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
         if (moveInEntered(moveCoords, next_x, next_y)){
-            System.out.println("Invalid, Move is Already Entered");
+            //System.out.println("Invalid, Move is Already Entered");
             return false;
         }else if (!moveInDomain(next_x, next_y)){
-            System.out.println("Invalid, Move is outside domain");
+            //System.out.println("Invalid, Move is outside domain");
             return false;
         }else if(!moveIsAvail(moveCoords, next_x, next_y)){
-            System.out.println("Invalid, Move is not available");
+            //System.out.println("Invalid, Move is not available");
             return false;
         }else{
-            System.out.println("Move is Valid");
+            //System.out.println("Move is Valid");
             return true;
         }
     }
@@ -487,7 +495,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         if(already_entered){
             return true;
         }else{
-            System.out.println("Cell " + next_x +","+ next_y + " isn't in entered");
+            //System.out.println("Cell " + next_x +","+ next_y + " isn't in entered");
             return false;
         }
 
@@ -547,8 +555,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
          */
         int[] next = {currentCell[0] + Coords[0], currentCell[1] + Coords[1]};
         for (int i = 0; i < enteredCells.size(); i++){
-            System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
-            System.out.println("  vs  " + "Checked Cell: (" + next[0] + "," + next[1] + ")");
+            //System.out.print("enteredCells[" + i + "]: (" + enteredCells.get(i)[0] + "," + enteredCells.get(i)[1] + ")");
+            //System.out.println("  vs  " + "Checked Cell: (" + next[0] + "," + next[1] + ")");
             if((next[0] == enteredCells.get(i)[0])&&(next[1] == enteredCells.get(i)[1])){
                 return true;
             }
@@ -586,8 +594,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             str = str.concat(", (" + dupes.get(k)[0] + "," + dupes.get(k)[1] + ")");
         }
         double dupl = (dupes.size()/2);
-        System.out.print(dupl + " duplicates in entered Cells: ");
-        System.out.println(str);
+        //System.out.print(dupl + " duplicates in entered Cells: ");
+        //System.out.println(str);
     }
 
 

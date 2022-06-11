@@ -16,4 +16,8 @@ public class Relation{
         rel.add(a);
         rel.add(b);
     }
+
+    public void printRel(){
+        System.out.print("{ (" + this.rel.get(0)[0] + "," + this.rel.get(0)[1] + "), (" + this.rel.get(1)[0] + "," + this.rel.get(1)[1] + ") }, ");
+    }
 }
