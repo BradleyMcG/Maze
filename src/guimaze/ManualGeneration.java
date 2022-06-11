@@ -28,6 +28,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     //GUI Fields
     private JFrame frame;
     private JPanel displayPanel;
+    private boolean displayOptimal = false;
 
     private final int displayLength = 500;
     private final int displayHeight = 500;
@@ -47,6 +48,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     private JLabel dead;
     private JLabel lblStart;
     private JLabel lblFinish;
+    private JButton btnOptimal;
 
     private String author;
     private String title;
@@ -153,12 +155,16 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
         lblFinish = new JLabel(finish);
 
+        btnOptimal = new JButton("Optimal Route");
+        btnOptimal.addActionListener(this);
+
         labelPanel.add(lblStart);
         labelPanel.add(lblFinish);
 
         labelPanel.add(optimal);
 
         labelPanel.add(dead);
+        labelPanel.add(btnOptimal);
 
 
     }
@@ -427,9 +433,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         if(e.getSource()==btnUpdate){
             System.out.println("pressed 'Reset'");
             maze.populateMazeArray();
-            frame.setVisible(false);
-            this.maze.Draw(displayPanel);
-            frame.setVisible(true);
+            updateFrame();
         }
         if(e.getSource()==btnInsertImg){
             System.out.println("pressed 'insert img'");
@@ -448,7 +452,21 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
             GenDialog = new ManualGenDialog(maze,this);
 
         }
+        if(e.getSource()==btnOptimal){
+            System.out.println("pressed 'Optimal route'");
+            ToggleOptimal();
 
+        }
+
+
+    }
+
+    private void ToggleOptimal(){
+        if(displayOptimal){
+            displayOptimal = false;
+        }else{
+            displayOptimal = true;
+        }
     }
 
     private String GetDate(){

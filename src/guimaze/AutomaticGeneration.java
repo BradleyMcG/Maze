@@ -32,6 +32,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JPanel displayPanel;
     private final int displayLength = 500;
     private final int displayHeight = 500;
+    private boolean displayOptimal = false;
 
     private JPanel buttonPanel;
     private JButton btnInsertImg;
@@ -46,6 +47,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JLabel lbldead;
     private JLabel lblStart;
     private JLabel lblFinish;
+
 
 
 
@@ -115,12 +117,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
         lblFinish = new JLabel(finish);
 
+        btnOptimal = new JButton("Optimal Route");
+        btnOptimal.addActionListener(this);
+
         labelPanel.add(lblStart);
         labelPanel.add(lblFinish);
         //labelPanel.add(optimalSolve);
         labelPanel.add(lbloptimal);
         //labelPanel.add(deadEnds);
         labelPanel.add(lbldead);
+        labelPanel.add(btnOptimal);
 
     }
 
@@ -265,7 +271,19 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
+        if(e.getSource()==btnOptimal){
+            System.out.println("pressed 'Optimal Route'");
+            ToggleOptimal();
+        }
 
+    }
+
+    private void ToggleOptimal(){
+        if(displayOptimal){
+            displayOptimal = false;
+        }else{
+            displayOptimal = true;
+        }
     }
 
 
