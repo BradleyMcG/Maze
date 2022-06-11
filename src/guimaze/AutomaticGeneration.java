@@ -32,7 +32,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JPanel displayPanel;
     private final int displayLength = 500;
     private final int displayHeight = 500;
-    private boolean displayOptimal = false;
+    private boolean displayOptimal;
 
     private JPanel buttonPanel;
     private JButton btnInsertImg;
@@ -55,13 +55,15 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private void CreateGUI(){ //will eventually be from GUI interface
 
         super.HideGUI();
+        displayOptimal = false;
         displayPanel = new JPanel();
         displayPanel.setLayout(null);
         //displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,displayLength, displayHeight);
         //displayPanel.add(new JLabel("[Area for working Maze]"));
 
-        this.maze.Draw(displayPanel);
+        //this.maze.Draw(displayPanel);//old
+        Draw();
 
         buttonPanel = new JPanel(new GridLayout(1, 3));
         //buttonPanel.setBackground(Color.RED);
@@ -156,7 +158,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         System.out.println("frame has been updated");
 
-        this.maze.Draw(displayPanel);
+        //this.maze.Draw(displayPanel);//old
+        Draw();
         createButtons();
         createLabels();
 
@@ -164,6 +167,15 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+    private void Draw(){
+
+        if(displayOptimal){
+            this.maze.Draw(displayPanel, this.maze.getSolution());
+        }else{
+            this.maze.Draw(displayPanel);
+        }
+
+    }
 
     public AutomaticGeneration(Maze maze) {
         /**
@@ -274,6 +286,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         if(e.getSource()==btnOptimal){
             System.out.println("pressed 'Optimal Route'");
             ToggleOptimal();
+            updateFrame();
         }
 
     }

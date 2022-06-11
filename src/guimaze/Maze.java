@@ -285,6 +285,11 @@ public class Maze{
         return solve.path.size();
     }
 
+    public List<int[]> getSolution(){
+        Solution solution = new Solution(this);
+        return solution.path;
+    }
+
     public int NumValidCells(){
         int num;
         num = (length * height) - invalidCells.size();
@@ -321,8 +326,55 @@ public class Maze{
             //System.out.println("l =" + l);
             for (int h = 0; h < this.height; h++ ){
                 //System.out.println("h =" + h);
-                this.cells[l][h].Draw(pane, cellPixels, l, h);
+                this.cells[l][h].Draw(pane, cellPixels, l, h, 0);
                     //evaluates as null for some reason
+            }
+        }
+    }
+
+    public void Draw(JPanel pane, List<int[]> path){
+
+        pane.removeAll();
+        /**
+         * @param pane - Reference to the JPanel to be drawn on
+         */
+
+        int pane_x = pane.getWidth();
+        int pane_y = pane.getHeight();
+        int longest_side;
+
+        //checks that displaypanel is square
+        if (pane_x != pane_y){
+            System.out.println("Invalid Display Panel");
+        }
+
+        if (length >= height){
+            longest_side = length;
+        }else{
+            longest_side = height;
+        }
+
+        int cellPixels = (int)((double)pane_x/(double)longest_side);
+        //pixel size of each cell (rounded down)
+
+
+        for (int l = 0; l < this.length; l++){
+            //System.out.println("l =" + l);
+            for (int h = 0; h < this.height; h++ ){
+                //System.out.println("h =" + h);
+                int[] temp = {l, h};
+                if (startCell[0] == temp[0] && startCell[1] == temp[1]){
+                    this.cells[l][h].Draw(pane, cellPixels, l, h, 1);
+                }else if(finishCell[0] == temp[0] && finishCell[1] == temp[1]){
+                    this.cells[l][h].Draw(pane, cellPixels, l, h, 2);
+                }else if(path.contains(temp)){
+                    this.cells[l][h].Draw(pane, cellPixels, l, h, 3);
+                }else{
+                    this.cells[l][h].Draw(pane, cellPixels, l, h, 0);
+                }
+
+
+                //evaluates as null for some reason
             }
         }
     }
