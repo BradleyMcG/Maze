@@ -75,16 +75,11 @@ public class CreateMaze implements ActionListener, Runnable{
 
 
     CreateMaze(){
+        /**
+         * Create Maze Constructor
+         */
 
-/*
-        CreateMazeGUI(); //eventually DisplayGUI (from interface)
-        btnAutomatic.addActionListener(this);
-        btnManual.addActionListener(this);
-
- */
         CreateGUI();
-
-
 
     }
 
@@ -135,8 +130,7 @@ public class CreateMaze implements ActionListener, Runnable{
     private void CreateEnds(){
 
         frame.setVisible(false);
-        //pnlFields.removeAll();
-        //CreateFields();
+
         DisableFields();
 
         lblStart = new JLabel("Start Cell (x, y): ");
@@ -222,15 +216,8 @@ public class CreateMaze implements ActionListener, Runnable{
         constraints.weightx = 1;
         constraints.weighty = 1;
 
-/*
-        //CreateMaze Sign
-        constraints.gridx = 1;
-        constraints.gridwidth = 5;
-        constraints.gridy = 1;
-        constraints.gridheight = 3;
-        pnlInputs.add(CreateSign, constraints);
 
- */
+
 
         //"Dimensions" Text Label
         constraints.gridx = 1;
@@ -375,8 +362,8 @@ public class CreateMaze implements ActionListener, Runnable{
         int day = LocalDate.now().getDayOfMonth();
         int month = LocalDate.now().getMonthValue();
         int year = LocalDate.now().getYear();
-        str = str.concat(day + "/"+ month +"/"+ year);
-        //str = str.concat(year + "/"+ month +"/"+ day);
+        //str = str.concat(day + "/"+ month +"/"+ year);
+        str = str.concat(year + "/"+ month +"/"+ day);
         return str;
     }
 

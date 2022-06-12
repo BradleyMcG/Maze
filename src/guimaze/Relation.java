@@ -12,6 +12,11 @@ public class Relation{
     public List<int[]> rel;
 
     public Relation(int[] a, int[] b){
+        /**
+         * Represent a relationship between two cells who have an open wall
+         * @param a first cell
+         * @param b second cell
+         */
         rel = new ArrayList<int[]>();
         rel.add(a);
         rel.add(b);

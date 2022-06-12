@@ -42,6 +42,9 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
     MazeGenerator(){
+        /**
+         * Maze Generator Constructor
+         */
         new Connect();
         populateDummyMazes();
         data = PopulateObject(allMazes);
@@ -50,10 +53,17 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
     private static class SingletonHolder{
+        /**
+         * Creates Singleton Instance
+         */
         private final static MazeGenerator Program = new MazeGenerator();
     }
 
     public static MazeGenerator GetInstance(){
+        /**
+         * Retrives Singleton instance
+         * @return SingletonHolder.Program returns singleton instance
+         */
 
         return SingletonHolder.Program;
     }
@@ -110,25 +120,13 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         constraints.ipady = 0;
         pane.add(btnExportOptimal, constraints);
 
-        /*btnFind = new JButton("Find Previous Maze");
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 3;
-        constraints.ipady = 40;
-        pane.add(btnFind, constraints);*/
 
         btnCreate.addActionListener(this);
-      //  btnFind.addActionListener(this);
         btnDisplay.addActionListener(this);
         btnExport.addActionListener(this);
         btnExportOptimal.addActionListener(this);
 
-        //JPanel pane = new JPanel();
-       // frame.setContentPane(pane);
-
-        //String [] columnNames = {"Author Name","Date","Maze Title","Export"}; //old version
-
-        String [] columnNames = {"Maze Number", "Author Name", "Maze Title", "Dimensions", "Date Created", "Last Edit","Select"};
+        String [] columnNames = {"Maze Number", "Author Name", "Maze Title", "Date Created", "Last Edit","Select"};
 
         tableMaze = new JTable(data, columnNames){
             public Class getColumnClass(int column) {
@@ -138,7 +136,6 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         };
 
         tableMaze.setAutoCreateRowSorter(true);
-
         tableMaze.setPreferredScrollableViewportSize(new Dimension(500, 300));
         tableMaze.setFillsViewportHeight(true);
 
@@ -150,10 +147,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         constraints.ipady = 0;
         frame.add(scrollPane,constraints);
 
-
-
         repaint();
-        //frame.pack();
 
         frame.setVisible(true); //Show the window
     }
@@ -161,9 +155,12 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
     private void checkTickBox(){
+        /**
+         * Checks which tick boxes have been selected and adds there referenece to a list
+         */
         int rowNumber = tableMaze.getRowCount();
         int columnNumber = tableMaze.getColumnCount();
-        int tick_num = 6; //for original configuration = 3
+        int tick_num = 5; //for original configuration = 3
 
         String[][] obj = new String[rowNumber][columnNumber];
 
@@ -182,73 +179,20 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         }
     }
 
-
-
-    private JPanel createPanel(Color c) {
-        //Create a JPanel object and store it in a local var
-        JPanel var = new JPanel();
-        //set the background colour to that passed in c
-        var.setBackground(c);
-        //Return the JPanel object
-        return var;
-    }
-
-    private JButton createButton(String str) {
-        //Create a JButton object and store it in a local var
-        JButton var = new JButton(str);
-        //Set the button text to that passed in str
-
-        //Add the frame as an actionListener
-        var.addActionListener(this);
-
-        //Return the JButton object
-        return var;
-    }
-
-    private void addToPanel(JPanel jp,Component c, GridBagConstraints
-            constraints,int x, int y, int w, int h) {
-        constraints.gridx = x;
-        constraints.gridy = y;
-        constraints.gridwidth = w;
-        constraints.gridheight = h;
-        jp.add(c, constraints);
-    }
-
-
-
-
-    /* //old version
     private Object[][] PopulateObject(List<Maze> mazes){
-        Object[][] obj = new Object[mazes.size()][4];
-        for(int i = 0; i < mazes.size(); i++){
-            Maze current = mazes.get(i);
-            obj[i][0] = current.author;
-            obj[i][1] = current.createDate;
-            obj[i][2] = current.title;
-            obj[i][3] = false;
-
-        }
-        return obj;
-    }
-    */
-
-
-
-
-
-    private Object[][] PopulateObject(List<Maze> mazes){
-        Object[][] obj = new Object[mazes.size()][7];
+        /**
+         * @param mazes a list of all mazes
+         * @return obj a two dimensional object array will all relevant maze information
+         */
+        Object[][] obj = new Object[mazes.size()][6];
         for(int i = 0; i < mazes.size(); i++){
             Maze current = mazes.get(i);
             obj[i][0] = i;
             obj[i][1] = current.author;
             obj[i][2] = current.title;
-            String dimensions = "";
-            dimensions.concat(current.length + " x " + current.height);
-            obj[i][3] = dimensions;
-            obj[i][4] = current.createDate;
-            obj[i][5] = current.editDate;
-            obj[i][6] = false;
+            obj[i][3] = current.createDate;
+            obj[i][4] = current.editDate;
+            obj[i][5] = false;
         }
         return obj;
     }
@@ -282,9 +226,6 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
             CreateMaze Create = new CreateMaze();
             System.out.println("pressed");
         }
-        /*if(e.getSource()==btnFind){
-            System.out.println("pressed");
-        }*/
         if(e.getSource()==btnDisplay){
             System.out.println("pressed");
 
@@ -309,7 +250,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
             if(refMaze.size() == 1){
-               
+
                 Export exp = new Export(allMazes.get(refMaze.get(0)));
                 refMaze.clear();
             } else {
@@ -336,6 +277,10 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
     private void PerformExport(boolean check){
+        /**
+         * Creates new instance of export depending if multiple mazes were selected or not
+         * @param check checks whether optimal button has been pressed or not
+         */
         System.out.println("EXPORT");
         checkTickBox();
 
@@ -354,6 +299,9 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
     }
 
     public void StoreMaze(Maze maze){
+        /**
+         * @param maze Reference to Maze instance
+         */
         allMazes.add(maze);
     }
     private void errorDialog(){

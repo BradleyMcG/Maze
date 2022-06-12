@@ -41,11 +41,16 @@ public class Display extends JFrame implements ActionListener, Runnable {
     JButton btnRoute = new JButton("Optimal Route");
     JButton btnEdit = new JButton("Edit");
 
+    boolean displayOptimal;
 
-    //JPanel pane;
-    //GridBagConstraints constraints;
 
     Display(Maze maze){
+        /**
+         * Display Constructor
+         *
+         * @param maze - Reference to Maze instance just created to now be developed
+         *
+         */
         super();
         this.maze = maze;
         CreateGUI();
@@ -68,6 +73,12 @@ public class Display extends JFrame implements ActionListener, Runnable {
         pnlButtons.add(btnBack);
         pnlButtons.add(btnEdit);
         pnlButtons.add(btnRoute);
+
+        btnBack.addActionListener(this);
+        btnRoute.addActionListener(this);
+        btnEdit.addActionListener(this);
+        btnExport.addActionListener(this);
+
     }
 
     private void CreateLabels(){
@@ -95,6 +106,7 @@ public class Display extends JFrame implements ActionListener, Runnable {
         lblDeadEnd = new JLabel(this.maze.Total_DeadEnd() + " dead end cells");
         pnlLabels.add(lblDeadEnd);
 
+
     }
 
     private void CreateGUI(){
@@ -103,91 +115,6 @@ public class Display extends JFrame implements ActionListener, Runnable {
         CreateButtons();
         CreateLabels();
 
-        /*
-        pane = new JPanel(new GridBagLayout());
-        frame.setContentPane(pane);
-
-
-        constraints = new GridBagConstraints();
-        constraints.weightx = 10;
-        constraints.weighty = 10;
-
-        constraints.gridx = 0;
-        constraints.gridwidth = 2;
-        constraints.gridy = 0;
-        headerLabel.setFont(new Font("Test", Font.PLAIN, 50));
-        pane.add(headerLabel, constraints);
-
-        constraints.gridx = 3;
-        constraints.gridwidth = 2;
-        constraints.gridy = 0;
-        headerLabel.setFont(new Font("Test", Font.PLAIN, 20));
-        pane.add(TitleLabel, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridwidth = 2;
-        constraints.gridy = 1;
-        headerLabel.setFont(new Font("Test", Font.PLAIN, 20));
-        pane.add(EditDateLabel, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridwidth = 2;
-        constraints.gridy = 2;
-        headerLabel.setFont(new Font("Test", Font.PLAIN, 20));
-        pane.add(DateLabel, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridwidth = 2;
-        constraints.gridy = 3;
-        headerLabel.setFont(new Font("Test", Font.PLAIN, 20));
-        pane.add(AuthorLabel, constraints);
-        //BUTTONs
-        //constraints.anchor = GridBagConstraints.PAGE_END;
-        constraints.gridwidth = 1;
-        constraints.gridx = 3;
-        constraints.gridy = 6;
-        constraints.ipady = 0;
-        btnBack.setFont(new Font("Test",Font.PLAIN,20));
-        pane.add(btnBack, constraints);
-
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 3;
-        constraints.ipady = 0;
-        pane.add(btnExport, constraints);
-
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 4;
-        constraints.ipady = 0;
-        pane.add(btnRoute, constraints);
-
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 5;
-        constraints.ipady = 0;
-        pane.add(btnEdit, constraints);
-
-         */
-
-
-        //BUTTON ACTION LISTENERS
-
-        btnBack.addActionListener(this);
-        btnRoute.addActionListener(this);
-        btnEdit.addActionListener(this);
-        btnExport.addActionListener(this);
-
-        /*
-        //IMAGE MAZE
-        ImageIcon icon = new ImageIcon("noroute.png");
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 1;
-        constraints.ipady = 0;
-        pane.add(new JLabel(icon),constraints);
-
-         */
 
         //VIEW FRAME
 
@@ -202,26 +129,54 @@ public class Display extends JFrame implements ActionListener, Runnable {
         frame.setVisible(true);
 
     }
-/*
-    private void OptimalRoute(){
-        // Calculate best route on the maze and displays it
 
-        //IMAGE MAZE
-        ImageIcon icon = new ImageIcon("route.png");
-        constraints.gridx = 3;
-        constraints.gridwidth = 1;
-        constraints.gridy = 2;
-        constraints.ipady = 0;
-        pane.add(new JLabel(icon),constraints);
-        //System.out.println("Running");
+    private void ToggleOptimal(){
+        /**
+         * Toggles boolean displayOptimal if optimal button is pressed or not
+         */
+        if(displayOptimal){
+            displayOptimal = false;
+        }else{
+            displayOptimal = true;
+        }
+    }
 
-        //VIEW FRAME
+    public void updateFrame(){
+        /**
+         * updates content(state) of GUI elements contained in JFrame by rebuilding each panel individually
+         * in the JFrame
+         */
+        frame.setVisible(false);
+        pnlButtons.removeAll();
+        //pnlLabels.removeAll();
+
+
+        System.out.println("frame has been updated");
+
+        //this.maze.Draw(displayPanel);//old
+
+
+        Draw();
+        CreateButtons();
+        //CreateLabels();
+
+        frame.add(pnlButtons);
+        frame.add(pnlLabels);
 
         frame.setVisible(true);
 
     }
 
- */
+    private void Draw(){
+
+        if(displayOptimal){
+            this.maze.Draw(pnlDisplay, this.maze.getSolution());
+        }else{
+            this.maze.Draw(pnlDisplay);
+        }
+
+    }
+
     private void EditMaze(){
         ManualGeneration edit = new ManualGeneration(this.maze);
     }
@@ -235,7 +190,9 @@ public class Display extends JFrame implements ActionListener, Runnable {
             MazeGenerator.GetInstance().ShowGUI();
         }
         if(e.getSource() == btnRoute){
-            //OptimalRoute();
+            //System.out.println("pressed 'Optimal Route'");
+            ToggleOptimal();
+            updateFrame();
         }
         if(e.getSource() == btnEdit){
             HideGUI();

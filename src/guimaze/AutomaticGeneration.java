@@ -229,8 +229,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         int day = LocalDate.now().getDayOfMonth();
         int month = LocalDate.now().getMonthValue();
         int year = LocalDate.now().getYear();
-        str = str.concat(day + "/"+ month +"/"+ year);
-        //str = str.concat(year + "/"+ month +"/"+ day);
+        //str = str.concat(day + "/"+ month +"/"+ year);
+        str = str.concat(year + "/"+ month +"/"+ day);
         return str;
     }
 

@@ -68,6 +68,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
     public ManualGeneration(Maze maze) {
         /**
+         * Manual Generation Constructor
          * @param maze - Reference to Maze instance just created to now be developed
          */
         super();
@@ -488,7 +489,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         int day = LocalDate.now().getDayOfMonth();
         int month = LocalDate.now().getMonthValue();
         int year = LocalDate.now().getYear();
-        str = str.concat(day + "/"+ month +"/"+ year);
+
+        str = str.concat(year + "/"+ month +"/"+ day);
         return str;
     }
 
