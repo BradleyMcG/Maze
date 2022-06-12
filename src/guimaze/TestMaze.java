@@ -18,6 +18,9 @@ public class TestMaze {
         int height = 5;
         maze = new Maze(title, date, author,length, height);
         maze.populateMazeArray();
+
+
+
     }
 
 
