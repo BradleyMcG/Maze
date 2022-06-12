@@ -49,8 +49,13 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JLabel lblFinish;
 
 
+    public int[] getCurrentCell(){
+        return currentCell;
+    }
 
-
+    public void setCurrentCell(int[] node){
+        currentCell = node;
+    }
 
     private void CreateGUI(){ //will eventually be from GUI interface
 
@@ -214,7 +219,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         cell_add[1] = currentCell[1];
         Reset_nextDirect();
     }
-
     private String GetDate(){
         /**
          * Gets the current date and returns as string
@@ -230,7 +234,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         return str;
     }
 
-    private void initializeMazeArray() {
+    public void initializeMazeArray() {
         this.maze.cells = new Cell[this.maze.length][this.maze.height];
     }
 
@@ -493,7 +497,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         return randDirection;
     }
 
-    private boolean MoveIsValid(int move){ //int move is the direction
+
+
+    public boolean MoveIsValid(int move){ //int move is the direction
         /**
          * @param move - the integer index for a move either N,S,E or W (ref directions_str)
          * @return - indicator whether checked cell can be entered
