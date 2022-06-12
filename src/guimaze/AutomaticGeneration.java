@@ -179,6 +179,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     public AutomaticGeneration(Maze maze) {
         /**
+         * Constructs an automatic genertion for a specified maze
+         *
          * @param maze - Reference to Maze instance just created to now be developed
          */
         super();
@@ -197,6 +199,9 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
     private void AutoGenInitialize(){
+        /**
+         * initialises the nessesary variables for the generation
+         */
         //currentCell = this.maze.startCell; - doesn't work - reference type logical errors
         currentCell[0] = this.maze.startCell[0];
         currentCell[1] = this.maze.startCell[1];
@@ -211,11 +216,17 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     }
 
     private String GetDate(){
+        /**
+         * Gets the current date and returns as string
+         *
+         * @return date in DD/MM/YYYY
+         */
         String str = "";
         int day = LocalDate.now().getDayOfMonth();
         int month = LocalDate.now().getMonthValue();
         int year = LocalDate.now().getYear();
         str = str.concat(day + "/"+ month +"/"+ year);
+        //str = str.concat(year + "/"+ month +"/"+ day);
         return str;
     }
 
@@ -395,7 +406,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     private void check_enteredCells(){
         /**
-         * used in development
+         * [used in development / testing]
          */
         for (int i = 0; i < enteredCells.size(); i++){
             System.out.print("Index: " + i + ",   ");
