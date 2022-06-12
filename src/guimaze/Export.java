@@ -89,6 +89,10 @@ public class Export implements ActionListener, Runnable {
     //changes
 
     public Export(Maze maze){
+        /**
+         * First Export Class Consturctor.
+         * @param maze Reference to Maze instance.
+         */
         super();
         this.maze = maze;
 
@@ -113,6 +117,11 @@ public class Export implements ActionListener, Runnable {
     }
 
     public Export(Maze maze, Boolean check){
+        /**
+         * Second Export Class Consturctor.
+         * @param maze Reference to Maze instance.
+         * @param check true if optimal route button was pressed; false otherwise.
+         */
 
         //OPTIMAL
         super();

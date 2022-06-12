@@ -315,7 +315,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
                 for(int i = 0; i < refMaze.size(); i++){
 
-                    Export expmultiple = new Export(allMazes.get(refMaze.get(i)), true);
+                    Export expmultiple = new Export(allMazes.get(refMaze.get(i)));
                 }
                 refMaze.clear();
             }

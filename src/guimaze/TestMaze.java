@@ -10,13 +10,14 @@ public class TestMaze {
     Maze maze;
 
     @BeforeEach
-    public void ConstructMaze(String title){
-        title = "TestMaze";
+    public void ConstructMaze(){
+        String title = "TestMaze";
         String date = "01/01/2000";
         String author = "Programmer";
         int length = 5;
         int height = 5;
         maze = new Maze(title, date, author,length, height);
+        maze.populateMazeArray();
     }
 
 
@@ -35,6 +36,7 @@ public class TestMaze {
         int y = 5;
         assertEquals(x, y);
     }
+
 
 
 }

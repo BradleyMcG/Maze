@@ -51,6 +51,12 @@ public class ManualGenDialog implements ActionListener {
     private Object[] columns = {"X1","X2","Y1","Y2"};
 
     ManualGenDialog(Maze maze, ManualGeneration ManualGens){
+        /**
+         * Constructor for class ManualGenDialog
+         * @param maze Reference to Maze instance
+         * @param ManualGens Reference to Manual Generation instance to return to
+         *
+         */
         this.ManualGen = ManualGens;
         entry_points = 2;
         DisplayGUI();
@@ -169,6 +175,7 @@ public class ManualGenDialog implements ActionListener {
 
     private Object[][] populateObject(int entryPoints){
 
+
         Object[][] obj = new Object[entryPoints][5];
         for (int i = 0; i < entryPoints; i++){
             obj[i][0] = i+1;
@@ -181,6 +188,7 @@ public class ManualGenDialog implements ActionListener {
     }
 
     private String[] removeWallArray(){
+
         cords[0] = x1input.getText();
         cords[1] = x2input.getText();
         cords[2] = y1input.getText();
@@ -190,6 +198,11 @@ public class ManualGenDialog implements ActionListener {
     }
 
     public int[][] transferData (JTable table){
+
+        /**
+         * Takes user input from Jtable and turns it into a two dimensional array
+         * @param table instance of Jtable that data needs to be retrieved from.
+         */
         System.out.println("Transfer Data is called");
         int rowNumber = table.getRowCount();
         int columnNumber = table.getColumnCount();
@@ -207,18 +220,6 @@ public class ManualGenDialog implements ActionListener {
         return obj;
     }
 
-
-    /*private static int[] linearSearch(int[][] data, int[][] target)
-    {
-        for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[i].length; j++) {
-                if (data[i][j] == target) {
-                    return new int[] { i, j };
-                }
-            }
-        }
-        return new int[] { -1, -1 };
-    }*/
 
     public int[][] SendData(){
         int[][] obj ;
@@ -240,12 +241,27 @@ public class ManualGenDialog implements ActionListener {
         if(e.getSource()==btnSubmit){
             System.out.println("pressed 'submit'");
 
-            HideGUI();
 
+            try {
+                Integer.parseInt(String.valueOf(obj[0]));
+                Integer.parseInt(String.valueOf(obj[1]));
+                Integer.parseInt(String.valueOf(obj[2]));
+                Integer.parseInt(String.valueOf(obj[3]));
+                Objects.nonNull(obj[0]);
+                Objects.nonNull(obj[1]);
+                Objects.nonNull(obj[2]);
+                Objects.nonNull(obj[3]);
+                if(obj[0]== obj[1] || obj[2] == obj[3]){
+                    ManualGen.RemoveWalls(transferData(deleteTable));
+                    ManualGen.updateFrame();
+                    HideGUI();
+                } else {
+                    errorDialog();
+                }
 
-
-            ManualGen.RemoveWalls(transferData(deleteTable));
-            ManualGen.updateFrame();
+            } catch (NumberFormatException f){
+                errorDialog();
+            }
 
 
         }
@@ -264,8 +280,16 @@ public class ManualGenDialog implements ActionListener {
                 Objects.nonNull(obj[1]);
                 Objects.nonNull(obj[2]);
                 Objects.nonNull(obj[3]);
-                ID++;
-                model.addRow(obj);
+
+
+                if(obj[0]== obj[1] || obj[2] == obj[3]){
+                    ID++;
+                    model.addRow(obj);
+                } else {
+                    errorDialog();
+                }
+
+
             }
             catch (NumberFormatException f)
             {
@@ -298,15 +322,22 @@ public class ManualGenDialog implements ActionListener {
                 Objects.nonNull(obj[1]);
                 Objects.nonNull(obj[2]);
                 Objects.nonNull(obj[3]);
-                if(i>=0){
-                    model.setValueAt(x1input.getText(),i,0);
-                    model.setValueAt(x2input.getText(),i,1);
-                    model.setValueAt(y1input.getText(),i,2);
-                    model.setValueAt(y2input.getText(),i,3);
+                if(obj[0]== obj[1] || obj[2] == obj[3]){
+                    if(i>=0){
+                        model.setValueAt(x1input.getText(),i,0);
+                        model.setValueAt(x2input.getText(),i,1);
+                        model.setValueAt(y1input.getText(),i,2);
+                        model.setValueAt(y2input.getText(),i,3);
+
+                    } else {
+                        System.out.println("Update Error");
+                    }
+
 
                 } else {
-                    System.out.println("Update Error");
+                    errorDialog();
                 }
+
 
             }
             catch (NumberFormatException f)
@@ -320,12 +351,14 @@ public class ManualGenDialog implements ActionListener {
     }
 
     private void errorDialog(){
+
         JDialog d = new JDialog(frame, "Input Error");
         d.setSize(400, 200);
         JPanel p = new JPanel();
         //p.setLayout(null);
         p.setBorder(BorderFactory.createLineBorder(Color.black));
-        String errorMsg = "Uh oh, incorrect data input. Make sure your are entering integers for the dimensions";
+        String errorMsg = "Uh oh, incorrect data input. Make sure your are entering integers for the dimensions" +
+                "Make sure the cells entered have the same x or y";
 
         JTextArea txtaInputError = new JTextArea(errorMsg);
         txtaInputError.setSize(300, 100);
