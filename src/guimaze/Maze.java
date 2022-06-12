@@ -363,11 +363,12 @@ public class Maze{
             for (int h = 0; h < this.height; h++ ){
                 //System.out.println("h =" + h);
                 int[] temp = {l, h};
+                System.out.println("Temp: (" + l + "," + h + ")");
                 if (startCell[0] == temp[0] && startCell[1] == temp[1]){
                     this.cells[l][h].Draw(pane, cellPixels, l, h, 1);
                 }else if(finishCell[0] == temp[0] && finishCell[1] == temp[1]){
                     this.cells[l][h].Draw(pane, cellPixels, l, h, 2);
-                }else if(path.contains(temp)){
+                }else if(ExistsIn(path, temp)){
                     this.cells[l][h].Draw(pane, cellPixels, l, h, 3);
                 }else{
                     this.cells[l][h].Draw(pane, cellPixels, l, h, 0);
@@ -380,7 +381,17 @@ public class Maze{
     }
 
 
-
-
+    private boolean ExistsIn(List<int[]> path,int[] node){
+        boolean exists = false;
+        for (int i = 0; i < path.size(); i++){
+            int[] current = {path.get(i)[0], path.get(i)[1]};
+            if(current[0] == node[0] && current[1] == node[1]){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
+
+
