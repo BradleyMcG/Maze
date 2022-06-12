@@ -9,7 +9,7 @@ public class Maze{
 
     /**
      * @author sam.fleming
-     * @version 5
+     * @version 7
      *
      */
 
@@ -47,6 +47,11 @@ public class Maze{
         }
 
         private int[][][] Solve(){
+            /**
+             * Using breadth first search algorithm for finding shortest path, interatively works through each of the
+             * distance classes sand stores the parent pf each cell in 'prev'. It does this starting at the start cell
+             * until it reaches the end cell to which is terminates and returns 'prev'.
+             */
             q = new LinkedList<int[]>();
             q.add(this.maze.startCell);
             Boolean[][] visited = initialiseVisited();
@@ -80,6 +85,16 @@ public class Maze{
 
 
         private List<int[]> reconstructPath(int[] start, int[] end, int[][][] prev){
+            /**
+             * With the collection prev, it finds the optimal route by starting at the end cell, and iteratively finding
+             * it's previous cell and stroing in a list 'path_'. Once it reaches the start cell it returns 'path_'
+             *
+             * @param start - the start cell
+             * @param end - the start cell
+             * @param prev - all cells previous cell
+             *
+             * @return path_ - a list of cell coordinates that are in the optimal route
+             */
             int[] current;
             List<int[]> path_ = new ArrayList<>();
 
@@ -110,6 +125,11 @@ public class Maze{
         }
 
         private List<int[]> getNeighbours(int[] node){
+            /**
+             * With a specific cell co-ordinate, gets all of it's adjacent cells in a generated maze
+             *
+             * @param node - a cell x,y to find it's adjacent (entereable) cells
+             */
             System.out.println();
             System.out.println("Get Neighbours of : (" + node[0] + "," + node[1] + ")");
             List<int[]> neighbours = new ArrayList<int[]>();
@@ -167,6 +187,9 @@ public class Maze{
 
 
     public Maze(String title,String date,String author, int length, int height){
+        /**
+         * Constructs an instance of Maze where the start and end cell are not specified
+         */
         this.title = title;
         this.author = author;
         this.length = length;
@@ -184,6 +207,9 @@ public class Maze{
     }
 
     public Maze(String title,String date,String author, int length, int height, int[]start, int[]end){
+        /**
+         * Constructs an instance of Maze where start and end cell are specified
+         */
         this.title = title;
         this.author = author;
         this.length = length;
@@ -201,6 +227,9 @@ public class Maze{
     }
 
     public void print_rels(){
+        /**
+         * used in developement / testing
+         */
         System.out.println("Maze Relations:");
         for (int i = 0; i < this.rels.size(); i++){
             rels.get(i).printRel();
@@ -208,6 +237,9 @@ public class Maze{
     }
 
     private List<int[]> GetCellCoords(){
+        /**
+         * used in developement / testing
+         */
         List<int[]> cellCoords = new ArrayList<int[]>();
         for (int i = 0; i < length; i++){
             for (int j = 0; i < height; i++){
@@ -221,6 +253,9 @@ public class Maze{
     }
 
     public void showRelations(){
+        /**
+         * used in developement / testing - prints all relations (open walls) of a generated maze
+         */
         System.out.println("Relations: ");
         for (int i = 0; i < rels.size(); i++){
             String str = "";
@@ -234,6 +269,9 @@ public class Maze{
     }
 
     public void populateMazeArray(){
+        /**
+         * Initializes the maze by closing all of its walls (no relations)
+         */
         invalidCells = new ArrayList<int[]>();
         rels = new ArrayList<Relation>();
 
@@ -250,6 +288,11 @@ public class Maze{
     }
 
     public float DeadEnd_Percentage(){
+        /**
+         * Calculates the dead end percentage of the maze and returns as a float
+         *
+         * @return - dead end percentage
+         */
         float percentage = 0;
 
         int total = Total_DeadEnd();
@@ -263,6 +306,11 @@ public class Maze{
     }
 
     public int Total_DeadEnd(){
+        /**
+         * Gets the total number of dead end cells of a maze (dead end is where a cell has 3 walls)
+         *
+         * @return - number of cells as integer
+         */
         int tally = 0;
         for (int i = 0; i < length; i++){
             for (int j = 0; j < height; j++){
@@ -280,28 +328,48 @@ public class Maze{
     }
 
     public int Total_CellOptimal(){
+        /**
+         * Gets the total number of  cells in a maze's optimal solution returns as an int
+         *
+         * @return - number of cells
+         */
         Solution solve = new Solution(this);
         System.out.println("Optimal Solve Size: " + solve.path.size());
         return solve.path.size();
     }
 
     public List<int[]> getSolution(){
+        /**
+         * Gets the maze's optimal solution as list of its relevent cell coordinates
+         *
+         * @return - list of cell coordinates
+         */
+
         Solution solution = new Solution(this);
         return solution.path;
     }
 
     public int NumValidCells(){
+        /**
+         * Gets the number of Valid cells in a Maze
+         *
+         * @return - number of cells
+         */
         int num;
         num = (length * height) - invalidCells.size();
         return num;
     }
 
     public void Draw(JPanel pane){
+        /**
+         * Draws the Maze using a series of javax.swing components onto a specified JPanel
+         *
+         * @param pane - Jpanel to draw maze onto
+         *
+         */
 
         pane.removeAll();
-        /**
-         * @param pane - Reference to the JPanel to be drawn on
-         */
+
 
         int pane_x = pane.getWidth();
         int pane_y = pane.getHeight();
@@ -333,11 +401,17 @@ public class Maze{
     }
 
     public void Draw(JPanel pane, List<int[]> path){
+        /**
+         * Draws the Mazeand it's optimal solution using a series of javax.swing components onto a specified JPanel,
+         *
+         *
+         * @param pane - Jpanel to draw maze onto
+         * @param path - list of cell Coords
+         *
+         */
 
         pane.removeAll();
-        /**
-         * @param pane - Reference to the JPanel to be drawn on
-         */
+
 
         int pane_x = pane.getWidth();
         int pane_y = pane.getHeight();
