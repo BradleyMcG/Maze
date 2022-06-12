@@ -91,27 +91,33 @@ public class Cell {
          * @param y - height position of cell on 'pane'
          */
         pnlCell = new JPanel();
+        Color background;
         int lengthPos = (x*cellPixels);
         int heightPos = (y*cellPixels);
         //System.out.println("Display dimensions: " + pane.getWidth() + " " + pane.getHeight());
         pnlCell.setBounds(lengthPos, heightPos, cellPixels, cellPixels);
         //System.out.println("in display pane, x=" + lengthPos + " y=" + heightPos + " and is " + cellPixels + " square");
         if (indicator == 1){
-            pnlCell.setBackground(Color.GREEN);
+            background = Color.GREEN;
+            //pnlCell.setBackground(Color.GREEN);
         }else if (indicator == 2){
-            pnlCell.setBackground(Color.RED);
+            background = Color.RED;
+            //pnlCell.setBackground(Color.RED);
         }else if (indicator == 3){
-            pnlCell.setBackground(Color.BLUE);
+            background = Color.LIGHT_GRAY;
+            //pnlCell.setBackground();
         }else{
-            pnlCell.setBackground(Color.WHITE);
+            background = Color.WHITE;
+            //pnlCell.setBackground(Color.WHITE);
         }
+        pnlCell.setBackground(background);
 
 
 
         pnlCell.setLayout(new BorderLayout());
 
         for (int i = 0; i < 4; i ++){
-            walls[i].Draw(cellPixels);
+            walls[i].Draw(cellPixels, background);
 
             switch(i){
                 case 0:
