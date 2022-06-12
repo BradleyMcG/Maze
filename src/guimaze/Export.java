@@ -35,12 +35,8 @@ public class Export implements ActionListener, Runnable {
     JLabel headerLabel = new JLabel("Export");
     JButton btnBack = new JButton("Submit");
     JFrame frame;
-    ByteArrayInputStream blob;
-    FileInputStream in;
-    byte[] imageInByte;
-    ByteArrayInputStream bais;
-    ByteArrayOutputStream baos;
-    FileInputStream fis;
+
+    FileInputStream fileinput;
     File file;
     //changes
 
@@ -60,9 +56,6 @@ public class Export implements ActionListener, Runnable {
 
 
 
-    private static final String INSERT_MAZE = "INSERT INTO mazes (title, length, height, author, date) VALUES (?, ?, ?, ?, ?);";
-
-
     private static final String INSERT_MAZES = "INSERT INTO mazes (title, length, height, author, date, cells) VALUES (?, ?, ?, ?, ?, ?);";
 
 
@@ -80,7 +73,7 @@ public class Export implements ActionListener, Runnable {
             addMaze.setString(4, maze.author);
             addMaze.setString(5, maze.createDate);
            // addMaze.setBytes(6, imageInByte);
-            addMaze.setBinaryStream(6, fis, (int) file.length());
+            addMaze.setBinaryStream(6, fileinput, (int) file.length());
             addMaze.execute();
             /* END MISSING CODE */
         } catch (SQLException ex) {
@@ -220,7 +213,7 @@ public class Export implements ActionListener, Runnable {
 
 
         file = new File(title+".png");
-        fis = new FileInputStream(file);
+        fileinput = new FileInputStream(file);
 
 
 

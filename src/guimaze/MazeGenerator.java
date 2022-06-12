@@ -309,7 +309,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
             if(refMaze.size() == 1){
-                HideGUI();
+               
                 Export exp = new Export(allMazes.get(refMaze.get(0)));
                 refMaze.clear();
             } else {
@@ -319,9 +319,10 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
                     Export expmultiple = new Export(allMazes.get(refMaze.get(i)), false);
                 }
                 refMaze.clear();
+
             }
 
-
+            exportDialog();
 
 
 
@@ -329,6 +330,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         if(e.getSource() == btnExportOptimal){
 
             PerformExport(true);
+            exportDialog();
         }
         
     }
@@ -360,6 +362,18 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
         p.setBorder(BorderFactory.createLineBorder(Color.black));
         JLabel inputError = new JLabel("You have selected too many tick boxes, " +
                 "please make sure only one is selected to Display the maze");
+        inputError.setSize(200, 200);
+        d.setSize(600, 200);
+        p.add(inputError);
+        d.add(p);
+        d.setVisible(true);
+    }
+
+    private void exportDialog(){
+        JDialog d = new JDialog(frame, "Input Error");
+        JPanel p = new JPanel();
+        p.setBorder(BorderFactory.createLineBorder(Color.black));
+        JLabel inputError = new JLabel("Export has completed please check local project folder or database");
         inputError.setSize(200, 200);
         d.setSize(600, 200);
         p.add(inputError);

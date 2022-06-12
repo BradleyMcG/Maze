@@ -242,7 +242,7 @@ public class Display extends JFrame implements ActionListener, Runnable {
             EditMaze();
         }
         if(e.getSource() == btnExport){
-            HideGUI();
+            //HideGUI();
             Export temp = new Export(maze);
         }
 
