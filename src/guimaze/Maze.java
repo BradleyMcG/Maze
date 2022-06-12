@@ -459,7 +459,8 @@ public class Maze{
         /**
          * Determines whether a specified integer pair exists in a specified list of integer pairs
          *
-         * @param path
+         * @param path - list of cell Coords in the Maze's optimal route
+         * @param node - coordinates of a single cell
          */
         boolean exists = false;
         for (int i = 0; i < path.size(); i++){

@@ -15,7 +15,9 @@ public class Cell {
     private JPanel pnlCell;
 
     public Cell(int[] xy){
-
+        /**
+         * constructs and instance of a Cell of specified coordinates
+         */
 
         coords = xy;
         walls = new Wall[4];
@@ -25,6 +27,9 @@ public class Cell {
     }
 
     private void initializeWalls(){
+        /**
+         * initaialises the cells walls
+         */
         for (int i = 0; i < 4; i++){
             walls[i] = new Wall(wallPos[i]);
         }
@@ -85,6 +90,8 @@ public class Cell {
 
     public void Draw(JPanel pane, int cellPixels, int x, int y, int indicator){
         /**
+         * Displays a cells onto a specified JPanel
+         *
          * @param pane - maze display panel
          * @param cellPixels - dimension of single square cell
          * @param x - length position of cell on 'pane'
@@ -147,6 +154,9 @@ public class Cell {
     }
 
     public int NumWallsEnabled(){
+        /**
+         * @return - the total number of walls of the cell
+         */
         int tally = 0;
         for (int i = 0; i < 4; i ++){
             if(walls[i].enabled){
@@ -157,10 +167,18 @@ public class Cell {
     }
 
     public void break_Wall(int wall){
+        /**
+         * breaks wall
+         * @param wall - integer correlating to the specified wall
+         */
         walls[wall].Disable();
     }
 
     public void add_Wall(int wall){
+        /**
+         * enables wall
+         * @param wall - integer correlating to the specified wall
+         */
         walls[wall].Enable();
     }
 
