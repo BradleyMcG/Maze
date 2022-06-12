@@ -28,6 +28,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     //GUI Fields
     private JFrame frame;
     private JPanel displayPanel;
+    private boolean displayOptimal = false;
 
     private final int displayLength = 500;
     private final int displayHeight = 500;
@@ -45,6 +46,9 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     private JLabel optimal;
     private JLabel deadEnds;
     private JLabel dead;
+    private JLabel lblStart;
+    private JLabel lblFinish;
+    private JButton btnOptimal;
 
     private String author;
     private String title;
@@ -64,7 +68,6 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
     public ManualGeneration(Maze maze) {
         /**
-         * Consturctor for Manual Mazes
          * @param maze - Reference to Maze instance just created to now be developed
          */
         super();
@@ -125,21 +128,45 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
     private void createLabels(){
 
-        isSolvable = new JLabel("Currently Solvable: ");
-        solveable = new JLabel("Yes");
-        optimalSolve = new JLabel("Optimal Solve(%):");
-        String opt = Float.toString(OptimalPercentage()) + "%";
+        String opt_1 = "Optimal Solve (%):";
+        String opt = "";
+        float solve_percentage = OptimalPercentage();
+        if(solve_percentage == 0){
+            opt = "Maze is Unsolvable";
+        }else{
+            opt = opt.concat(opt_1 + Float.toString(solve_percentage) + "%");
+        }
         optimal = new JLabel(opt);
-        deadEnds = new JLabel("Dead End Cells (%)");
-        String deadper = Float.toString(DeadEndPercentage()) + "%";
+        String deadper_1 = "Dead End Cells (%): ";
+        String deadper = "";
+        float dead_per = DeadEndPercentage();
+        if(solve_percentage == 0){
+            deadper = "No Dead Ends";
+        }else{
+            deadper = deadper.concat(deadper_1 + Float.toString(dead_per) + "%");
+        }
         dead = new JLabel(deadper);
 
-        labelPanel.add(isSolvable);
-        labelPanel.add(solveable);
-        labelPanel.add(optimalSolve);
+        String start = "";
+        start = start.concat("Start Cell: (" + this.maze.startCell[0] + "," + this.maze.startCell[1] + ")" );
+        lblStart = new JLabel(start);
+
+        String finish = "";
+        finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
+        lblFinish = new JLabel(finish);
+
+        btnOptimal = new JButton("Optimal Route");
+        btnOptimal.addActionListener(this);
+
+        labelPanel.add(lblStart);
+        labelPanel.add(lblFinish);
+
         labelPanel.add(optimal);
-        labelPanel.add(deadEnds);
+
         labelPanel.add(dead);
+        labelPanel.add(btnOptimal);
+
+
     }
 
     private void CreateGUI(){ //will eventually be from GUI interface
@@ -160,7 +187,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
 
         createButtons();
 
-        labelPanel = new JPanel(new GridLayout(3,2));
+        labelPanel = new JPanel(new GridLayout(5,2));
         labelPanel.setBounds(550, 25, 225, 500);
 
 
@@ -187,10 +214,30 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     private float OptimalPercentage(){
+        /**
+         * @return - percentage of cells in the optimal (shortest) solution to maze
+         */
+        /*
         Random rand = new Random();
         float result = (float)rand.nextInt(100-1) + 1;
         return result;
         //dummy value - random percentage
+
+         */
+
+        float total = this.maze.Total_CellOptimal();
+        float percentage = total/validCells_size() * 100;
+        //OR float percentage = total/(this.maze.length * this.maze.height);
+        return percentage;
+    }
+
+    private int validCells_size(){
+        /**
+         * @return - the number of cells in maze that aren't disabled
+         */
+        int num;
+        num = (maze.length * maze.height) - this.maze.invalidCells.size();
+        return num;
     }
 
     private float DeadEndPercentage(){
@@ -201,17 +248,12 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         return this.maze.DeadEnd_Percentage();
     }
 
-    //DIDN'T USE
     private List<int[]> wallDialog(){
 
         return new ArrayList<int[]>();
     }
 
     public void RemoveWalls(int[][] data){
-        /**
-         * Removes walls from certain cells, by using user input from two dimensional array.
-         * @param data a two dimensional array that is filled with x1 and y1 data of the first cell; x2 and y2 data of the next cell.
-         */
         frame.setVisible(false);
 
         System.out.println("Remove walls");
@@ -286,8 +328,23 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 }
 
 
+
+                //old code:
                 maze.cells[currentCell[0]][currentCell[1]].break_Wall(walls);
                 maze.cells[nextCell[0]][nextCell[1]].break_Wall(nextWalls);
+
+
+                /*
+                int[] old_pass = {currentCell[0], currentCell[1]};
+                int[] new_pass = {nextCell[0], nextCell[1]};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(walls);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextWalls);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
+
+                 */
+
 
             }
         }
@@ -297,18 +354,8 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     public void RemoveAlotOfWalls(int[] current, int[] next , int move, int nextmove){
-        /**
-         * Removes multiple walls from certain cells, by using user input from two deminsional array.
-         * @param current an array of current dimension of the cells
-         * @param next an array of the next dimension of the cells
-         * @param move an int that showcases which wall need to be removed
-         * @param nextmove an int that showcases which wall need to be removed next
-         * void no return
-         */
-
         int temp = 0;
         System.out.println("Remove alot of walls");
-
 
         if(move == 0 ||move == 1 ){
 
@@ -318,12 +365,22 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 temp = next[1];
             }
             for(int i = 0; i <= temp;i++){
+                //old code
                 maze.cells[current[0]][i].break_Wall(move);
 
                 maze.cells[next[0]][i].break_Wall(nextmove);
 
 
+                /*
+                int[] old_pass = {current[0], i};
+                int[] new_pass = {next[0], i};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(move);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextmove);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
 
+                 */
 
                 //System.out.println("Current Cells are:" + maze.cells[current[0]][i] + "Next Cells are" + maze.cells[next[0]][next[1]+i]);
             }
@@ -341,8 +398,21 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
                 temp = next[0];
             }
             for(int i = 0; i <= temp;i++){
+                //old code
                 maze.cells[i][current[1]].break_Wall(move);
                 maze.cells[i][next[1]].break_Wall(nextmove);
+
+
+                /*
+                int[] old_pass = { i, current[i]};
+                int[] new_pass = {i, next[1]};
+                maze.cells[old_pass[0]][old_pass[1]].break_Wall(move);
+                maze.cells[new_pass[0]][new_pass[1]].break_Wall(nextmove);
+                Relation new_rel = new Relation(old_pass, new_pass);
+                this.maze.rels.add(new_rel);
+                this.maze.print_rels();
+
+                 */
             }
 
             maze.cells[next[0]][next[1]].add_Wall(move);
@@ -363,9 +433,7 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
         if(e.getSource()==btnUpdate){
             System.out.println("pressed 'Reset'");
             maze.populateMazeArray();
-            frame.setVisible(false);
-            this.maze.Draw(displayPanel);
-            frame.setVisible(true);
+            updateFrame();
         }
         if(e.getSource()==btnInsertImg){
             System.out.println("pressed 'insert img'");
@@ -384,7 +452,21 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
             GenDialog = new ManualGenDialog(maze,this);
 
         }
+        if(e.getSource()==btnOptimal){
+            System.out.println("pressed 'Optimal route'");
+            ToggleOptimal();
 
+        }
+
+
+    }
+
+    private void ToggleOptimal(){
+        if(displayOptimal){
+            displayOptimal = false;
+        }else{
+            displayOptimal = true;
+        }
     }
 
     private String GetDate(){

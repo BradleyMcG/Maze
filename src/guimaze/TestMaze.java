@@ -27,7 +27,7 @@ public class TestMaze {
         int supposed_len = maze.length * maze.height;
         System.out.println("Actual Length: " + len);
         System.out.println("Supposed Length: "+ supposed_len);
-        //assertEquals(len, supposed_len);
+        assertEquals(len, supposed_len);
     }
 
     @Test

@@ -42,7 +42,29 @@ public class Wall extends JPanel{
         }
     }
 
-
+    public void Draw(int cellPixels, Color background){
+        //int smaller = (cellPixels/20);
+        int smaller = 1;
+        switch (position){
+            case "NORTH":
+                this.setPreferredSize(new Dimension(cellPixels, smaller));
+                break;
+            case "SOUTH":
+                this.setPreferredSize(new Dimension(cellPixels, smaller));
+                break;
+            case "EAST":
+                this.setPreferredSize(new Dimension(smaller, cellPixels));
+                break;
+            case "WEST":
+                this.setPreferredSize(new Dimension(smaller, cellPixels));
+                break;
+        }
+        if (enabled){
+            setBackground(Color.BLACK);
+        }else{
+            setBackground(background);
+        }
+    }
 
     public void Disable(){
         enabled = false;

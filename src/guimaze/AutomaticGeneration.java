@@ -32,6 +32,7 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
     private JPanel displayPanel;
     private final int displayLength = 500;
     private final int displayHeight = 500;
+    private boolean displayOptimal;
 
     private JPanel buttonPanel;
     private JButton btnInsertImg;
@@ -50,16 +51,19 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
 
 
+
     private void CreateGUI(){ //will eventually be from GUI interface
 
         super.HideGUI();
+        displayOptimal = false;
         displayPanel = new JPanel();
         displayPanel.setLayout(null);
         //displayPanel.setBackground(Color.GREEN);
         displayPanel.setBounds(25,25,displayLength, displayHeight);
         //displayPanel.add(new JLabel("[Area for working Maze]"));
 
-        this.maze.Draw(displayPanel);
+        //this.maze.Draw(displayPanel);//old
+        Draw();
 
         buttonPanel = new JPanel(new GridLayout(1, 3));
         //buttonPanel.setBackground(Color.RED);
@@ -115,12 +119,16 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         finish = finish.concat("Finish Cell: (" + this.maze.finishCell[0] + "," + this.maze.finishCell[1] + ")");
         lblFinish = new JLabel(finish);
 
+        btnOptimal = new JButton("Optimal Route");
+        btnOptimal.addActionListener(this);
+
         labelPanel.add(lblStart);
         labelPanel.add(lblFinish);
         //labelPanel.add(optimalSolve);
         labelPanel.add(lbloptimal);
         //labelPanel.add(deadEnds);
         labelPanel.add(lbldead);
+        labelPanel.add(btnOptimal);
 
     }
 
@@ -150,7 +158,8 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
         System.out.println("frame has been updated");
 
-        this.maze.Draw(displayPanel);
+        //this.maze.Draw(displayPanel);//old
+        Draw();
         createButtons();
         createLabels();
 
@@ -158,6 +167,15 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
 
     }
 
+    private void Draw(){
+
+        if(displayOptimal){
+            this.maze.Draw(displayPanel, this.maze.getSolution());
+        }else{
+            this.maze.Draw(displayPanel);
+        }
+
+    }
 
     public AutomaticGeneration(Maze maze) {
         /**
@@ -218,13 +236,6 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
         /**
          * @return - percentage of cells in the optimal (shortest) solution to maze
          */
-        /*
-        Random rand = new Random();
-        float result = (float)rand.nextInt(100-1) + 1;
-        return result;
-        //dummy value - random percentage
-
-         */
 
         float total = this.maze.Total_CellOptimal();
         float percentage = total/validCells_size() * 100;
@@ -272,7 +283,20 @@ public class AutomaticGeneration extends CreateMaze implements ActionListener, R
             HideGUI();
             MazeGenerator.GetInstance().ShowGUI();
         }
+        if(e.getSource()==btnOptimal){
+            System.out.println("pressed 'Optimal Route'");
+            ToggleOptimal();
+            updateFrame();
+        }
 
+    }
+
+    private void ToggleOptimal(){
+        if(displayOptimal){
+            displayOptimal = false;
+        }else{
+            displayOptimal = true;
+        }
     }
 
 

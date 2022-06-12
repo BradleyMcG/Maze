@@ -121,6 +121,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
       //  btnFind.addActionListener(this);
         btnDisplay.addActionListener(this);
         btnExport.addActionListener(this);
+        btnExportOptimal.addActionListener(this);
 
         //JPanel pane = new JPanel();
        // frame.setContentPane(pane);
@@ -315,7 +316,7 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
                 for(int i = 0; i < refMaze.size(); i++){
 
-                    Export expmultiple = new Export(allMazes.get(refMaze.get(i)));
+                    Export expmultiple = new Export(allMazes.get(refMaze.get(i)), false);
                 }
                 refMaze.clear();
             }
@@ -325,7 +326,29 @@ public class MazeGenerator extends JFrame implements ActionListener, Runnable {
 
 
         }
+        if(e.getSource() == btnExportOptimal){
+
+            PerformExport(true);
+        }
         
+    }
+
+    private void PerformExport(boolean check){
+        System.out.println("EXPORT");
+        checkTickBox();
+
+        if(refMaze.size() == 1){
+            //HideGUI();
+            Export exp = new Export(allMazes.get(refMaze.get(0)), check);
+            refMaze.clear();
+        } else {
+
+            for(int i = 0; i < refMaze.size(); i++){
+
+                Export expmultiple = new Export(allMazes.get(refMaze.get(i)), check);
+            }
+            refMaze.clear();
+        }
     }
 
     public void StoreMaze(Maze maze){
