@@ -23,6 +23,7 @@ public class Export implements ActionListener, Runnable {
     protected Maze maze;
 
     JPanel pnlDisplay;
+    JPanel pnlOptimal;
     private final int displayLength = 500;
     private final int displayHeight = 500;
 
@@ -127,7 +128,12 @@ public class Export implements ActionListener, Runnable {
 
             /* BEGIN MISSING CODE */
             addMaze = connection.prepareStatement(INSERT_MAZES);
-            tempDraw(maze);
+            if(check){
+                tempDrawOptimal(maze);
+            }else{
+                tempDraw(maze);
+            }
+            //tempDraw(maze);
             addMaze();
 
             /* END MISSING CODE */
@@ -147,7 +153,7 @@ public class Export implements ActionListener, Runnable {
 
         try {
             System.out.println("IMAGE METHOD SHOULD BE CALLED");
-            image(pnlDisplay);
+            image(pnlDisplay, false);
         } catch (IOException e) {
             System.out.println("IMAGE METHOD NOT CALLED");
             e.printStackTrace();
@@ -156,17 +162,54 @@ public class Export implements ActionListener, Runnable {
 
     }
 
-    public BufferedImage image(JPanel panel) throws IOException {
+    public void tempDrawOptimal(Maze maze){
+        //tempDraw(maze);
+        pnlDisplay = new JPanel();
+        pnlDisplay.setLayout(null);
+        pnlDisplay.setBounds(25, 25, displayLength, displayHeight);
+        maze.Draw(pnlDisplay);
+
+        try {
+            System.out.println("IMAGE METHOD SHOULD BE CALLED");
+            image(pnlDisplay, false);
+        } catch (IOException e) {
+            System.out.println("IMAGE METHOD NOT CALLED");
+            e.printStackTrace();
+        }
+
+        pnlOptimal = new JPanel();
+        pnlOptimal.setLayout(null);
+        pnlOptimal.setBounds(25, 25, displayLength, displayHeight);
+        maze.Draw(pnlOptimal, this.maze.getSolution());
+
+        try {
+            System.out.println("IMAGE METHOD SHOULD BE CALLED");
+            image(pnlOptimal, true);
+        } catch (IOException e) {
+            System.out.println("IMAGE METHOD NOT CALLED");
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public BufferedImage image(JPanel panel, boolean opt) throws IOException {
         int w = 500;
         int h = 500;
 
         BufferedImage temp = new BufferedImage(w,h,BufferedImage.TYPE_INT_RGB);
         Graphics2D g = temp.createGraphics();
         panel.paint(g);
-        ImageIO.write(temp,"png",new File(this.maze.title+".png"));
+        String title = "";
+        if(opt){
+            title = title.concat(this.maze.title+"_optimal");
+        }else{
+            title = this.maze.title;
+        }
+        ImageIO.write(temp,"png",new File(title+".png"));
 
 
-        file = new File(this.maze.title+".png");
+        file = new File(title+".png");
         fis = new FileInputStream(file);
 
 
