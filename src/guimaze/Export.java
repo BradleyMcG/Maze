@@ -166,6 +166,13 @@ public class Export implements ActionListener, Runnable {
     }
 
     public BufferedImage image(JPanel panel) throws IOException {
+        /**
+         * Takes current maze panel, creates it into a png file which is saved locally.
+         *
+         * @param panel Instance of panel in which current maze is draw on
+         * @return temp returns buffered image
+         *
+         */
         int w = 500;
         int h = 500;
 
