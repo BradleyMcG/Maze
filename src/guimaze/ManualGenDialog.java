@@ -251,7 +251,9 @@ public class ManualGenDialog implements ActionListener {
                 Objects.nonNull(obj[1]);
                 Objects.nonNull(obj[2]);
                 Objects.nonNull(obj[3]);
-                if(obj[0]== obj[1] || obj[2] == obj[3]){
+                boolean b = Integer.parseInt(String. valueOf(obj[0])) == Integer.parseInt(String. valueOf(obj[1]));
+                boolean c = Integer.parseInt(String. valueOf(obj[2])) == Integer.parseInt(String. valueOf(obj[3]));
+                if(b || c){
                     ManualGen.RemoveWalls(transferData(deleteTable));
                     ManualGen.updateFrame();
                     HideGUI();
@@ -281,8 +283,9 @@ public class ManualGenDialog implements ActionListener {
                 Objects.nonNull(obj[2]);
                 Objects.nonNull(obj[3]);
 
-
-                if(obj[0]== obj[1] || obj[2] == obj[3]){
+                boolean b = Integer.parseInt(String. valueOf(obj[0])) == Integer.parseInt(String. valueOf(obj[1]));
+                boolean c = Integer.parseInt(String. valueOf(obj[2])) == Integer.parseInt(String. valueOf(obj[3]));
+                if(b || c){
                     ID++;
                     model.addRow(obj);
                 } else {
@@ -322,7 +325,11 @@ public class ManualGenDialog implements ActionListener {
                 Objects.nonNull(obj[1]);
                 Objects.nonNull(obj[2]);
                 Objects.nonNull(obj[3]);
-                if(obj[0]== obj[1] || obj[2] == obj[3]){
+
+                boolean b = Integer.parseInt(String. valueOf(obj[0])) == Integer.parseInt(String. valueOf(obj[1]));
+                boolean c = Integer.parseInt(String. valueOf(obj[2])) == Integer.parseInt(String. valueOf(obj[3]));
+
+                if(b || c){
                     if(i>=0){
                         model.setValueAt(x1input.getText(),i,0);
                         model.setValueAt(x2input.getText(),i,1);

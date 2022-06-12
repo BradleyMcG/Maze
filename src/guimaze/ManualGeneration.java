@@ -254,6 +254,11 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     public void RemoveWalls(int[][] data){
+        /**
+         * Removes walls from certain cells, by using user input from two dimensional array.
+         * @param data a two dimensional array that is filled with x1 and y1 data of the first cell; x2 and y2 data of the next cell.
+         */
+
         frame.setVisible(false);
 
         System.out.println("Remove walls");
@@ -354,6 +359,15 @@ public class ManualGeneration extends CreateMaze implements ActionListener, Runn
     }
 
     public void RemoveAlotOfWalls(int[] current, int[] next , int move, int nextmove){
+        /**
+         * Removes multiple walls from certain cells, by using user input from two deminsional array.
+         * @param current an array of current dimension of the cells
+         * @param next an array of the next dimension of the cells
+         * @param move an int that showcases which wall need to be removed
+         * @param nextmove an int that showcases which wall need to be removed next
+         * void no return
+         */
+
         int temp = 0;
         System.out.println("Remove alot of walls");
 
