@@ -406,7 +406,7 @@ public class Maze{
          *
          *
          * @param pane - Jpanel to draw maze onto
-         * @param path - list of cell Coords
+         * @param path - list of cell Coords in the Maze's optimal route
          *
          */
 
@@ -456,6 +456,11 @@ public class Maze{
 
 
     private boolean ExistsIn(List<int[]> path,int[] node){
+        /**
+         * Determines whether a specified integer pair exists in a specified list of integer pairs
+         *
+         * @param path
+         */
         boolean exists = false;
         for (int i = 0; i < path.size(); i++){
             int[] current = {path.get(i)[0], path.get(i)[1]};
